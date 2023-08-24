@@ -29,7 +29,7 @@ const ControlPanel = () => {
                 >
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                    Offcanvas
+                    Menu
                     </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
