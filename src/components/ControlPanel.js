@@ -7,11 +7,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { toLonLat } from 'ol/proj';
-import View from 'ol/View.js';
 
-const ControlPanel = (props) => {
+const ControlPanel = () => {
+    const [count, setCount] = useState(0);
     const expand = 'lg';
+
+    function alertMe() {
+        alert("Test!");
+    }
 
     return (
         <>
@@ -31,8 +34,8 @@ const ControlPanel = (props) => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link onClick={props.zero}>Zero In</Nav.Link>
-                    <Nav.Link onClick={props.centerOnPoint}>Set Center</Nav.Link>
+                    <Nav.Link onClick={alertMe}>Home</Nav.Link>
+                    <Nav.Link href="#action2">Link</Nav.Link>
                     <NavDropdown
                         title="Dropdown"
                         id={`offcanvasNavbarDropdown-expand-${expand}`}

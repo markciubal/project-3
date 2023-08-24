@@ -10,7 +10,7 @@ nav {
   pointer-events: auto;
   z-index: 2;
 }
-.map {
+#map {
   position: absolute;
 /* pointer-events: none; */
   top: 0;
