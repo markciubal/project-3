@@ -27,10 +27,7 @@ const MainMap = () => {
           source: new OSM(),
         }),
       ],
-      view: new View({
-        center: fromLonLat([longitude, latitude]),
-        zoom: 10,
-      }),
+      view: view
     });
 
     const geolocation = new Geolocation({
@@ -45,9 +42,29 @@ const MainMap = () => {
       return document.getElementById(id);
     }
     
-    geolocation.setTracking(true);
+  geolocation.setTracking(true);
+  console.log(geolocation);
+  
+  const positionFeature = new Feature();
 
-    const coordinates = geolocation.getPosition();
+  positionFeature.setStyle(
+    new Style({
+      image: new CircleStyle({
+        radius: 6,
+        fill: new Fill({
+          color: '#3399CC',
+        }),
+        stroke: new Stroke({
+          color: '#fff',
+          width: 2,
+        }),
+      }),
+    })
+  );
+    geolocation.on('change:position', function () {
+      const coordinates = geolocation.getPosition();
+      positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
+    });
   }, []);
 
   return (
