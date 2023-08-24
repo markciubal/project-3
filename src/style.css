@@ -4,11 +4,31 @@ html,
 body {
   margin: 0;
   height: 100%;
+  z-index: -2;
 }
-
+nav {
+  pointer-events: auto;
+  z-index: 2;
+}
 #map {
   position: absolute;
+/* pointer-events: none; */
   top: 0;
   bottom: 0;
   width: 100%;
+  overflow: hidden;
+} 
+
+/* #main-map:first-of-type { display:none; } */
+
+#control-panel {
+  background-color: whitesmoke;
+}
+nav {
+  position: absolute;
+}
+.ol-zoom {
+  top: 65px;
+  right: 8px;
+  background-color: transparent;
 }
