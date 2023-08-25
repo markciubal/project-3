@@ -12,13 +12,6 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
 import { useEffect, useState, useRef } from 'react';
 
 const MainMap = () => {
-  // useGeographic();
-  const transformCenter = (center) => {
-    if (center != null) {
-        return transform(center, "EPSG:4326", "EPSG:3857");
-    }
-  };
-
   const [latitude, setLatitude] = useState(38);
   const [longitude, setLongitude] = useState(-98);
   const [center, setCenter] = useState([longitude, latitude]);
@@ -27,14 +20,14 @@ const MainMap = () => {
   const [point, setPoint] = useState();
   const [map, setMap] = useState();
   const [geolocation, setGeolocation] = useState(null);
-  const [transformedCenter] = useState(transformCenter(center));
+  const [selectedCoord, setSelectedCoord ] = useState([longitude, latitude]);
 
   const mapRef = useRef();
   mapRef.current = map;
 
   useEffect(() => {
     // Create a point
-    var point = new Point(transformedCenter);
+    var point = new Point(transform(selectedCoord, "EPSG:4326", "EPSG:3857"));
     setPoint(point);
     var feature = new Feature({
       geometry: point,
@@ -63,7 +56,7 @@ const MainMap = () => {
         source: vectorSource,
     });
     const initialView = new View({
-      center: transformedCenter,
+      center: transform(selectedCoord, "EPSG:4326", "EPSG:3857"),
       zoom: 5,
     });
     const locationMap = new Map({
@@ -80,22 +73,26 @@ const MainMap = () => {
   setMap(locationMap);
   // mapRef.current = locationMap;
   setFeaturesLayer(initalFeaturesLayer);
-  }, []);
+  console.log('useEffect');
+  }, [selectedCoord]);
 
   const centerOnPoint = (latitude, longitude) => {
     alert("Center");
   }
   const zero = async () => {
     if (mapRef.current) {
-      const zero = [0, 0];
-      const zeroView = new View({
-        center: transformCenter(zero),
-        zoom: 5,
-      });
-      console.log(zeroView);
-      mapRef.current.setView(zeroView);
+      setSelectedCoord([0, 0]);
+      console.log(selectedCoord);
+
+      // const zeroView = new View({
+      //   center: transformCenter(selectedCoord),
+      //   zoom: 5,
+      // });
+      // console.log(zeroView);
+      // mapRef.current.setView(zeroView);
     }
  }
+ console.log('drawing');
   return (
     <>
       <ControlPanel 
