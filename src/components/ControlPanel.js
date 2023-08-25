@@ -5,10 +5,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { useState } from "react";
+//import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { toLonLat } from 'ol/proj';
-import View from 'ol/View.js';
+//import { toLonLat } from 'ol/proj';
+//import View from 'ol/View.js';
 
 const ControlPanel = (props) => {
     const expand = 'lg';
@@ -45,7 +45,11 @@ const ControlPanel = (props) => {
                         <NavDropdown.Item href="#action5">
                         Something else here
                         </NavDropdown.Item>
+                        <NavDropdown.Item onClick={props.logout}>Logout</NavDropdown.Item>
+                        <NavDropdown.Item onClick={props.profile}>Profile</NavDropdown.Item>
                     </NavDropdown>
+                     <Nav.Link onClick={props.history}>History</Nav.Link>
+                    < Nav.Link onClick={props.createNew}>New</Nav.Link>
                     </Nav>
                     <Form className="d-flex">
                     <Form.Control
@@ -66,4 +70,4 @@ const ControlPanel = (props) => {
   }
   
   export default ControlPanel;
-  
+  // logout, profile, history, new, 
