@@ -1,11 +1,16 @@
 import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
-import "@szhsin/react-menu/dist/core.css";
-const COORDINATE_ROUND_PLACES = 3;
+import "@szhsin/react-menu/dist/theme-dark.css";
+
+import "@szhsin/react-menu/dist/index.css";
 
 function CenterMenu(props) {
   return (
-    <Menu id="center-button" menuButton={<MenuButton>{`${props.centerLatitude.toFixed(COORDINATE_ROUND_PLACES)}, ${props.centerLongitude.toFixed(COORDINATE_ROUND_PLACES)}`} <span id="center-down-button">▼</span></MenuButton>}>
-      <MenuItem>New File</MenuItem>
+    <Menu id="center-button"
+      menuButton={
+      <MenuButton>
+        {/* {`${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`} */}
+        <span id="center-down-button"> ▼</span></MenuButton>}>
+      <MenuItem onClick={() => { props.setIsPaneOpen(true)}}>Post</MenuItem>
       <MenuItem>Save</MenuItem>
       <SubMenu label="Edit">
         <MenuItem>Cut</MenuItem>

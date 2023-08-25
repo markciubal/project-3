@@ -21,13 +21,17 @@
 
 .szh-menu {
   margin: 0;
-  padding: 0;
+  padding: 2em;
   list-style: none;
   box-sizing: border-box;
-  width: max-content;
   z-index: 100;
   border: 1px solid rgba(0, 0, 0, 1);
   background-color: #fff;
+}
+
+.szh-menu-container {
+  padding: 10px;
+  width: 752px;
 }
 .szh-menu:focus {
   outline: none;
@@ -100,4 +104,5 @@
   position: relative;
   font-size: .80em;
   top: -1px;
+  user-select: none;
 }

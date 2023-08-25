@@ -16,6 +16,7 @@
     "react-geolocation": "^1.0.4",
     "react-openlayers": "^0.3.0",
     "react-scripts": "5.0.1",
+    "react-sliding-pane": "^7.3.0",
     "rlayers": "^2.0.0",
     "web-vitals": "^2.1.4"
   },
