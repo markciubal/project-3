@@ -1,182 +1,62 @@
-import '../style.css';
-import ControlPanel from '../components/ControlPanel.js';
-import Map from 'ol/Map.js';
-import View  from 'ol/View.js';
-import { useGeographic, transform, fromLonLat } from 'ol/proj.js'; 
-import Geolocation from 'ol/Geolocation.js';
-import Point from 'ol/geom/Point.js';
-import Feature from 'ol/Feature.js';
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
-import {OSM, Vector as VectorSource} from 'ol/source.js';
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
-import { useEffect, useState, useRef } from 'react';
+import React from "react";
+import {useEffect, useState} from "react";
 
+import ControlPanel from "./ControlPanel";
+import { fromLonLat } from "ol/proj";
+import { toLonLat } from "ol/proj";
+import { Geometry, Point } from "ol/geom";
+import { Geolocation as OLGeoLoc } from "ol";
+import "ol/ol.css";
+
+import {
+  RMap,
+  ROSM,
+  RLayerVector,
+  RFeature,
+  RGeolocation,
+  ROverlay,
+  RStyle,
+  useOL,
+} from "rlayers";
+import locationIcon from "../locationIcon.svg";
+import { RCircle, RFill } from "rlayers/style";
+const COORDINATE_ROUND_PLACES = 3;
 const MainMap = () => {
-  const [latitude, setLatitude] = useState(38);
-  const [longitude, setLongitude] = useState(-98);
-  const [center, setCenter] = useState([longitude, latitude]);
-  const [featuresLayer, setFeaturesLayer] = useState();
-  const [feature, setFeature] = useState();
-  const [point, setPoint] = useState();
-  const [map, setMap] = useState();
-  const [geolocation, setGeolocation] = useState(null);
-  const [selectedCoord, setSelectedCoord ] = useState([longitude, latitude]);
-
-  const mapRef = useRef();
-  mapRef.current = map;
+  // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
+  const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [-103.771556, 44.967243];
+  const [view, setView] = useState({ center: fromLonLat(GEOGRAPHIC_CENTER_OF_UNITED_STATES), zoom: 3 });
+  const [centerLatitude, setCenterLatitude] = useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[0]);
+  const [centerLongitude, setCenterLongitude] = useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[1]);
 
   useEffect(() => {
-    // Create a point
-    var point = new Point(transform(selectedCoord, "EPSG:4326", "EPSG:3857"));
-    setPoint(point);
-    var feature = new Feature({
-      geometry: point,
-      name: "Your address is shown here",
-    });
-    var iconStyle = new Style({
-      image: new CircleStyle({
-          radius: 6,
-          fill: new Fill({
-            color: '#4B0082',
-          }),
-          stroke: new Stroke({
-            color: '#fff',
-            width: 2,
-          }),
-      })
-    });
-    feature.setStyle(iconStyle);
-    setFeature(feature);
-    var vectorSource = new VectorSource({
-        features: [feature],
-    });
+    let viewCenter = toLonLat(view.center);
+    console.log(viewCenter);
+    setCenterLatitude(viewCenter[1]);
+    setCenterLongitude(viewCenter[0]);
+  }, [view]);
 
-    // create and add vector source layer
-    const initalFeaturesLayer = new VectorLayer({
-        source: vectorSource,
-    });
-    const initialView = new View({
-      center: transform(selectedCoord, "EPSG:4326", "EPSG:3857"),
-      zoom: 5,
-    });
-    const locationMap = new Map({
-      target: mapRef.current,
-      layers: [
-          new TileLayer({
-              source: new OSM(),
-          }),
-          initalFeaturesLayer,
-      ],
-      view: initialView,
-      controls: [],
-  });
-  setMap(locationMap);
-  // mapRef.current = locationMap;
-  setFeaturesLayer(initalFeaturesLayer);
-  console.log('useEffect');
-  }, [selectedCoord]);
-
-  const centerOnPoint = (latitude, longitude) => {
-    alert("Center");
-  }
-  const zero = async () => {
-    if (mapRef.current) {
-      setSelectedCoord([0, 0]);
-      console.log(selectedCoord);
-
-      // const zeroView = new View({
-      //   center: transformCenter(selectedCoord),
-      //   zoom: 5,
-      // });
-      // console.log(zeroView);
-      // mapRef.current.setView(zeroView);
-    }
- }
- console.log('drawing');
   return (
     <>
-      <ControlPanel 
-        map={map}
-        centerOnPoint={centerOnPoint}
-        zero={zero}
-        geolocation={geolocation}
-        latitude={latitude} 
-        setLatitude={setLatitude}
-        longitude={longitude}
-        setLongitude={setLongitude}
-      />
-      <div ref={mapRef} className="map"></div>
+      <ControlPanel centerLatitude={centerLatitude} centerLongitude={centerLongitude} />
+      <RMap
+        className="map"
+        initial={view}
+        view={[view, setView]}
+      >
+        <ROSM />
+        <RLayerVector>
+        <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
+        <RStyle.RStyle>
+            <RStyle.RCircle radius={5}>
+              <RStyle.RFill color="#000" />
+            </RStyle.RCircle>
+          </RStyle.RStyle>
+          <ROverlay className="example-overlay">{`${centerLatitude.toFixed(COORDINATE_ROUND_PLACES)}, ${centerLongitude.toFixed(COORDINATE_ROUND_PLACES)}`}</ROverlay>
+        </RFeature>
+        </RLayerVector>
+      </RMap>
     </>
   )
 };
 
 export default MainMap;
-
-
-  //   const geolocation = new Geolocation({ 
-  //     trackingOptions: {
-  //       enableHighAccuracy: true,
-  //     },
-  //     projection: view.getProjection(),
-  //   });
-
-  //   setGeolocation(geolocation);
-  //   function el(id) {
-  //     return document.getElementById(id);
-  //   }
-    
-  // geolocation.setTracking(true);
-  // console.log(geolocation);
-  
-  // const positionFeature = new Feature();
-
-  // positionFeature.setStyle(
-  //   new Style({
-  //     image: new CircleStyle({
-  //       radius: 6,
-  //       fill: new Fill({
-  //         color: '#3399CC',
-  //       }),
-  //       stroke: new Stroke({
-  //         color: '#fff',
-  //         width: 2,
-  //       }),
-  //     }),
-  //   })
-  // );
-  //   geolocation.on('change:position', function () {
-  //     const coordinates = geolocation.getPosition();
-  //     positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
-  //   });
-
-  
-  // useEffect(() => {
-  //   if (!geolocation) return;
-
-  //   const positionFeature = new Feature();
-  //   positionFeature.setStyle(
-  //     new Style({
-  //       image: new CircleStyle({
-  //         radius: 6,
-  //         fill: new Fill({
-  //           color: '#3399CC',
-  //         }),
-  //         stroke: new Stroke({
-  //           color: '#fff',
-  //           width: 2,
-  //         }),
-  //       }),
-  //     })
-  //   );
-
-  //   const vectorSource = new VectorSource();
-  //   const vectorLayer = new VectorLayer({
-  //     source: vectorSource,
-  //   });
-  //   geolocation.setTracking(true);
-
-  //   setGeolocation(geolocation);
-  //   map.addLayer(vectorLayer);
-  //   vectorSource.addFeature(positionFeature);
-
-  // }, [geolocation, map]);

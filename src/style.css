@@ -5,6 +5,7 @@ body {
   margin: 0;
   height: 100%;
   z-index: -2;
+  
 }
 nav {
   pointer-events: auto;
@@ -16,7 +17,6 @@ nav {
   top: 0;
   bottom: 0;
   width: 100%;
-  overflow: hidden;
 } 
 
 /* #main-map:first-of-type { display:none; } */
