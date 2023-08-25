@@ -111,3 +111,16 @@
 .bottom-pane {
   background-color: black;
 }
+
+.true {
+  background-color: darkred;
+  color: white;
+  text-align: center;
+
+}
+
+.false {
+  background-color: darkgreen;
+  color: white;
+  text-align: center;
+}
