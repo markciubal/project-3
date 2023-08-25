@@ -27,7 +27,7 @@
   box-sizing: border-box;
   z-index: 100;
   border: 1px solid rgba(0, 0, 0, 1);
-  background-color: #fff;
+  background-color: #F2EFE9;
 }
 
 .szh-menu-container {
@@ -106,4 +106,8 @@
   font-size: .80em;
   top: -1px;
   user-select: none;
+}
+
+.bottom-pane {
+  background-color: black;
 }

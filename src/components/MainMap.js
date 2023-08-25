@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import { render } from "react-dom";
 import '../App.css';
 import ControlPanel from "./ControlPanel";
+import Post from './Post';
 import SlidingPane from "react-sliding-pane";
 import { Menu } from "@szhsin/react-menu";
 import { fromLonLat } from "ol/proj";
@@ -36,6 +37,7 @@ const MainMap = () => {
 
   // Bottom sliding pane state.
   const [isPaneOpen, setIsPaneOpen] = useState(false);
+
 
   useEffect(() => {
     let viewCenter = toLonLat(view.center);
@@ -82,15 +84,16 @@ const MainMap = () => {
       </RMap>
       <SlidingPane
         closeIcon={<div>Close</div>}
+        className="bottom-pane"
         from="bottom"
         isOpen={isPaneOpen}
         onRequestClose={() => {
           setIsPaneOpen(false);
         }}  
         width="100%"
+
       >
-        <div>And I am pane content. BTW, what rocks?</div>
-        <br />
+        <Post />
       </SlidingPane>
     </>
   )
