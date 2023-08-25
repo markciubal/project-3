@@ -32,7 +32,7 @@ const ControlPanel = (props) => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <span>{`${props.centerLatitude.toFixed(COORDINATE_ROUND_PLACES)}, ${props.centerLongitude.toFixed(COORDINATE_ROUND_PLACES)}`}</span>
+                    <Nav.Link onClick={props.zero}><span>{`${props.centerLatitude.toFixed(COORDINATE_ROUND_PLACES)}, ${props.centerLongitude.toFixed(COORDINATE_ROUND_PLACES)}`}</span></Nav.Link>
                     <Nav.Link onClick={props.zero}>Zero In</Nav.Link>
                     <Nav.Link onClick={props.centerOnPoint}>Set Center</Nav.Link>
                     <NavDropdown

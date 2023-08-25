@@ -1,7 +1,8 @@
 import React from "react";
-import {useEffect, useState} from "react";
-
+import { useEffect, useState } from "react";
+import '../App.css';
 import ControlPanel from "./ControlPanel";
+import { Menu } from "@szhsin/react-menu";
 import { fromLonLat } from "ol/proj";
 import { toLonLat } from "ol/proj";
 import { Geometry, Point } from "ol/geom";
@@ -20,6 +21,7 @@ import {
 } from "rlayers";
 import locationIcon from "../locationIcon.svg";
 import { RCircle, RFill } from "rlayers/style";
+import CenterMenu from "./CenterMenu";
 const COORDINATE_ROUND_PLACES = 3;
 const MainMap = () => {
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
@@ -42,17 +44,22 @@ const MainMap = () => {
         className="map"
         initial={view}
         view={[view, setView]}
+        noDefaultControls={true}
+        maxZoom="15"
       >
         <ROSM />
         <RLayerVector>
-        <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
-        <RStyle.RStyle>
-            <RStyle.RCircle radius={5}>
-              <RStyle.RFill color="#000" />
-            </RStyle.RCircle>
-          </RStyle.RStyle>
-          <ROverlay className="example-overlay">{`${centerLatitude.toFixed(COORDINATE_ROUND_PLACES)}, ${centerLongitude.toFixed(COORDINATE_ROUND_PLACES)}`}</ROverlay>
-        </RFeature>
+          <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
+            <RStyle.RStyle>
+              <RStyle.RCircle radius={7}>
+                <RStyle.RFill color="#FFF" />
+                <RStyle.RStroke width="2" color="#000" />
+              </RStyle.RCircle>
+            </RStyle.RStyle>
+            <ROverlay
+              className="center-overlay"
+              positioning="top-center"><CenterMenu centerLatitude={centerLatitude} centerLongitude={centerLongitude}></CenterMenu></ROverlay>
+          </RFeature>
         </RLayerVector>
       </RMap>
     </>
