@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import { toLonLat } from 'ol/proj';
 //import View from 'ol/View.js';
 
-const COORDINATE_ROUND_PLACES = 3;
 const ControlPanel = (props) => {
     const expand = 'lg';
 
@@ -32,7 +31,7 @@ const ControlPanel = (props) => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link onClick={props.zero}><span>{`${props.centerLatitude.toFixed(COORDINATE_ROUND_PLACES)}, ${props.centerLongitude.toFixed(COORDINATE_ROUND_PLACES)}`}</span></Nav.Link>
+                    <Nav.Link onClick={props.zero}><span>{`${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`}</span></Nav.Link>
                     <Nav.Link onClick={props.zero}>Zero In</Nav.Link>
                     <Nav.Link onClick={props.centerOnPoint}>Set Center</Nav.Link>
                     <NavDropdown

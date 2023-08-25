@@ -5,6 +5,7 @@
 .App {
   text-align: center;
   z-index: 1;
+  background-color: #F2EFE9;
 }
 
 #center-coordinate-text {
@@ -94,7 +95,7 @@
 }
 
 .szh-menu-button {
-  margin-top: 15px;
+  margin-top: 0px;
   box-sizing: border-box;
   font-size: .75em;
   border-radius: .5em;

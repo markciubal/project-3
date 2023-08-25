@@ -46,7 +46,11 @@ const MainMap = () => {
 
   return (
     <>
-      <ControlPanel centerLatitude={centerLatitude} centerLongitude={centerLongitude} />
+      <ControlPanel 
+        centerLatitude={centerLatitude}
+        centerLongitude={centerLongitude}
+        coordinateRoundTo={coordinateRoundTo}
+        />
       <RMap
         className="map"
         initial={view}
@@ -59,7 +63,7 @@ const MainMap = () => {
           <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
             <RStyle.RStyle>
               <RStyle.RCircle radius={7}>
-                <RStyle.RFill color="#FFF" />
+                <RStyle.RFill color="#F8F7F4" />
                 <RStyle.RStroke width="2" color="#000" />
               </RStyle.RCircle>
             </RStyle.RStyle>
@@ -77,14 +81,12 @@ const MainMap = () => {
         </RLayerVector>
       </RMap>
       <SlidingPane
-        closeIcon={<div>Some div containing custom close icon.</div>}
-        from="bottom" isOpen={isPaneOpen}
-        title="Hey, it is optional pane title.  I can be React component too."
-        subtitle="Optional subtitle."
+        closeIcon={<div>Close</div>}
+        from="bottom"
+        isOpen={isPaneOpen}
         onRequestClose={() => {
-          // triggered on "<" on left top click or on outside click
           setIsPaneOpen(false);
-        }}
+        }}  
         width="100%"
       >
         <div>And I am pane content. BTW, what rocks?</div>
