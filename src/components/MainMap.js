@@ -12,27 +12,35 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
 import { useEffect, useState, useRef } from 'react';
 
 const MainMap = () => {
+  const [map, setMap] = useState();
+  const [featuresLayer, setFeaturesLayer] = useState();
   const [latitude, setLatitude] = useState(38);
   const [longitude, setLongitude] = useState(-98);
-  const [center, setCenter] = useState([longitude, latitude]);
-  const [featuresLayer, setFeaturesLayer] = useState();
-  const [feature, setFeature] = useState();
-  const [point, setPoint] = useState();
-  const [map, setMap] = useState();
-  const [geolocation, setGeolocation] = useState(null);
   const [selectedCoord, setSelectedCoord ] = useState([longitude, latitude]);
 
+  const [mapView, setMapView] = useState();
+  const [center, setCenter] = useState([longitude, latitude]);
+  const [feature, setFeature] = useState();
+  const [point, setPoint] = useState();
+  const [geolocation, setGeolocation] = useState(null);
+  // pull refs
+  const mapElement = useRef();
+  
+  // create state ref that can be accessed in OpenLayers onclick callback function
+  //  https://stackoverflow.com/a/60643670
   const mapRef = useRef();
   mapRef.current = map;
 
   useEffect(() => {
     // Create a point
-    var point = new Point(transform(selectedCoord, "EPSG:4326", "EPSG:3857"));
+    var point = new Point(selectedCoord);
     setPoint(point);
+
     var feature = new Feature({
       geometry: point,
       name: "Your address is shown here",
     });
+
     var iconStyle = new Style({
       image: new CircleStyle({
           radius: 6,
@@ -45,53 +53,79 @@ const MainMap = () => {
           }),
       })
     });
+
     feature.setStyle(iconStyle);
+
     setFeature(feature);
+
     var vectorSource = new VectorSource({
         features: [feature],
     });
 
     // create and add vector source layer
-    const initalFeaturesLayer = new VectorLayer({
+    const initialFeaturesLayer = new VectorLayer({
         source: vectorSource,
     });
     const initialView = new View({
-      center: transform(selectedCoord, "EPSG:4326", "EPSG:3857"),
+      projection: 'EPSG:3857',
+      center: selectedCoord,
       zoom: 5,
     });
-    const locationMap = new Map({
-      target: mapRef.current,
+
+    setMapView(initialView); 
+
+    const initialMap = new Map({
+      target: mapElement.current,
       layers: [
           new TileLayer({
               source: new OSM(),
           }),
-          initalFeaturesLayer,
+          initialFeaturesLayer,
       ],
       view: initialView,
       controls: [],
   });
-  setMap(locationMap);
-  // mapRef.current = locationMap;
-  setFeaturesLayer(initalFeaturesLayer);
-  console.log('useEffect');
-  }, [selectedCoord]);
+  initialMap.on('click', handleMapClick)
 
+  setMap(initialMap);
+  // mapRef.current = initialMap;
+  setFeaturesLayer(initialFeaturesLayer);
+  console.log('useEffect');
+  }, []);
+  useEffect(() => {
+    if (mapRef.current) {
+      const zeroView = new View({
+        projection: 'EPSG:3857',
+        center: selectedCoord,
+        zoom: 5,
+      });
+      mapRef.current.setView(zeroView);
+    }
+    
+  }, [selectedCoord]);
   const centerOnPoint = (latitude, longitude) => {
     alert("Center");
   }
   const zero = async () => {
-    if (mapRef.current) {
-      setSelectedCoord([0, 0]);
-      console.log(selectedCoord);
-
-      // const zeroView = new View({
-      //   center: transformCenter(selectedCoord),
-      //   zoom: 5,
-      // });
-      // console.log(zeroView);
-      // mapRef.current.setView(zeroView);
-    }
+    setSelectedCoord([10, 0]);
+    console.log(selectedCoord);
  }
+ const handleMapClick = (event) => {
+
+    // get clicked coordinate using mapRef to access current React state inside OpenLayers callback
+    //  https://stackoverflow.com/a/60643670
+    const clickedCoord = mapRef.current.getCoordinateFromPixel(event.pixel);
+
+    // transform coord to EPSG 4326 standard Lat Long
+    const transormedCoord = transform(clickedCoord, 'EPSG:3857', 'EPSG:4326');
+
+    // set React state
+    setSelectedCoord( transormedCoord )
+
+    console.log(transormedCoord)
+    
+  }
+
  console.log('drawing');
   return (
     <>
@@ -105,7 +139,7 @@ const MainMap = () => {
         longitude={longitude}
         setLongitude={setLongitude}
       />
-      <div ref={mapRef} className="map"></div>
+      <div ref={mapElement} className="map"></div>
     </>
   )
 };
