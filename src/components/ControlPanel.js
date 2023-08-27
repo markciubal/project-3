@@ -6,8 +6,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-
 import Auth from '../utils/auth'; // Import Auth
+
+import Post from './Post';
+//import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import { useState } from "react";
 //import { toLonLat } from 'ol/proj';
@@ -48,7 +50,7 @@ const ControlPanel = (props) => {
                             <NavDropdown.Item href="#action5">
                             Something else here
                             </NavDropdown.Item>
-    {/* Logout functionality  */}
+                            {/* Logout functionality  */}
                             <NavDropdown.Item onClick={() => {
                                 Auth.logout();
                             // Redirect to login page after logout
@@ -58,7 +60,7 @@ const ControlPanel = (props) => {
                             <NavDropdown.Item href="/account#signup">Signup</NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>
-                        < Nav.Link onClick={props.createNew}>New</Nav.Link>
+                        <Nav.Link onClick={() => { props.setIsPaneOpen(true)}}>New</Nav.Link>
                         </Nav>
                         <Form className="d-flex">
                         <Form.Control
