@@ -5,6 +5,7 @@ body {
   margin: 0;
   height: 100%;
   z-index: -2;
+
 }
 nav {
   pointer-events: auto;
@@ -12,11 +13,11 @@ nav {
 }
 .map {
   position: absolute;
+  overflow: hidden;
 /* pointer-events: none; */
   top: 0;
   bottom: 0;
   width: 100%;
-  overflow: hidden;
 } 
 
 /* #main-map:first-of-type { display:none; } */
@@ -31,4 +32,13 @@ nav {
   top: 65px;
   right: 8px;
   background-color: transparent;
+}
+
+.modal-content {
+  background-color: rgba(255, 255, 255, .25) I !important;
+}
+
+.toxic-table {
+  margin: 10px;
+  padding: 10px;
 }
