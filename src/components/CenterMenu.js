@@ -10,7 +10,7 @@ function CenterMenu(props) {
       menuButton={
       <MenuButton>
         
-        <span id="center-down-button"> ▼</span></MenuButton>}>
+        <span id="center-down-button">{props.currentEmoji}</span></MenuButton>}>
       {`@ ${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`}
       <MenuItem onClick={() => { props.setIsPaneOpen(true)}}>Post</MenuItem>
       <MenuItem>Save</MenuItem>

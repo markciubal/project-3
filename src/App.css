@@ -12,7 +12,7 @@
   font-size: .75em;
   position: relative;
   background: var(--grey-gradient);
-  top: 12.5px;
+  top: 12.5px0px;
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #333;
@@ -95,12 +95,25 @@
 }
 
 .szh-menu-button {
-  margin-top: 0px;
+  margin-top: 10px;
   box-sizing: border-box;
   font-size: .75em;
   border-radius: .5em;
+  animation: beat 2s infinite;
 }
 
+@keyframes beat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+  
+}
 #center-down-button {
   position: relative;
   font-size: .80em;
