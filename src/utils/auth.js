@@ -40,6 +40,13 @@ class AuthService {
     // this will reload the page and reset the state of the application
     window.location.assign('/');
   }
+  // Added a method to check if the user is authenticated
+  isAuthenticated() {
+    return this.loggedIn();
+  }
 }
 
-export default new AuthService();
+// Create an instance
+const authService = new AuthService(); 
+
+export default authService;
