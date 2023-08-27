@@ -28,11 +28,12 @@
   z-index: 100;
   border: 1px solid rgba(0, 0, 0, 1);
   background-color: #F2EFE9;
+  /* overflow: hidden; */
 }
 
 .szh-menu-container {
   padding: 10px;
-  width: 752px;
+  /* width: 752px; */
 }
 .szh-menu:focus {
   outline: none;
@@ -107,7 +108,7 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.025);
   }
   100% {
     transform: scale(1);

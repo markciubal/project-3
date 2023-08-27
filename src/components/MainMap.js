@@ -54,7 +54,7 @@ const MainMap = () => {
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
   const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [-103.771556, 44.967243];
   const [coordinateRoundTo, setCoordinateRoundTo] = useState(3);
-  const [view, setView] = useState({ center: fromLonLat(GEOGRAPHIC_CENTER_OF_UNITED_STATES), zoom: 3 });
+  const [view, setView] = useState({ center: fromLonLat(GEOGRAPHIC_CENTER_OF_UNITED_STATES), zoom: 3, extent: [-20037508.34, 20037508.34, 20037508.34, -20037508.34] });
   const [centerLatitude, setCenterLatitude] = useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[0]);
   const [centerLongitude, setCenterLongitude] = useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[1]);
   const [currentEmoji, setCurrentEmoji] = useState('▼');
@@ -125,10 +125,11 @@ const MainMap = () => {
   // For managing the user's current position.
   const [currentLatitude, setCurrentLatitude] = useState();
   const [currentLongitude, setCurrentLongitude] = useState();
+  const [accuracy, setAccuracy] = useState();
 
   const earthquakeLayer = useRef();
 
-  const zoomToMe = async () => {
+  const panToMe = async () => {
     const successCallback = async (position) => {
       console.log(position.coords);
       setCurrentLongitude(position.coords.longitude);
@@ -157,8 +158,8 @@ const MainMap = () => {
       // parse the data
       const parsedData = await JSON.stringify(geojson.json());
       // use the data
-      await setData(parsedData);
-      await console.log(data); 
+      setData(parsedData);
+      console.log(data); 
     }
     fetchData();
   }, []);
@@ -179,46 +180,31 @@ const MainMap = () => {
         noDefaultControls={true}
       >
         <ROSM />
-        <RLayerVector
-          wrapX="false"
-          noWrap="true"
-        >
+        <RLayerVector>
           <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
             <RStyle.RStyle>
+              
               <RStyle.RCircle radius={7}>
                 {/* <RStyle.RFill color="#F8F7F4" /> */}
-                <RStyle.RStroke width="1" color="#000" />
+                <RStyle.RStroke width="2" color="darkred" />
               </RStyle.RCircle>
             </RStyle.RStyle>
-            <ROverlay
-              className="center-overlay"
-              positioning="top-center"
-              >
-                <CenterMenu
-                  centerLatitude={centerLatitude}
-                  centerLongitude={centerLongitude}
-                  coordinateRoundTo={coordinateRoundTo}
-                  setIsPaneOpen={setIsPaneOpen}
-                  currentEmoji={currentEmoji}
-                >    
-                </CenterMenu>
-              </ROverlay>
           </RFeature>
           <RLayerCluster
-          ref={earthquakeLayer}
-          distance={distance}
-          format={new GeoJSON({ featureProjection: "EPSG:3857" })}
-          url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
-          onClick={React.useCallback((e) => {
-            const features = e.target.get("features") ?? [];
-            setSelected(
-              `${features.length} earthquakes in this location, ` +
-                `magnitudes are ${features
-                  .map((eq) => eq.get("mag"))
-                  .join(", ")}`
-            );
-          }, [])}
-        >
+            ref={earthquakeLayer}
+            distance={distance}
+            format={new GeoJSON({ featureProjection: "EPSG:3857" })}
+            url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+            onClick={React.useCallback((e) => {
+              const features = e.target.get("features") ?? [];
+              setSelected(
+                `${features.length} earthquakes in this location, ` +
+                  `magnitudes are ${features
+                    .map((eq) => eq.get("mag"))
+                    .join(", ")}`
+              );
+            }, [])}
+          >
           <RStyle.RStyle
             cacheSize={1024}
             cacheId={useCallback(
@@ -279,14 +265,22 @@ const MainMap = () => {
         </RLayerCluster>
         </RLayerVector>
       </RMap>
-      <BottomMenu
+      {/* <BottomMenu
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
         setIsPaneOpen={setIsPaneOpen}
         currentEmoji={currentEmoji}
-        zoomToMe={zoomToMe}
-      />
+        panToMe={panToMe}
+      /> */}
+      <CenterMenu
+        centerLatitude={centerLatitude}
+        centerLongitude={centerLongitude}
+        coordinateRoundTo={coordinateRoundTo}
+        setIsPaneOpen={setIsPaneOpen}
+        currentEmoji={currentEmoji}
+        panToMe={panToMe}
+      />    
       <SlidingPane
         closeIcon={<div>Close</div>}
         className="bottom-pane"

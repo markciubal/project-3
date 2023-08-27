@@ -16,7 +16,7 @@ const BottomMenu = (props) => {
 
     return (
         <>
-            <Navbar fixed="bottom" key={expand} expand={expand} className="bg-body-tertiary">
+            <Navbar key={expand} expand={expand} className="bg-body-tertiary" fixed="bottom">
             <Container fluid>
                 <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -34,7 +34,7 @@ const BottomMenu = (props) => {
                     <Nav className="justify-content-end flex-grow-1 pe-3">
                     <Nav.Link onClick={props.zero}><span>{`@ ${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`}</span></Nav.Link>
                     {/* <Post/> */}
-                    <Nav.Link onClick={() => { props.zoomToMe()}}>Me!</Nav.Link>
+                    <Nav.Link >Me!</Nav.Link>
                     <Nav.Link onClick={props.centerOnPoint}>Set Center</Nav.Link>
                     <NavDropdown
                         title="Dropdown"

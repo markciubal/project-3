@@ -1,5 +1,5 @@
 import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
-
+import PostModal from './PostModal';
 // CSS Imports, for styling center menu.
 // import "@szhsin/react-menu/dist/theme-dark.css";
 import "@szhsin/react-menu/dist/index.css";
@@ -9,17 +9,16 @@ function CenterMenu(props) {
     <Menu id="center-button"
       menuButton={
       <MenuButton>
-        
-        <span id="center-down-button">{props.currentEmoji}</span></MenuButton>}>
-      {`@ ${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`}
+        <span id="center-down-button">{`@ ${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`} {props.currentEmoji}</span></MenuButton>}>
+      <MenuItem onClick={() => { props.panToMe()}}>Pan To Me</MenuItem>
       <MenuItem onClick={() => { props.setIsPaneOpen(true)}}>Post</MenuItem>
-      <MenuItem>Save</MenuItem>
+      <MenuItem><PostModal></PostModal></MenuItem>
       <SubMenu label="Edit">
-        <MenuItem>Cut</MenuItem>
-        <MenuItem>Copy</MenuItem>
-        <MenuItem>Paste</MenuItem>
+        <MenuItem>-</MenuItem>
+        <MenuItem>-</MenuItem>
+        <MenuItem>-</MenuItem>
       </SubMenu>
-      <MenuItem>Print...</MenuItem>
+      <MenuItem>-</MenuItem>
     </Menu>
   );
 }
