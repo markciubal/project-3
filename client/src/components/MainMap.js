@@ -13,7 +13,7 @@ import { Geometry, Point } from "ol/geom";
 import { Geolocation as OLGeoLoc } from "ol";
 import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
 import { useGeolocated } from "react-geolocated";
-
+import Login from './Login';
 
 import "ol/ol.css";
 
@@ -60,7 +60,9 @@ const MainMap = () => {
   const [currentEmoji, setCurrentEmoji] = useState('▼');
   
   // Bottom sliding pane state.
-  const [isPaneOpen, setIsPaneOpen] = useState(false);
+  const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
+  const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false);
+  
   const geoJSONString = JSON.stringify(
     {
     "type": "FeatureCollection",
@@ -166,12 +168,17 @@ const MainMap = () => {
 
   return (
     <>
+      {/* // Bottom sliding pane state.
+  const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
+  const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false); */}
       <ControlPanel 
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
-        isPaneOpen={isPaneOpen}
-        setIsPaneOpen={setIsPaneOpen}
+        isPostPaneOpen={isPostPaneOpen}
+        setIsPostPaneOpen={setIsPostPaneOpen}
+        isLoginPaneOpen={isLoginPaneOpen}
+        setIsLoginPaneOpen={setIsLoginPaneOpen}
       />
       <RMap
         className="map"
@@ -277,7 +284,10 @@ const MainMap = () => {
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
-        setIsPaneOpen={setIsPaneOpen}
+        isPostPaneOpen={isPostPaneOpen}
+        setIsPostPaneOpen={setIsPostPaneOpen}
+        isLoginPaneOpen={isLoginPaneOpen}
+        setIsLoginPaneOpen={setIsLoginPaneOpen}
         currentEmoji={currentEmoji}
         panToMe={panToMe}
       />    
@@ -285,14 +295,27 @@ const MainMap = () => {
         closeIcon={<div>Close</div>}
         className="bottom-pane"
         from="bottom"
-        isOpen={isPaneOpen}
+        isOpen={isPostPaneOpen}
         onRequestClose={() => {
-          setIsPaneOpen(false);
+          setIsPostPaneOpen(false);
         }}  
         width="100%"
       >
         {selected}
         <Post />
+      </SlidingPane>
+      <SlidingPane
+        closeIcon={<div>Close</div>}
+        className="bottom-pane"
+        from="bottom"
+        isOpen={isLoginPaneOpen}
+        onRequestClose={() => {
+          setIsLoginPaneOpen(false);
+        }}  
+        width="100%"
+      >
+        {selected}
+        <Login />
       </SlidingPane>
     </>
   )

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom'; // Import useHistory
+import React, { useState, useHistory } from 'react';
+import { Link } from 'react-router-dom'; // Import useHistory
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -17,7 +17,6 @@ function Login(props) {
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
-      history.push('/control-panel'); // Redirect after successful login
     } catch (e) {
       console.log(e);
     }

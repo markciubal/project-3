@@ -58,6 +58,7 @@ const ControlPanel = (props) => {
                             }}>Logout</NavDropdown.Item>
                             <NavDropdown.Item onClick={props.profile}>Profile</NavDropdown.Item>
                             <NavDropdown.Item href="/account#signup">Signup</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => { props.setIsLoginPaneOpen(true)}}>Login</NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>
                         <Nav.Link onClick={() => { props.setIsPaneOpen(true)}}>New</Nav.Link>
