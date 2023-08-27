@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.8.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.1",
+    "jwt-decode": "^3.1.2",
     "ol": "^7.5.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
@@ -14,6 +16,7 @@
     "react-geolocated": "^4.1.2",
     "react-geolocation": "^1.0.4",
     "react-openlayers": "^0.3.0",
+    "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
