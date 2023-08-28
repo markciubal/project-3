@@ -21,13 +21,14 @@ import {
   RLayerVector,
   RLayerCluster,
   RFeature,
+  RControl,
   RGeolocation,
   ROverlay,
   RStyle,
   useOL,
 } from "rlayers";
 
-import { RCircle, RFill, RText,   RStroke, RRegularShape } from "rlayers/style";
+import { RCircle, RFill, RText, RStroke, RRegularShape } from "rlayers/style";
 import CenterMenu from "./CenterMenu";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
@@ -76,6 +77,23 @@ const MainMap = () => {
   const earthquakeLayer = useRef();
 
   const panAndZoomToMe = async () => {
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          return "User denied the request for Geolocation."
+          break;
+        case error.POSITION_UNAVAILABLE:
+          return "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          return "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          return "An unknown error occurred."
+          break;
+      }
+    }
+
     const successCallback = async (position) => {
       setCurrentLongitude(position.coords.longitude);
       setCurrentLatitude(position.coords.latitude);
@@ -83,10 +101,10 @@ const MainMap = () => {
     };
     
     const errorCallback = async (error) => {
-      console.log(error);
+      alert(showError(error));
     };
     
-    const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    const id = await navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
   useEffect(() => {
@@ -130,6 +148,8 @@ const MainMap = () => {
         noDefaultControls={true}
       >
         <ROSM />
+        <RControl.RAttribution />
+        <RControl.RRotate />
         <RLayerVector>
           <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
             <RStyle.RStyle>

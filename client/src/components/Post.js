@@ -53,7 +53,8 @@ const Post = () => {
           {255 - postText.length} letters left.
           {postValidationText}
           <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
-          <Button variant="flat" onClick={() => {checkPost()}} disabled={postDisabled}>
+          <div className="d-flex align-items-center justify-content-center text-center">
+            <Button variant="flat" onClick={() => {checkPost()}} disabled={postDisabled}>
             <Spinner
               as="span"
               animation="border"
@@ -61,9 +62,10 @@ const Post = () => {
               role="status"
               aria-hidden="false"
               hidden={spinnerHidden}
-              className={"float-right"}
             />{postButtonText}
             </Button>
+          </div>
+          
           <br/>
           </div>
     )

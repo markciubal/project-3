@@ -49,6 +49,7 @@ nav {
 .btn-flat {
   background-color: #4682A9 !important;
   color: white !important;
+  float: right;
 }
 
 .btn-xxl {
@@ -69,4 +70,9 @@ nav {
   margin-top: 55vh !important;
   box-shadow: var(--black-shadow) !important;
 
+}
+
+.offcanvas-header {
+  background: #f7f5f2 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
