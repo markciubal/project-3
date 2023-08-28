@@ -104,7 +104,7 @@ const MainMap = () => {
       alert(showError(error));
     };
     
-    const id = await navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
   useEffect(() => {
