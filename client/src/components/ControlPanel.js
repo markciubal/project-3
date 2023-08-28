@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Auth from '../utils/auth'; // Import Auth
-
+import SelectedPosts from './SelectedPosts';
 import Post from './Post';
 //import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,7 +17,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ControlPanel = (props) => {
     const expand = 'lg';
-
+    
     return (
         <>
             <Navbar key={expand} expand={expand} variant="main" className="mb-3">
@@ -62,6 +62,7 @@ const ControlPanel = (props) => {
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>
                         <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>New</Nav.Link>
+                        <Nav.Link><SelectedPosts selectedPosts={props.selectedPosts} /></Nav.Link>
                         </Nav>
                         <Form className="d-flex">
                         <Form.Control

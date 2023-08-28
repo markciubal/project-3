@@ -2,7 +2,9 @@
 
 :root {
   --black-shadow: 0 0 1em #000;
+  --blue-gradient: linear-gradient(217deg, rgba(116, 155, 194, 1), rgba(70, 130, 169, 1));
 }
+
 html,
 body {
   margin: 0;
@@ -47,7 +49,7 @@ nav {
 }
 
 .btn-flat {
-  background-color: #4682A9 !important;
+  background: var(--blue-gradient) !important;
   color: white !important;
   float: right;
 }

@@ -11,7 +11,7 @@
 #center-coordinate-text {
   font-size: .75em;
   position: relative;
-  background: var(--grey-gradient);
+  /* background: var(--grey-gradient); */
   top: 12.5px0px;
   padding: 5px;
   border-radius: 5px;
@@ -99,7 +99,7 @@
   margin-top: 10px;
   box-sizing: border-box;
   font-size: .75em;
-  border-radius: .25em;
+  border-radius: .75em;
   animation: beat 2s infinite;
 }
 

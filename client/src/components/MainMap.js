@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState, useRef, useCallback  } from "rea
 import '../App.css';
 import ControlPanel from "./ControlPanel";
 import Post from './Post';
+import SelectedPosts from "./SelectedPosts";
 import SlidingPane from "react-sliding-pane";
 import { Menu } from "@szhsin/react-menu";
 import { fromLonLat } from "ol/proj";
@@ -61,7 +62,8 @@ const MainMap = () => {
   // Bottom sliding pane state.
   const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
   const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false);
-  
+  const [isSelectedPaneOpen, setIsSelectedPaneOpen] = useState(false);
+
   const geoJSONString = JSON.stringify();
   const [data, setData] = useState(geoJSONString);
 
@@ -74,6 +76,8 @@ const MainMap = () => {
   const [currentLongitude, setCurrentLongitude] = useState();
   const [accuracy, setAccuracy] = useState();
 
+  // For managing user clicks and date.
+  const [selectedMapPosts, setSelectedMapPosts] = useState([]);
   const earthquakeLayer = useRef();
 
   const panAndZoomToMe = async () => {
@@ -116,21 +120,18 @@ const MainMap = () => {
   useEffect(() => {
     async function fetchData() {
       // fetch the data from the url, this will need to be updated to fetch posts from database.
-      const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson');
+      const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
       // parse the data
       const parsedData = await JSON.stringify(geojson.json());
       // use the data
       setData(parsedData);
-      console.log(data); 
+      console.log(parsedData); 
     }
     fetchData();
   }, []);
 
   return (
     <>
-      {/* // Bottom sliding pane state.
-  const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
-  const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false); */}
       <ControlPanel 
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
@@ -140,6 +141,7 @@ const MainMap = () => {
         isLoginPaneOpen={isLoginPaneOpen}
         setIsLoginPaneOpen={setIsLoginPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
+        
       />
       <RMap
         className="map"
@@ -177,12 +179,14 @@ const MainMap = () => {
             url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
             onClick={React.useCallback((e) => {
               const features = e.target.get("features") ?? [];
-              setSelected(
-                `${features.length} earthquakes in this location, ` +
-                  `magnitudes are ${features
-                    .map((eq) => eq.get("mag"))
-                    .join(", ")}`
-              );
+              console.log(features);
+              setSelectedMapPosts(features);
+              // setSelected(
+              //   `${features.length} earthquakes in this location, ` +
+              //     `magnitudes are ${features
+              //       .map((eq) => eq.get("mag"))
+              //       .join(", ")}`
+              // );
             }, [])}
           >
           <RStyle.RStyle
@@ -269,7 +273,6 @@ const MainMap = () => {
         }}  
         width="100%"
       >
-        {selected}
         <Post />
       </SlidingPane>
       <SlidingPane
@@ -282,7 +285,22 @@ const MainMap = () => {
         }}  
         width="100%"
       >
-        <Login />
+      </SlidingPane>
+      <SlidingPane
+        closeIcon={<div>Close</div>}
+        className="bottom-pane"
+        from="bottom"
+        isOpen={isSelectedPaneOpen}
+        onRequestClose={() => {
+          setIsSelectedPaneOpen(false);
+        }}  
+        width="100%"
+      >
+        <SelectedPosts
+          selectedMapPosts={selectedMapPosts}
+          isSelectedPaneOpen={isSelectedPaneOpen}
+          setSelectedMapPosts={setIsSelectedPaneOpen}
+        ></SelectedPosts>
       </SlidingPane>
     </>
   )
