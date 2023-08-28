@@ -1,5 +1,6 @@
 import './App.css';
 import './style.css';
+import './custom.scss';
 import MainMap from './components/MainMap';
 import React from 'react';
 import {

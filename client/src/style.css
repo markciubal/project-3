@@ -1,5 +1,8 @@
 @import "../node_modules/ol/ol.css";
 
+:root {
+  --black-shadow: 0 0 1em #000;
+}
 html,
 body {
   margin: 0;
@@ -41,4 +44,29 @@ nav {
 .toxic-table {
   margin: 10px;
   padding: 10px;
+}
+
+.btn-flat {
+  background-color: #4682A9 !important;
+  color: white !important;
+}
+
+.btn-xxl {
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+}
+
+.navbar-main {
+  background: #f7f5f2 !important;
+  box-shadow: var(--black-shadow);
+}
+
+.slide-pane__header {
+  background: #f7f5f2 !important;
+}
+.slide-pane_from_bottom {
+  height: 45vh !important;
+  margin-top: 55vh !important;
+  box-shadow: var(--black-shadow) !important;
+
 }

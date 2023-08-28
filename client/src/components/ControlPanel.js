@@ -20,7 +20,7 @@ const ControlPanel = (props) => {
 
     return (
         <>
-            <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
+            <Navbar key={expand} expand={expand} variant="main" className="mb-3">
                 <Container fluid>
                     <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -36,7 +36,7 @@ const ControlPanel = (props) => {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                        <Nav.Link onClick={props.zero}>Zero In</Nav.Link>
+                        <Nav.Link onClick={() => { props.panAndZoomToMe()}}>Pan and Zoom to Me</Nav.Link>
                         <Nav.Link onClick={props.centerOnPoint}>Set Center</Nav.Link>
                         <NavDropdown
                             title="Dropdown"
@@ -61,7 +61,7 @@ const ControlPanel = (props) => {
                             <NavDropdown.Item onClick={() => { props.setIsLoginPaneOpen(true)}}>Login</NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>
-                        <Nav.Link onClick={() => { props.setIsPaneOpen(true)}}>New</Nav.Link>
+                        <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>New</Nav.Link>
                         </Nav>
                         <Form className="d-flex">
                         <Form.Control

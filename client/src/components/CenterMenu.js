@@ -10,15 +10,14 @@ function CenterMenu(props) {
       menuButton={
       <MenuButton>
         <span id="center-down-button">{`@ ${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`} {props.currentEmoji}</span></MenuButton>}>
-      <MenuItem onClick={() => { props.panToMe()}}>Pan To Me</MenuItem>
-      <MenuItem onClick={() => { props.setIsPaneOpen(true)}}>Post</MenuItem>
-      <MenuItem><PostModal></PostModal></MenuItem>
-      <SubMenu label="Edit">
+      <MenuItem onClick={() => { props.panAndZoomToMe()}}>Pan and Zoom to Me</MenuItem>
+      <MenuItem onClick={() => { props.setIsPostPaneOpen(true)}}>Post</MenuItem>
+      {/* <SubMenu label="Edit">
         <MenuItem>-</MenuItem>
         <MenuItem>-</MenuItem>
         <MenuItem>-</MenuItem>
       </SubMenu>
-      <MenuItem>-</MenuItem>
+      <MenuItem>-</MenuItem> */}
     </Menu>
   );
 }

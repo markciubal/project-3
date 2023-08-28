@@ -5,7 +5,7 @@
 .App {
   text-align: center;
   z-index: 1;
-  background-color: #F2EFE9;
+  background-color: #f7f5f2;
 }
 
 #center-coordinate-text {
@@ -27,7 +27,7 @@
   box-sizing: border-box;
   z-index: 100;
   border: 1px solid rgba(0, 0, 0, 1);
-  background-color: #F2EFE9;
+  background-color: #f7f5f2;
   /* overflow: hidden; */
 }
 
@@ -130,11 +130,13 @@
   background-color: darkred;
   color: white;
   text-align: center;
-
+  font-size: 5pt;
 }
 
 .false {
   background-color: darkgreen;
   color: white;
   text-align: center;
+  font-size: 5pt;
+
 }

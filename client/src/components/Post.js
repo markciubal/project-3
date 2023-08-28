@@ -3,6 +3,7 @@ import * as toxicity from '@tensorflow-models/toxicity';
 import ToxicityGrid from './ToxicityGrid'; 
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import '../style.css';
 
   // Post states.
 
@@ -25,7 +26,8 @@ const Post = () => {
 
             setPostDisabled(true);
             setSpinnerHidden(false);
-            setPostButtonText("Checking post content...")
+            // Space before text is intentional, it is for putting a gap between the loader and the text.
+            setPostButtonText(" Checking post content...")
             await toxicity.load(threshold, labelsToInclude).then(model => {
                 // Now you can use the `model` object to label sentences. 
                 model.classify([postText]).then(predictions => {
@@ -49,20 +51,18 @@ const Post = () => {
           />
           <br/>
           {255 - postText.length} letters left.
-          <br/>
           {postValidationText}
-          <br/>
-            <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
-          <br/>
-          <Button variant="outline-success" onClick={() => {checkPost()}} disabled={postDisabled}>
+          <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
+          <Button variant="flat" onClick={() => {checkPost()}} disabled={postDisabled}>
             <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            aria-hidden="false"
-            hidden={spinnerHidden}
-            /> {postButtonText}
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="false"
+              hidden={spinnerHidden}
+              className={"float-right"}
+            />{postButtonText}
             </Button>
           <br/>
           </div>

@@ -1,8 +1,6 @@
 import React, { Component, useEffect, useState, useRef, useCallback  } from "react";
-import { render } from "react-dom";
 import '../App.css';
 import ControlPanel from "./ControlPanel";
-import BottomMenu from "./BottomMenu";
 import Post from './Post';
 import SlidingPane from "react-sliding-pane";
 import { Menu } from "@szhsin/react-menu";
@@ -63,65 +61,11 @@ const MainMap = () => {
   const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
   const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false);
   
-  const geoJSONString = JSON.stringify(
-    {
-    "type": "FeatureCollection",
-    "metadata": {
-      "generated": 1693082887000,
-      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
-      "title": "USGS Magnitude 2.5+ Earthquakes, Past Day",
-      "status": 200,
-      "api": "1.10.3",
-      "count": 25
-    },
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "mag": 4,
-          "place": "87 km S of Nikolski, Alaska",
-          "time": 1693079204894,
-          "updated": 1693080299554,
-          "tz": null,
-          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000kr82",
-          "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000kr82.geojson",
-          "felt": null,
-          "cdi": null,
-          "mmi": 1.332,
-          "alert": null,
-          "status": "reviewed",
-          "tsunami": 0,
-          "sig": 246,
-          "net": "us",
-          "code": "7000kr82",
-          "ids": ",ak023axxhsxn,us7000kr82,",
-          "sources": ",ak,us,",
-          "types": ",origin,phase-data,shakemap,",
-          "nst": 27,
-          "dmin": 0.817,
-          "rms": 0.71,
-          "gap": 214,
-          "magType": "mb",
-          "type": "earthquake",
-          "title": "M 4.0 - 87 km S of Nikolski, Alaska"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -168.6862,
-            52.1631,
-            35
-          ]
-        },
-        "id": "us7000kr82"
-      }
-    ]
-  }
-  );
+  const geoJSONString = JSON.stringify();
   const [data, setData] = useState(geoJSONString);
 
   //For clustering posts.
-  const [distance, setDistance] = useState(20);
+  const [distance, setDistance] = useState(50);
   const [selected, setSelected] = useState("Click a cluster for details");
 
   // For managing the user's current position.
@@ -131,20 +75,18 @@ const MainMap = () => {
 
   const earthquakeLayer = useRef();
 
-  const panToMe = async () => {
+  const panAndZoomToMe = async () => {
     const successCallback = async (position) => {
-      console.log(position.coords);
       setCurrentLongitude(position.coords.longitude);
       setCurrentLatitude(position.coords.latitude);
-      setView({ center: fromLonLat([position.coords.longitude, position.coords.latitude]), zoom: view.zoom });
-      console.log(view);
+      setView({ center: fromLonLat([position.coords.longitude, position.coords.latitude]), zoom: view.zoom+3 });
     };
     
     const errorCallback = async (error) => {
       console.log(error);
     };
     
-    const id = await navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
   useEffect(() => {
@@ -179,6 +121,7 @@ const MainMap = () => {
         setIsPostPaneOpen={setIsPostPaneOpen}
         isLoginPaneOpen={isLoginPaneOpen}
         setIsLoginPaneOpen={setIsLoginPaneOpen}
+        panAndZoomToMe={panAndZoomToMe}
       />
       <RMap
         className="map"
@@ -191,12 +134,22 @@ const MainMap = () => {
           <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
             <RStyle.RStyle>
               
-              <RStyle.RCircle radius={7}>
+              <RStyle.RCircle radius={5}>
+                {/* <RStyle.RFill color="#F8F7F4" /> */}
+                <RStyle.RStroke width="1" color="darkred" />
+              </RStyle.RCircle>
+            </RStyle.RStyle>
+          </RFeature>
+          <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
+            <RStyle.RStyle>
+              
+              <RStyle.RCircle radius={10}>
                 {/* <RStyle.RFill color="#F8F7F4" /> */}
                 <RStyle.RStroke width="2" color="darkred" />
               </RStyle.RCircle>
             </RStyle.RStyle>
           </RFeature>
+          
           <RLayerCluster
             ref={earthquakeLayer}
             distance={distance}
@@ -244,7 +197,7 @@ const MainMap = () => {
                   <React.Fragment>
                     <RCircle radius={radius}>
                       <RFill color={colorBlob(size)} />
-                      <RStroke color="rgba(0, 0, 0, 0.6)" width={1} />
+                      <RStroke color="rgba(0, 0, 0, 0.6)" width={3} />
                     </RCircle>
                     <RText text={size.toString()}>
                       <RFill color="#fff" />
@@ -255,31 +208,26 @@ const MainMap = () => {
               }
               // We have a single feature cluster
               const unclusteredFeature = feature.get("features")[0];
-              // Render a star
+              const mag = unclusteredFeature.get("mag");
+              console.log(mag);
+              // console.log(mag);
               return (
-                <RRegularShape
-                  radius1={radiusStar(unclusteredFeature)}
-                  radius2={5}
-                  points={8}
-                  angle={Math.PI}
-                >
-                  <RFill color="rgba(255, 255, 255, 0.8)" />
-                  <RStroke color="rgba(0, 0, 0, 0.2)" width={1} />
-                </RRegularShape>
+                <>
+                  <RCircle radius="6">
+                    <RFill color="rgba(255, 255, 255, 0.8)" />
+                    <RStroke color="rgba(0, 0, 0, 1)" width={1.5} />
+                  </RCircle>
+                  <RText text={mag.toString()}>
+                    <RFill color="#fff" />
+                    <RStroke color="rgba(0, 0, 0, 0.6)" width={5} />
+                  </RText>
+                </>
               );
             }, [])}
           />
         </RLayerCluster>
         </RLayerVector>
       </RMap>
-      {/* <BottomMenu
-        centerLatitude={centerLatitude}
-        centerLongitude={centerLongitude}
-        coordinateRoundTo={coordinateRoundTo}
-        setIsPaneOpen={setIsPaneOpen}
-        currentEmoji={currentEmoji}
-        panToMe={panToMe}
-      /> */}
       <CenterMenu
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
@@ -289,7 +237,7 @@ const MainMap = () => {
         isLoginPaneOpen={isLoginPaneOpen}
         setIsLoginPaneOpen={setIsLoginPaneOpen}
         currentEmoji={currentEmoji}
-        panToMe={panToMe}
+        panAndZoomToMe={panAndZoomToMe}
       />    
       <SlidingPane
         closeIcon={<div>Close</div>}
@@ -314,7 +262,6 @@ const MainMap = () => {
         }}  
         width="100%"
       >
-        {selected}
         <Login />
       </SlidingPane>
     </>
