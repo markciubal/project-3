@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN, SIGNUP } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -8,7 +8,6 @@ const Account = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error: loginError }] = useMutation(LOGIN);
   const [signup, { error: signupError }] = useMutation(SIGNUP);
-  const history = useHistory();
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -18,7 +17,6 @@ const Account = () => {
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
-      history.push('/control-panel');
     } catch (e) {
       console.log(e);
     }
@@ -32,7 +30,6 @@ const Account = () => {
       });
       const token = mutationResponse.data.signup.token;
       Auth.login(token);
-      history.push('/control-panel');
     } catch (e) {
       console.log(e);
     }

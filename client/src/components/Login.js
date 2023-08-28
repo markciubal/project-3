@@ -1,4 +1,4 @@
-import React, { useState, useHistory } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import useHistory
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../utils/mutations';
@@ -7,7 +7,6 @@ import Auth from '../utils/auth';
 function Login(props) {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error }] = useMutation(LOGIN);
-  const history = useHistory(); // Get history from react-router-dom
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
