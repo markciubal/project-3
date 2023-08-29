@@ -1,5 +1,4 @@
 import './App.css';
-import './style.css';
 import './custom.scss';
 import MainMap from './components/MainMap';
 import React from 'react';
@@ -12,7 +11,8 @@ import {
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: 'http://localhost:3001/graphql',
+  port: 3001
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -35,7 +35,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App box">
+      <div className="App">
         <section>
           <MainMap/>
         </section>

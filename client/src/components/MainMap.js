@@ -50,7 +50,8 @@ const extentFeatures = (features, resolution) => {
   return Math.round(0.25 * (getWidth(extent) + getHeight(extent))) / resolution;
 };
 const MainMap = () => {
-
+  // Managing login status.
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   // Map states.
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
   const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [-103.771556, 44.967243];
@@ -135,6 +136,7 @@ const MainMap = () => {
   return (
     <>
       <ControlPanel 
+        isLoggedIn={isLoggedIn}
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
@@ -145,7 +147,6 @@ const MainMap = () => {
         isSignUpPaneOpen={isSignUpPaneOpen}
         setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
-        
       />
       <RMap
         className="map"
@@ -239,16 +240,17 @@ const MainMap = () => {
               const unclusteredFeature = feature.get("features")[0];
               const mag = unclusteredFeature.get("mag");
               console.log(mag);
+              const magSize = (Math.abs(mag)*5).toFixed(1);
               // console.log(mag);
               return (
                 <>
-                  <RCircle radius="6">
+                  <RCircle radius={magSize}>
                     <RFill color="rgba(255, 255, 255, 0.8)" />
                     <RStroke color="rgba(0, 0, 0, 1)" width={1.5} />
                   </RCircle>
                   <RText text={mag.toString()}>
-                    <RFill color="#fff" />
-                    <RStroke color="rgba(0, 0, 0, 0.6)" width={5} />
+                    <RFill color="#000" />
+                    <RStroke color="rgba(255, 255, 255, 0.6)" width={5} />
                   </RText>
                 </>
               );
@@ -302,7 +304,11 @@ const MainMap = () => {
         }}  
         width="100%"
       >
-        <Login/>
+        <Login 
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          setIsLoginPaneOpen={setIsLoginPaneOpen}
+        />
       </SlidingPane>
       <SlidingPane
         closeIcon={<div>Close</div>}

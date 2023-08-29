@@ -18,16 +18,19 @@ const SelectedPosts = (props) => {
     console.log(props);
     useEffect(() => {
         console.log(props);
-
+        let keyCount = 0;
         if (props.selectedMapPosts) {
+            
             let postLength = props.selectedMapPosts.length;
+            
             if (postLength !== 1) {
                 setSelectedText(postLength + " posts selected.");
             } else {
                 setSelectedText(postLength + " post selected.");
             }
             setSelectedPosts(props.selectedMapPosts.map((post) => {
-                return <PostInstance post={post}/>;
+                keyCount++;
+                return <PostInstance key={`post-${keyCount}`} post={post}/>;
                 
             }));
             props.setIsSelectedPaneOpen(true);
