@@ -14,23 +14,33 @@ const typeDefs = gql`
     body: String
   }
 
+  input Comment {
+  _id: ID
+  body: String
+  }
+  
+  type Reaction {
+  _id: ID
+  body: String
+  }
+
   type Auth {
     token: ID
     user: User
   }
 
   type Query {
-    comments: [Comment]
-    reactions(_id: ID!): Product
     users: [User]
     posts: [Post]
+    comments: [Comment]
+    reactions: [Reaction]
   }
 
   type Mutation {
-    addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
-    addOrder(products: [ID]!): Order
+    signUp(userName: String!, firstName: String!, lastName: String!, email: String!, password: String!): Auth
+    addPost(body: String!, comments: [Comment]): Post
     updateUser(firstName: String, lastName: String, email: String, password: String): User
-    updateProduct(_id: ID!, quantity: Int!): Product
+    updatePost(_id: ID!, quantity: Int!): Post
     login(email: String!, password: String!): Auth
   }
 `;

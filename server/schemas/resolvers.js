@@ -21,15 +21,15 @@ const resolvers = {
         };
       }
 
-      return await Product.find(params).populate('category');
+      return await Post.find(params).populate('category');
     },
     posts: async (parent, { _id }) => {
-      return await Product.findById(_id).populate('category');
+      return await Post.findById(_id).populate('category');
     },
     reactions: async (parent, args, context) => {
       if (context.user) {
         const user = await User.findById(context.user._id).populate({
-          path: 'orders.products',
+          path: 'orders.posts',
           populate: 'category',
         });
 
@@ -42,16 +42,16 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (parent, args) => {
+    signUp: async (parent, args) => {
       const user = await User.create(args);
       const token = signToken(user);
 
       return { token, user };
     },
-    addOrder: async (parent, { products }, context) => {
+    addPost: async (parent, { products }, context) => {
       console.log(context);
       if (context.user) {
-        const order = new Order({ products });
+        const order = new Post({ products });
 
         await User.findByIdAndUpdate(context.user._id, {
           $push: { orders: order },
@@ -71,10 +71,10 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
-    updateProduct: async (parent, { _id, quantity }) => {
+    updatePost: async (parent, { _id, quantity }) => {
       const decrement = Math.abs(quantity) * -1;
 
-      return await Product.findByIdAndUpdate(
+      return await Post.findByIdAndUpdate(
         _id,
         { $inc: { quantity: decrement } },
         { new: true }
