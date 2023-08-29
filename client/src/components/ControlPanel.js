@@ -36,20 +36,18 @@ const ControlPanel = (props) => {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                        <Nav.Link onClick={() => { props.panAndZoomToMe()}}>Pan and Zoom to Me</Nav.Link>
-                        <Nav.Link onClick={props.centerOnPoint}>Set Center</Nav.Link>
-                        <NavDropdown
-                            title="Dropdown"
+                    <NavDropdown
+                            title="Account"
                             id={`offcanvasNavbarDropdown-expand-${expand}`}
                         >
-                            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                            {/* <NavDropdown.Item href="#action3"></NavDropdown.Item>
                             <NavDropdown.Item href="#action4">
-                            Another action
+                            
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                            Something else here
-                            </NavDropdown.Item>
+                            <NavDropdown.Item href="">
+                            
+                            </NavDropdown.Item> */}
                             {/* Logout functionality  */}
                             <NavDropdown.Item onClick={() => {
                                 Auth.logout();
@@ -61,7 +59,7 @@ const ControlPanel = (props) => {
                             <NavDropdown.Item onClick={() => { props.setIsLoginPaneOpen(true)}}>Login</NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>
-                        <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>New</Nav.Link>
+                        <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
                         </Nav>
                         <Form className="d-flex">
                         <Form.Control
