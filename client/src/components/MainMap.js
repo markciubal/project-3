@@ -13,6 +13,7 @@ import { Geolocation as OLGeoLoc } from "ol";
 import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
 import { useGeolocated } from "react-geolocated";
 import Login from './Login';
+import SignUp from './SignUp';
 
 import "ol/ol.css";
 
@@ -286,6 +287,7 @@ const MainMap = () => {
         }}  
         width="100%"
       >
+        <SignUp/>
       </SlidingPane>
       <SlidingPane
         closeIcon={<div>Close</div>}
