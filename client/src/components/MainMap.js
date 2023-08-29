@@ -179,8 +179,9 @@ const MainMap = () => {
             url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
             onClick={React.useCallback((e) => {
               const features = e.target.get("features") ?? [];
-              console.log(features);
+              // console.log(features);
               setSelectedMapPosts(features);
+              setIsSelectedPaneOpen(true);
               // setSelected(
               //   `${features.length} earthquakes in this location, ` +
               //     `magnitudes are ${features
@@ -298,8 +299,8 @@ const MainMap = () => {
       >
         <SelectedPosts
           selectedMapPosts={selectedMapPosts}
+          setIsSelectedPaneOpen={setIsSelectedPaneOpen}
           isSelectedPaneOpen={isSelectedPaneOpen}
-          setSelectedMapPosts={setIsSelectedPaneOpen}
         ></SelectedPosts>
       </SlidingPane>
     </>

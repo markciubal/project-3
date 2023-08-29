@@ -1,10 +1,21 @@
 
 import React, { useState, useEffect } from 'react';
-
+const PostInstance = (props) => {
+    const postData = props.post;
+    const detail = postData.get('detail');
+    const time = postData.get('time');
+    return (
+    <div>
+        <div>{detail}</div>
+        <div>By: User @ {time}</div>
+    </div>)
+}
 const SelectedPosts = (props) => {
     const [selectedText, setSelectedText] = useState();
+    const [postResults, setPostResults] = useState();
+    const [selectedPosts, setSelectedPosts] = useState();
     // props.setIsSelectedPostPaneOpen(true);
-    
+    console.log(props);
     useEffect(() => {
         console.log(props);
 
@@ -15,11 +26,16 @@ const SelectedPosts = (props) => {
             } else {
                 setSelectedText(postLength + " post selected.");
             }
-            props.setIsSelectedPostPaneOpen(true);
+            setSelectedPosts(props.selectedMapPosts.map((post) => {
+                return <PostInstance post={post}/>;
+                
+            }));
+            props.setIsSelectedPaneOpen(true);
             
         }
-        return selectedText;
+        
     }, [props.selectedMapPosts])
+    return selectedPosts;
 }
 
 export default SelectedPosts;

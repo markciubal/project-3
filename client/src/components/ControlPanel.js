@@ -62,7 +62,6 @@ const ControlPanel = (props) => {
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>
                         <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>New</Nav.Link>
-                        <Nav.Link><SelectedPosts selectedPosts={props.selectedPosts} /></Nav.Link>
                         </Nav>
                         <Form className="d-flex">
                         <Form.Control
