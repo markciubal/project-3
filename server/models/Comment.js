@@ -1,12 +1,13 @@
+const User = require('./User');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
 const commentSchema = new Schema({
-  user: {
-    type: User,
-    required: true,
-  },
+  // user: {
+  //   type: User,
+  //   required: true,
+  // },
   body: {
     type: String,
     required: true,
