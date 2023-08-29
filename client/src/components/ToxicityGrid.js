@@ -42,14 +42,14 @@ const ToxicityGrid = (props) => {
           <thead>
             <tr>
               {props.toxicityResult.map(toxic => (
-                <th style={{marginBottom: "20px", writingMode: "vertical-rtl"}}key={toxic.label}><span>{labelChange(toxic.label)}</span></th>
+                <th key={toxic.label}><span>{labelChange(toxic.label)}</span></th>
               ))}
             </tr>
           </thead>
           <tbody>
             <tr>
               {props.toxicityResult.map(toxic => (
-                <td style={{margin: "10px", writingMode: "vertical-rtl"}}className={`${String(toxic.results[0].match)}`} key={toxic.label}>{String(toxic.results[0].match)}</td>
+                <td className={`${String(toxic.results[0].match)}`} key={toxic.label}>{String(toxic.results[0].match)}</td>
               ))}
             </tr>
           </tbody>

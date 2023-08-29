@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom'; // Import useHistory
+import { Link } from 'react-router-dom'; // Import useHistory
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -7,7 +7,6 @@ import Auth from '../utils/auth';
 function Login(props) {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error }] = useMutation(LOGIN);
-  const history = useHistory(); // Get history from react-router-dom
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -17,7 +16,6 @@ function Login(props) {
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
-      history.push('/control-panel'); // Redirect after successful login
     } catch (e) {
       console.log(e);
     }

@@ -1,9 +1,8 @@
 import React, { Component, useEffect, useState, useRef, useCallback  } from "react";
-import { render } from "react-dom";
 import '../App.css';
 import ControlPanel from "./ControlPanel";
-import BottomMenu from "./BottomMenu";
 import Post from './Post';
+import SelectedPosts from "./SelectedPosts";
 import SlidingPane from "react-sliding-pane";
 import { Menu } from "@szhsin/react-menu";
 import { fromLonLat } from "ol/proj";
@@ -13,7 +12,7 @@ import { Geometry, Point } from "ol/geom";
 import { Geolocation as OLGeoLoc } from "ol";
 import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
 import { useGeolocated } from "react-geolocated";
-
+import Login from './Login';
 
 import "ol/ol.css";
 
@@ -23,13 +22,14 @@ import {
   RLayerVector,
   RLayerCluster,
   RFeature,
+  RControl,
   RGeolocation,
   ROverlay,
   RStyle,
   useOL,
 } from "rlayers";
 
-import { RCircle, RFill, RText,   RStroke, RRegularShape } from "rlayers/style";
+import { RCircle, RFill, RText, RStroke, RRegularShape } from "rlayers/style";
 import CenterMenu from "./CenterMenu";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
@@ -60,66 +60,15 @@ const MainMap = () => {
   const [currentEmoji, setCurrentEmoji] = useState('▼');
   
   // Bottom sliding pane state.
-  const [isPaneOpen, setIsPaneOpen] = useState(false);
-  const geoJSONString = JSON.stringify(
-    {
-    "type": "FeatureCollection",
-    "metadata": {
-      "generated": 1693082887000,
-      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
-      "title": "USGS Magnitude 2.5+ Earthquakes, Past Day",
-      "status": 200,
-      "api": "1.10.3",
-      "count": 25
-    },
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "mag": 4,
-          "place": "87 km S of Nikolski, Alaska",
-          "time": 1693079204894,
-          "updated": 1693080299554,
-          "tz": null,
-          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000kr82",
-          "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000kr82.geojson",
-          "felt": null,
-          "cdi": null,
-          "mmi": 1.332,
-          "alert": null,
-          "status": "reviewed",
-          "tsunami": 0,
-          "sig": 246,
-          "net": "us",
-          "code": "7000kr82",
-          "ids": ",ak023axxhsxn,us7000kr82,",
-          "sources": ",ak,us,",
-          "types": ",origin,phase-data,shakemap,",
-          "nst": 27,
-          "dmin": 0.817,
-          "rms": 0.71,
-          "gap": 214,
-          "magType": "mb",
-          "type": "earthquake",
-          "title": "M 4.0 - 87 km S of Nikolski, Alaska"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -168.6862,
-            52.1631,
-            35
-          ]
-        },
-        "id": "us7000kr82"
-      }
-    ]
-  }
-  );
+  const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
+  const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false);
+  const [isSelectedPaneOpen, setIsSelectedPaneOpen] = useState(false);
+
+  const geoJSONString = JSON.stringify();
   const [data, setData] = useState(geoJSONString);
 
   //For clustering posts.
-  const [distance, setDistance] = useState(20);
+  const [distance, setDistance] = useState(50);
   const [selected, setSelected] = useState("Click a cluster for details");
 
   // For managing the user's current position.
@@ -127,22 +76,39 @@ const MainMap = () => {
   const [currentLongitude, setCurrentLongitude] = useState();
   const [accuracy, setAccuracy] = useState();
 
+  // For managing user clicks and date.
+  const [selectedMapPosts, setSelectedMapPosts] = useState([]);
   const earthquakeLayer = useRef();
 
-  const panToMe = async () => {
+  const panAndZoomToMe = async () => {
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          return "User denied the request for Geolocation."
+          break;
+        case error.POSITION_UNAVAILABLE:
+          return "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          return "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          return "An unknown error occurred."
+          break;
+      }
+    }
+
     const successCallback = async (position) => {
-      console.log(position.coords);
       setCurrentLongitude(position.coords.longitude);
       setCurrentLatitude(position.coords.latitude);
-      setView({ center: fromLonLat([position.coords.longitude, position.coords.latitude]), zoom: view.zoom });
-      console.log(view);
+      setView({ center: fromLonLat([position.coords.longitude, position.coords.latitude]), zoom: view.zoom+3 });
     };
     
     const errorCallback = async (error) => {
-      console.log(error);
+      alert(showError(error));
     };
     
-    const id = await navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
   useEffect(() => {
@@ -154,12 +120,12 @@ const MainMap = () => {
   useEffect(() => {
     async function fetchData() {
       // fetch the data from the url, this will need to be updated to fetch posts from database.
-      const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson');
+      const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
       // parse the data
       const parsedData = await JSON.stringify(geojson.json());
       // use the data
       setData(parsedData);
-      console.log(data); 
+      console.log(parsedData); 
     }
     fetchData();
   }, []);
@@ -170,8 +136,12 @@ const MainMap = () => {
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
-        isPaneOpen={isPaneOpen}
-        setIsPaneOpen={setIsPaneOpen}
+        isPostPaneOpen={isPostPaneOpen}
+        setIsPostPaneOpen={setIsPostPaneOpen}
+        isLoginPaneOpen={isLoginPaneOpen}
+        setIsLoginPaneOpen={setIsLoginPaneOpen}
+        panAndZoomToMe={panAndZoomToMe}
+        
       />
       <RMap
         className="map"
@@ -180,16 +150,28 @@ const MainMap = () => {
         noDefaultControls={true}
       >
         <ROSM />
+        <RControl.RAttribution />
+        <RControl.RRotate />
         <RLayerVector>
           <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
             <RStyle.RStyle>
               
-              <RStyle.RCircle radius={7}>
+              <RStyle.RCircle radius={5}>
+                {/* <RStyle.RFill color="#F8F7F4" /> */}
+                <RStyle.RStroke width="1" color="darkred" />
+              </RStyle.RCircle>
+            </RStyle.RStyle>
+          </RFeature>
+          <RFeature geometry={new Point(fromLonLat([centerLongitude, centerLatitude]))} >
+            <RStyle.RStyle>
+              
+              <RStyle.RCircle radius={10}>
                 {/* <RStyle.RFill color="#F8F7F4" /> */}
                 <RStyle.RStroke width="2" color="darkred" />
               </RStyle.RCircle>
             </RStyle.RStyle>
           </RFeature>
+          
           <RLayerCluster
             ref={earthquakeLayer}
             distance={distance}
@@ -197,12 +179,15 @@ const MainMap = () => {
             url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
             onClick={React.useCallback((e) => {
               const features = e.target.get("features") ?? [];
-              setSelected(
-                `${features.length} earthquakes in this location, ` +
-                  `magnitudes are ${features
-                    .map((eq) => eq.get("mag"))
-                    .join(", ")}`
-              );
+              // console.log(features);
+              setSelectedMapPosts(features);
+              setIsSelectedPaneOpen(true);
+              // setSelected(
+              //   `${features.length} earthquakes in this location, ` +
+              //     `magnitudes are ${features
+              //       .map((eq) => eq.get("mag"))
+              //       .join(", ")}`
+              // );
             }, [])}
           >
           <RStyle.RStyle
@@ -237,7 +222,7 @@ const MainMap = () => {
                   <React.Fragment>
                     <RCircle radius={radius}>
                       <RFill color={colorBlob(size)} />
-                      <RStroke color="rgba(0, 0, 0, 0.6)" width={1} />
+                      <RStroke color="rgba(0, 0, 0, 0.6)" width={3} />
                     </RCircle>
                     <RText text={size.toString()}>
                       <RFill color="#fff" />
@@ -248,51 +233,75 @@ const MainMap = () => {
               }
               // We have a single feature cluster
               const unclusteredFeature = feature.get("features")[0];
-              // Render a star
+              const mag = unclusteredFeature.get("mag");
+              console.log(mag);
+              // console.log(mag);
               return (
-                <RRegularShape
-                  radius1={radiusStar(unclusteredFeature)}
-                  radius2={5}
-                  points={8}
-                  angle={Math.PI}
-                >
-                  <RFill color="rgba(255, 255, 255, 0.8)" />
-                  <RStroke color="rgba(0, 0, 0, 0.2)" width={1} />
-                </RRegularShape>
+                <>
+                  <RCircle radius="6">
+                    <RFill color="rgba(255, 255, 255, 0.8)" />
+                    <RStroke color="rgba(0, 0, 0, 1)" width={1.5} />
+                  </RCircle>
+                  <RText text={mag.toString()}>
+                    <RFill color="#fff" />
+                    <RStroke color="rgba(0, 0, 0, 0.6)" width={5} />
+                  </RText>
+                </>
               );
             }, [])}
           />
         </RLayerCluster>
         </RLayerVector>
       </RMap>
-      {/* <BottomMenu
-        centerLatitude={centerLatitude}
-        centerLongitude={centerLongitude}
-        coordinateRoundTo={coordinateRoundTo}
-        setIsPaneOpen={setIsPaneOpen}
-        currentEmoji={currentEmoji}
-        panToMe={panToMe}
-      /> */}
       <CenterMenu
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
-        setIsPaneOpen={setIsPaneOpen}
+        isPostPaneOpen={isPostPaneOpen}
+        setIsPostPaneOpen={setIsPostPaneOpen}
+        isLoginPaneOpen={isLoginPaneOpen}
+        setIsLoginPaneOpen={setIsLoginPaneOpen}
         currentEmoji={currentEmoji}
-        panToMe={panToMe}
+        panAndZoomToMe={panAndZoomToMe}
       />    
       <SlidingPane
         closeIcon={<div>Close</div>}
         className="bottom-pane"
         from="bottom"
-        isOpen={isPaneOpen}
+        isOpen={isPostPaneOpen}
         onRequestClose={() => {
-          setIsPaneOpen(false);
+          setIsPostPaneOpen(false);
         }}  
         width="100%"
       >
-        {selected}
         <Post />
+      </SlidingPane>
+      <SlidingPane
+        closeIcon={<div>Close</div>}
+        className="bottom-pane"
+        from="bottom"
+        isOpen={isLoginPaneOpen}
+        onRequestClose={() => {
+          setIsLoginPaneOpen(false);
+        }}  
+        width="100%"
+      >
+      </SlidingPane>
+      <SlidingPane
+        closeIcon={<div>Close</div>}
+        className="bottom-pane"
+        from="bottom"
+        isOpen={isSelectedPaneOpen}
+        onRequestClose={() => {
+          setIsSelectedPaneOpen(false);
+        }}  
+        width="100%"
+      >
+        <SelectedPosts
+          selectedMapPosts={selectedMapPosts}
+          setIsSelectedPaneOpen={setIsSelectedPaneOpen}
+          isSelectedPaneOpen={isSelectedPaneOpen}
+        ></SelectedPosts>
       </SlidingPane>
     </>
   )
