@@ -85,13 +85,13 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (parent, args) => {
+    signUp: async (parent, args) => {
       const user = await User.create(args);
       const token = signToken(user);
 
       return { token, user };
     },
-    addOrder: async (parent, { products }, context) => {
+    addPost: async (parent, { products }, context) => {
       console.log(context);
       if (context.user) {
         const order = new Order({ products });
@@ -114,7 +114,7 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
-    updateProduct: async (parent, { _id, quantity }) => {
+    updatePost: async (parent, { _id, quantity }) => {
       const decrement = Math.abs(quantity) * -1;
 
       return await Product.findByIdAndUpdate(
