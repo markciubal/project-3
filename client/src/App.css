@@ -1,3 +1,7 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+
 :root {
   --grey-gradient: linear-gradient(217deg, rgba(245, 245, 245, 0.5), rgba(245, 245, 245, 0) 70.71%), linear-gradient(127deg, rgb(232, 232, 232, .75), rgb(225, 225, 225) 70.71%), linear-gradient(336deg, rgba(245, 245, 245, 0.8), rgb(232, 232, 232) 70.71%);
 }
@@ -140,3 +144,4 @@
   font-size: 5pt;
 
 }
+

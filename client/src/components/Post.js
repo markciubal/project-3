@@ -4,6 +4,7 @@ import ToxicityGrid from './ToxicityGrid';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import '../style.css';
+import '../App.css';
 
   // Post states.
 
@@ -48,6 +49,8 @@ const Post = () => {
             value={postText}
             onChange={(e) => setPostText(e.target.value)}
             maxLength={255}
+            style={{ color: 'blue', borderColor: 'lightblue' }}
+           
           />
           <br/>
           {255 - postText.length} letters left.
@@ -67,6 +70,7 @@ const Post = () => {
           </div>
           
           <br/>
+          <p style={{ fontFamily: 'Pacifico, sans-serif' }}>Pin the World🌐</p>
           </div>
     )
 }
