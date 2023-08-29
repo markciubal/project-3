@@ -1,8 +1,13 @@
+const User = require('./User');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
 const postSchema = new Schema({
+  user: {
+    type: User,
+    required: true,
+  },
   body: {
     type: String,
     required: true,

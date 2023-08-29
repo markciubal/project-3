@@ -7,8 +7,9 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/account" element={<Account />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/account" element={<Account/>} />
+                <Route path="/login" element={<Login/>} />
+                <Route path="/signUp" element={<SignUp/>} />
                 {/* possibly change '/control-panel' to just '/home' or '/'*/}
                 <Route path="/control-panel" element={ <PrivateRoute><ControlPanel /></PrivateRoute>} />
             </Routes>

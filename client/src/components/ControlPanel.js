@@ -55,7 +55,8 @@ const ControlPanel = (props) => {
                                 props.history.push('/login'); // Use props.history to redirect
                             }}>Logout</NavDropdown.Item>
                             <NavDropdown.Item onClick={props.profile}>Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="/account#signup">Signup</NavDropdown.Item>
+                            {/* <NavDropdown.Item href="/account-signup">Signup</NavDropdown.Item> */}
+                            <NavDropdown.Item onClick={() => { props.setIsSignUpPaneOpen(true)}}>Sign Up</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => { props.setIsLoginPaneOpen(true)}}>Login</NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link onClick={props.history}>History</Nav.Link>

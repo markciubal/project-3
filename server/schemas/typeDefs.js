@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server-express');
-
+const { User, Post, Comment, Reaction } = require('../models');
 const typeDefs = gql`
   type User {
     _id: ID
@@ -12,7 +12,16 @@ const typeDefs = gql`
   type Post {
     _id: ID
     body: String
-    maxlength: 255
+  }
+
+  input Comment {
+  _id: ID
+  body: String
+  }
+  
+  type Reaction {
+  _id: ID
+  body: String
   }
 
   type Auth {
@@ -21,19 +30,17 @@ const typeDefs = gql`
   }
 
   type Query {
-    categories: [Category]
-    products(category: ID, name: String): [Product]
-    product(_id: ID!): Product
-    user: User
-    order(_id: ID!): Order
-    checkout(products: [ProductInput]): Checkout
+    users: [User]
+    posts: [Post]
+    comments: [Comment]
+    reactions: [Reaction]
   }
 
   type Mutation {
     signUp(userName: String!, firstName: String!, lastName: String!, email: String!, password: String!): Auth
-    addPost(body: String!, comments: [Comment]): Order
+    addPost(body: String!, comments: [Comment]): Post
     updateUser(firstName: String, lastName: String, email: String, password: String): User
-    updatePost(_id: ID!, quantity: Int!): Product
+    updatePost(_id: ID!, quantity: Int!): Post
     login(email: String!, password: String!): Auth
   }
 `;

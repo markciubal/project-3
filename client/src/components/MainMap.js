@@ -62,6 +62,7 @@ const MainMap = () => {
   
   // Bottom sliding pane state.
   const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
+  const [isSignUpPaneOpen, setIsSignUpPaneOpen] = useState(false);
   const [isLoginPaneOpen, setIsLoginPaneOpen] = useState(false);
   const [isSelectedPaneOpen, setIsSelectedPaneOpen] = useState(false);
 
@@ -141,6 +142,8 @@ const MainMap = () => {
         setIsPostPaneOpen={setIsPostPaneOpen}
         isLoginPaneOpen={isLoginPaneOpen}
         setIsLoginPaneOpen={setIsLoginPaneOpen}
+        isSignUpPaneOpen={isSignUpPaneOpen}
+        setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
         
       />
@@ -269,6 +272,18 @@ const MainMap = () => {
         closeIcon={<div>Close</div>}
         className="bottom-pane"
         from="bottom"
+        isOpen={isSignUpPaneOpen}
+        onRequestClose={() => {
+          setIsSignUpPaneOpen(false);
+        }}  
+        width="100%"
+      >
+        <SignUp />
+      </SlidingPane>
+      <SlidingPane
+        closeIcon={<div>Close</div>}
+        className="bottom-pane"
+        from="bottom"
         isOpen={isPostPaneOpen}
         onRequestClose={() => {
           setIsPostPaneOpen(false);
@@ -287,7 +302,7 @@ const MainMap = () => {
         }}  
         width="100%"
       >
-        <SignUp/>
+        <Login/>
       </SlidingPane>
       <SlidingPane
         closeIcon={<div>Close</div>}
