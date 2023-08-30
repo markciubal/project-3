@@ -1,11 +1,11 @@
 const { gql } = require('apollo-server-express');
-const { User, Post, Comment, Reaction } = require('../models');
+
 const typeDefs = gql`
   type User {
     _id: ID
-    firstName: String
-    lastName: String
-    email: String
+    username: String!
+    email: String!
+    password: String!
     posts: [Post]
   }
 
@@ -31,18 +31,32 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
-    posts: [Post]
-    comments: [Comment]
-    reactions: [Reaction]
   }
 
   type Mutation {
-    signUp(userName: String!, firstName: String!, lastName: String!, email: String!, password: String!): Auth
+    signUp(username: String!, email: String!, password: String!): Auth
+    login(username: String!, password: String!): Auth
     addPost(body: String!, comments: [Comment]): Post
-    updateUser(firstName: String, lastName: String, email: String, password: String): User
-    updatePost(_id: ID!, quantity: Int!): Post
-    login(email: String!, password: String!): Auth
+
   }
 `;
 
 module.exports = typeDefs;
+
+// Full query.
+// type Query {
+//   users: [User]
+//   posts: [Post]
+//   comments: [Comment]
+//   reactions: [Reaction]
+// }
+
+// Full Mutations:
+// type Mutation {
+//   signUp(userName: String!, firstName: String!, lastName: String!, email: String!, password: String!): Auth
+//   login(email: String!, password: String!): Auth
+//   addPost(body: String!, comments: [Comment]): Post
+//   updateUser(firstName: String, lastName: String, email: String, password: String): User
+//   updatePost(_id: ID!, quantity: Int!): Post
+  
+// }

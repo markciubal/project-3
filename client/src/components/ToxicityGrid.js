@@ -34,24 +34,24 @@ const labelChange = (label) => {
 }
 const ToxicityGrid = (props) => {
   const [toxicTable, setToxicTable] = useState(null);
-
+  const truthyChange = (value) => {
+    if (value === true) {
+      return "Detected";
+    } else {
+      return "Not Detected";
+    }
+  }
   useEffect(() => {
     let toxicTableHTML = (
       <div className="toxic-table">
         <table style={{fontSize: "8pt"}}>
-          <thead>
-            <tr>
-              {props.toxicityResult.map(toxic => (
-                <th key={toxic.label}><span>{labelChange(toxic.label)}</span></th>
-              ))}
-            </tr>
-          </thead>
           <tbody>
-            <tr>
-              {props.toxicityResult.map(toxic => (
-                <td className={`${String(toxic.results[0].match)}`} key={toxic.label}>{String(toxic.results[0].match)}</td>
-              ))}
-            </tr>
+            {props.toxicityResult.map(toxic => (
+              <tr>
+                <td key={toxic.label}><span>{labelChange(toxic.label)}</span></td>
+                <td key={toxic.label}><span>{truthyChange(toxic.results[0].match)}</span></td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

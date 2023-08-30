@@ -14,6 +14,37 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import { useState } from "react";
 //import { toLonLat } from 'ol/proj';
 //import View from 'ol/View.js';
+const HeaderOptions = (props) => {
+    if (props.isLoggedIn === true) {
+        return (
+            <>
+            <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
+            <Nav.Link onClick={props.history}>History</Nav.Link>
+            <Nav.Link onClick={props.profile}>Profile</Nav.Link>
+            <Nav.Link onClick={() => {
+                Auth.logout();
+            // Redirect to login page after logout
+            }}>Logout</Nav.Link>
+            <Form className="d-flex">
+                <Form.Control
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                />
+                <Button variant="outline-success">Search</Button>
+            </Form>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <Nav.Link onClick={() => { props.setIsSignUpPaneOpen(true)}}>Sign Up</Nav.Link>
+                <Nav.Link onClick={() => { props.setIsLoginPaneOpen(true)}}>Login</Nav.Link>
+            </>
+        )
+    }
+}
 
 const ControlPanel = (props) => {
     const expand = 'lg';
@@ -36,41 +67,13 @@ const ControlPanel = (props) => {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <NavDropdown
-                            title="Account"
-                            id={`offcanvasNavbarDropdown-expand-${expand}`}
-                        >
-                            {/* <NavDropdown.Item href="#action3"></NavDropdown.Item>
-                            <NavDropdown.Item href="#action4">
-                            
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="">
-                            
-                            </NavDropdown.Item> */}
-                            {/* Logout functionality  */}
-                            <NavDropdown.Item onClick={() => {
-                                Auth.logout();
-                            // Redirect to login page after logout
-                                props.history.push('/login'); // Use props.history to redirect
-                            }}>Logout</NavDropdown.Item>
-                            <NavDropdown.Item onClick={props.profile}>Profile</NavDropdown.Item>
-                            {/* <NavDropdown.Item href="/account-signup">Signup</NavDropdown.Item> */}
-                            <NavDropdown.Item onClick={() => { props.setIsSignUpPaneOpen(true)}}>Sign Up</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => { props.setIsLoginPaneOpen(true)}}>Login</NavDropdown.Item>
-                        </NavDropdown>
-                        <Nav.Link onClick={props.history}>History</Nav.Link>
-                        <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
+                        <HeaderOptions
+                            setIsSignUpPaneOpen={props.setIsSignUpPaneOpen}
+                            setIsLoginPaneOpen={props.setIsLoginPaneOpen}
+                            setIsPostPaneOpen={props.setIsPostPaneOpen}
+                            isLoggedIn={props.isLoggedIn}
+                        ></HeaderOptions>
                         </Nav>
-                        <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                        </Form>
                     </Offcanvas.Body>
 
                     </Navbar.Offcanvas>

@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useMutation } from '@apollo/client';
-import { ADD_PROFILE, SIGNUP } from '../utils/mutations';
+import { SIGNUP } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
 const SignUp = () => {
   const [formState, setFormState] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
   });
@@ -49,16 +49,15 @@ const SignUp = () => {
             {data ? (
               <p>
                 Success! You may now head{' '}
-                <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
               <form onSubmit={handleFormSubmit}>
                 <input
                   className="form-input"
                   placeholder="Your username"
-                  name="name"
+                  name="username"
                   type="text"
-                  value={formState.name}
+                  value={formState.username}
                   onChange={handleChange}
                 />
                 <input
@@ -71,7 +70,7 @@ const SignUp = () => {
                 />
                 <input
                   className="form-input"
-                  placeholder="******"
+                  placeholder=""
                   name="password"
                   type="password"
                   value={formState.password}
