@@ -1,14 +1,33 @@
 import React, { Component, useEffect, useState } from "react";
+import { useMutation } from '@apollo/client';
 import * as toxicity from '@tensorflow-models/toxicity';
 import ToxicityGrid from './ToxicityGrid'; 
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import '../App.css';
+import { ADD_POST } from '../utils/mutations';
+import Auth from '../utils/auth';
 
   // Post states.
 
 // Toxicity filter based on https://medium.com/tensorflow/text-classification-using-tensorflow-js-an-example-of-detecting-offensive-language-in-browser-e2b94e3565ce
-const Post = () => {
+const Post = (props) => {
+  // This is used for the state of the form
+  const [formState, setFormState] = useState({ body: '' });
+  const [addPost, { error }] = useMutation(ADD_POST);
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const mutationResponse = addPost({
+        variables: { body: formState.body },
+      });
+      props.setIsPostPaneOpen(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const [postText, setPostText] = useState('');
   const [postValidationText, setPostValidationText] = useState();
   const [toxicityResult, setToxicityResult] = useState([]);
@@ -42,31 +61,33 @@ const Post = () => {
   
     return ( 
         <div>
-          <textarea
-            className="w-100"
-            value={postText}
-            onChange={(e) => setPostText(e.target.value)}
-            maxLength={255}
-           
-           
-          />
-          <br/>
-          {255 - postText.length} letters left.
-          {postValidationText}
-          <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
-          <div className="d-flex align-items-center justify-content-center text-center">
-            <Button variant="flat" onClick={() => {checkPost()}} disabled={postDisabled}>
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="false"
-              hidden={spinnerHidden}
-            />{postButtonText}
-            </Button>
-          </div>
-          
+          <form onSubmit={handleFormSubmit}>
+            <textarea
+              className="w-100"
+              value={postText}
+              name="body"
+              onChange={(e) => setPostText(e.target.value)}
+              maxLength={255}
+              style={{ color: 'blue', borderColor: 'lightblue' }}
+            
+            />
+            <br/>
+            {255 - postText.length} letters left.
+            {postValidationText}
+            <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
+            <div className="d-flex align-items-center justify-content-center text-center">
+              <Button type="submit" disabled={postDisabled}>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="false"
+                hidden={spinnerHidden}
+              />{postButtonText}
+              </Button>
+            </div>
+          </form>
           <br/>
           <p>Pin the World🌐</p>
           </div>

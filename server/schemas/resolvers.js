@@ -8,7 +8,9 @@ const resolvers = {
       return User.find();
     },
     // posts: async (parent, { _id }) => {
-    //   return await Post.findById(_id).populate('category');
+    //   if (context.user) {
+    //     const 
+    //   }
     // },
     // comments: async () => {
     //   return await Comment.find();
@@ -50,20 +52,21 @@ const resolvers = {
       console.log(token);
       return { token, user };
     },
-    // addPost: async (parent, { products }, context) => {
-    //   console.log(context);
-    //   if (context.user) {
-    //     const order = new Post({ products });
+    addPost: async (parent, { body }, context) => {
+      console.log(context);
+      if (context.user) {
+        const newPost = new Post({ body });
 
-    //     await User.findByIdAndUpdate(context.user._id, {
-    //       $push: { orders: order },
-    //     });
+        // await User.findByIdAndUpdate(context.user._id, {
+          // $push: { orders: order },
+        // });
 
-    //     return order;
-    //   }
+        console.log("New post has been made!")
+        return newPost;
+      }
 
-    //   throw new AuthenticationError('Not logged in');
-    // },
+      throw new AuthenticationError('Not logged in');
+    },
     // updateUser: async (parent, args, context) => {
     //   if (context.user) {
     //     return await User.findByIdAndUpdate(context.user._id, args, {
