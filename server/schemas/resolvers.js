@@ -53,9 +53,9 @@ const resolvers = {
       return { token, user };
     },
     addPost: async (parent, { body }, context) => {
-      console.log(context);
+      console.log({ user: context.user._id, body });
       if (context.user) {
-        const newPost = new Post({ body });
+        const newPost = await Post.create({ user: context.user._id, body });
 
         // await User.findByIdAndUpdate(context.user._id, {
           // $push: { orders: order },
