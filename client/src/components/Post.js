@@ -40,33 +40,37 @@ const Post = () => {
       }
   }
   
-
-  return ( 
-    <div>
-      <textarea
-        className="w-100"
-        value={postText}
-        onChange={(e) => setPostText(e.target.value)}
-        maxLength={255}
-      />
-      <br/>
-      {255 - postText.length} letters left.
-      {postValidationText}
-      <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
-      <div className="d-flex align-items-center justify-content-center text-center">
-        <Button variant="flat" onClick={() => {checkPost()}} disabled={postDisabled}>
-        <Spinner
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          aria-hidden="false"
-          hidden={spinnerHidden}
-        />{postButtonText}
-        </Button>
-      </div>
-    </div>
-  )
+    return ( 
+        <div>
+          <textarea
+            className="w-100"
+            value={postText}
+            onChange={(e) => setPostText(e.target.value)}
+            maxLength={255}
+            style={{ color: 'blue', borderColor: 'lightblue' }}
+           
+          />
+          <br/>
+          {255 - postText.length} letters left.
+          {postValidationText}
+          <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
+          <div className="d-flex align-items-center justify-content-center text-center">
+            <Button variant="flat" onClick={() => {checkPost()}} disabled={postDisabled}>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="false"
+              hidden={spinnerHidden}
+            />{postButtonText}
+            </Button>
+          </div>
+          
+          <br/>
+          <p style={{ fontFamily: 'Pacifico, sans-serif' }}>Pin the World🌐</p>
+          </div>
+    )
 }
 
 export default Post;
