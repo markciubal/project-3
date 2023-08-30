@@ -212,6 +212,7 @@ nav {
   background: #f7f5f2 !important;
 }
 .slide-pane_from_bottom {
+  z-index: 9999;
   height: 45vh !important;
   margin-top: 55vh !important;
   box-shadow: var(--black-shadow) !important;
