@@ -219,3 +219,13 @@ nav {
   background: #f7f5f2 !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+textarea {
+  color: blue;
+  border-color: lightblue;
+  font-family: 'Pacifico', sans-serif;
+}
+
+p {
+  font-family: 'Pacifico', sans-serif;
+}

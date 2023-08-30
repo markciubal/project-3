@@ -89,7 +89,7 @@ const Post = (props) => {
             </div>
           </form>
           <br/>
-          <p style={{ fontFamily: 'Pacifico, sans-serif' }}>Pin the World🌐</p>
+          <p>Pin the World🌐</p>
           </div>
     )
 }
