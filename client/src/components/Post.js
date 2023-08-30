@@ -47,7 +47,7 @@ const Post = () => {
             value={postText}
             onChange={(e) => setPostText(e.target.value)}
             maxLength={255}
-            style={{ color: 'blue', borderColor: 'lightblue' }}
+           
            
           />
           <br/>
@@ -68,7 +68,7 @@ const Post = () => {
           </div>
           
           <br/>
-          <p style={{ fontFamily: 'Pacifico, sans-serif' }}>Pin the World🌐</p>
+          <p>Pin the World🌐</p>
           </div>
     )
 }
