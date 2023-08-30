@@ -21,3 +21,11 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const ADD_POST = gql`
+  mutation addPost($username: String!, $body: String!) {
+  addPost(username: $username, body: $body) {
+    Post
+    }
+  }
+`;
