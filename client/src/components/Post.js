@@ -16,6 +16,17 @@ const Post = (props) => {
   const [formState, setFormState] = useState({ body: '' });
   const [addPost, { error }] = useMutation(ADD_POST);
 
+  // update state based on form input changes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+  console.log(name, value);
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -24,6 +35,7 @@ const Post = (props) => {
       });
       props.setIsPostPaneOpen(false);
     } catch (e) {
+      console.log(error);
       console.log(e);
     }
   };
@@ -66,7 +78,10 @@ const Post = (props) => {
               className="w-100"
               value={postText}
               name="body"
-              onChange={(e) => setPostText(e.target.value)}
+              onChange={(e) => {
+                setPostText(e.target.value);
+                handleChange(e);
+              }}
               maxLength={255}
               style={{ color: 'blue', borderColor: 'lightblue' }}
             
