@@ -12,6 +12,8 @@ const typeDefs = gql`
   type Post {
     _id: ID
     body: String
+    latitude: Float!
+    longitude: Float!
   }
 
   input Comment {
@@ -36,7 +38,7 @@ const typeDefs = gql`
   type Mutation {
     signUp(username: String!, email: String!, password: String!): Auth
     login(username: String!, password: String!): Auth
-    addPost(body: String!): Post
+    addPost(body: String!, latitude: Float!, longitude: Float!): Post
 
   }
 `;

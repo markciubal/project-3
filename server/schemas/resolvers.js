@@ -49,19 +49,12 @@ const resolvers = {
       }
 
       const token = signToken(user);
-      console.log(token);
       return { token, user };
     },
-    addPost: async (parent, { body }, context) => {
-      console.log({ user: context.user._id, body });
+    addPost: async (parent, { body, latitude, longitude }, context) => {
       if (context.user) {
-        const newPost = await Post.create({ user: context.user._id, body });
-
-        // await User.findByIdAndUpdate(context.user._id, {
-          // $push: { orders: order },
-        // });
-
-        console.log("New post has been made!")
+        const newPost = await Post.create({ user: context.user._id, body, latitude, longitude });
+        console.log("New post has been made! " + `${latitude}, ${longitude}`)
         return newPost;
       }
 
@@ -74,6 +67,9 @@ const resolvers = {
     //     });
     //   }
 
+        // await User.findByIdAndUpdate(context.user._id, {
+          // $push: { orders: order },
+        // });
     //   throw new AuthenticationError('Not logged in');
     // },
     // updatePost: async (parent, { _id, quantity }) => {

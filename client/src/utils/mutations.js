@@ -23,9 +23,11 @@ export const LOGIN = gql`
 `;
 
 export const ADD_POST = gql`
-  mutation addPost($body: String!) {
-    addPost(body: $body) {
+  mutation addPost($body: String!, $latitude: Float!, $longitude: Float!) {
+    addPost(body: $body, latitude: $latitude, longitude: $longitude) {
       body
+      latitude
+      longitude
     }
   }
 `;

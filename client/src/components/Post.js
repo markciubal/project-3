@@ -16,10 +16,43 @@ const Post = (props) => {
   const [formState, setFormState] = useState({ body: '' });
   const [addPost, { error }] = useMutation(ADD_POST);
 
+
+  const [postText, setPostText] = useState('');
+  const [postValidationText, setPostValidationText] = useState();
+  const [toxicityResult, setToxicityResult] = useState([]);
+  const [spinnerHidden, setSpinnerHidden] = useState(true);
+  const [postDisabled, setPostDisabled] = useState(false);
+  const [postButtonText, setPostButtonText] = useState("Post");
+
+  
+  // This should probably be server side.
+  const checkPost = async () => {
+    if (postText.length !== 0) {
+        // The minimum prediction confidence.
+        const threshold = 0.7;
+
+        // Which toxicity labels to return.
+        const labelsToInclude = ['toxicity', 'severe_toxicity', 'identity_attack', 'insult', 'threat', 'sexual_explicit', 'obscene'];
+
+        setPostDisabled(true);
+        setSpinnerHidden(false);
+        // Space before text is intentional, it is for putting a gap between the loader and the text.
+        setPostButtonText(" Checking post content...")
+        await toxicity.load(threshold, labelsToInclude).then(model => {
+            // Now you can use the `model` object to label sentences. 
+            model.classify([postText]).then(predictions => {
+                setToxicityResult(predictions);
+                setPostDisabled(false); 
+                setSpinnerHidden(true); 
+                setPostButtonText("Post")
+            });
+        });
+    }
+}
   // update state based on form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
-  console.log(name, value);
+    console.log(name, value);
 
     setFormState({
       ...formState,
@@ -30,8 +63,9 @@ const Post = (props) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
+      let approvePost = await checkPost();
       const mutationResponse = addPost({
-        variables: { body: formState.body },
+        variables: { body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
       });
       props.setIsPostPaneOpen(false);
     } catch (e) {
@@ -39,40 +73,12 @@ const Post = (props) => {
       console.log(e);
     }
   };
+  useEffect(() => {
 
-  const [postText, setPostText] = useState('');
-  const [postValidationText, setPostValidationText] = useState();
-  const [toxicityResult, setToxicityResult] = useState([]);
-  const [spinnerHidden, setSpinnerHidden] = useState(true);
-  const [postDisabled, setPostDisabled] = useState(false);
-  const [postButtonText, setPostButtonText] = useState("Post");
-  // This should probably be server side.
-  const checkPost = async () => {
-      if (postText.length !== 0) {
-          // The minimum prediction confidence.
-          const threshold = 0.7;
-
-          // Which toxicity labels to return.
-          const labelsToInclude = ['toxicity', 'severe_toxicity', 'identity_attack', 'insult', 'threat', 'sexual_explicit', 'obscene'];
-
-          setPostDisabled(true);
-          setSpinnerHidden(false);
-          // Space before text is intentional, it is for putting a gap between the loader and the text.
-          setPostButtonText(" Checking post content...")
-          await toxicity.load(threshold, labelsToInclude).then(model => {
-              // Now you can use the `model` object to label sentences. 
-              model.classify([postText]).then(predictions => {
-                  setToxicityResult(predictions);
-                  setPostDisabled(false); 
-                  setSpinnerHidden(true); 
-                  setPostButtonText("Post")
-              });
-          });
-      }
-  }
-  
+  }, [toxicityResult])
     return ( 
-        <div>
+        <div className="align-items-center justify-content-center text-center">
+          @ {`${props.centerLatitude}, ${props.centerLongitude}`}
           <form onSubmit={handleFormSubmit}>
             <textarea
               className="w-100"
@@ -84,13 +90,12 @@ const Post = (props) => {
               }}
               maxLength={255}
               style={{ color: 'blue', borderColor: 'lightblue' }}
-            
             />
             <br/>
             {255 - postText.length} letters left.
             {postValidationText}
             <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
-            <div className="d-flex align-items-center justify-content-center text-center">
+            <div>
               <Button type="submit" disabled={postDisabled}>
               <Spinner
                 as="span"

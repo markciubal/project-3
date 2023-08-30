@@ -20,7 +20,7 @@ const PostModal = (props) => {
           <Modal.Title>Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Post />
+            <Post setIsPostPaneOpen={props.setIsPostPaneOpen}/>
         </Modal.Body>
       </Modal>
     </>

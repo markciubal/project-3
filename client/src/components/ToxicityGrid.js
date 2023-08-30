@@ -46,17 +46,20 @@ const ToxicityGrid = (props) => {
       <div className="toxic-table">
         <table style={{fontSize: "8pt"}}>
           <tbody>
+            <th>
+              <td>Type</td>
+              <td>Value</td>
+            </th>
             {props.toxicityResult.map(toxic => (
               <tr>
-                <td key={toxic.label}><span>{labelChange(toxic.label)}</span></td>
-                <td key={toxic.label}><span>{truthyChange(toxic.results[0].match)}</span></td>
+                <td key={toxic.label + "-label"}><span>{labelChange(toxic.label)}</span></td>
+                <td key={toxic.label+ "-value"}><span>{truthyChange(toxic.results[0].match)}</span></td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
     );
-
     setToxicTable(toxicTableHTML);
   }, [props.toxicityResult]);
 

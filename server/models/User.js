@@ -21,6 +21,8 @@ const userSchema = new Schema({
     minlength: 5
   },
   posts: [Post.schema]
+}, {
+  timestamps: true
 });
 
 // set up pre-save middleware to create password

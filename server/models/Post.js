@@ -14,11 +14,23 @@ const postSchema = new Schema({
     trim: true,
     maxlength: 255
   },
+  latitude: {
+    type: Number,
+    required: true,
+    trim: true
+  },
+  longitude: {
+    type: Number,
+    required: true,
+    trim: true
+  },
   comments: {
     type: Schema.Types.ObjectId,
     ref: 'Comment',
     required: false
   }
+}, {
+  timestamps: true
 });
 
 const Post = mongoose.model('Post', postSchema);
