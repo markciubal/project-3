@@ -1,4 +1,5 @@
 const User = require('./User');
+const Comment = require('./Comment');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -24,11 +25,11 @@ const postSchema = new Schema({
     required: true,
     trim: true
   },
-  comments: {
-    type: Schema.Types.ObjectId,
-    ref: 'Comment',
-    required: false
-  }
+  // comments: {
+  //   type: Comment,
+  //   ref: 'Comment',
+  //   required: false
+  // }
 }, {
   timestamps: true
 });
