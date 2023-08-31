@@ -37,7 +37,7 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <section>
-          <MainMap/>
+          <MainMap client={client}/>
         </section>
       </div>
     </ApolloProvider>
