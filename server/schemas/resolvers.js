@@ -83,6 +83,7 @@ const resolvers = {
       return { token, user };
     },
     addPost: async (parent, { body, latitude, longitude }, context) => {
+      console.log(context);
       if (context.user) {
         const newPost = await Post.create({ user: context.user._id, body, latitude, longitude });
         console.log("New post has been made! " + `${latitude}, ${longitude}`)
