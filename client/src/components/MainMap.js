@@ -18,7 +18,7 @@ import { useGeolocated } from "react-geolocated";
 import Login from './Login';
 import SignUp from './SignUp';
 import postToGeoJSON from '../utils/postToGeoJSON';
-
+import NewMap from './NewMap';
 // Queries and Mutations
 import { GET_ALL_POSTS } from '../utils/queries';
 
@@ -162,6 +162,7 @@ const MainMap = () => {
         setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
       />
+       <NewMap/>
       <SlidingPane
         closeIcon={<div>Close</div>}
         className="bottom-pane"
