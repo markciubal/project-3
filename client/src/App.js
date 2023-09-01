@@ -1,6 +1,6 @@
 import './App.css';
 import './custom.scss';
-import MainMap from './components/MainMap';
+import PinPoint from './components/PinPoint';
 import React from 'react';
 import {
   ApolloClient,
@@ -37,7 +37,7 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <section>
-          <MainMap client={client}/>
+          <PinPoint client={client}/>
         </section>
       </div>
     </ApolloProvider>

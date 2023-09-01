@@ -7,35 +7,39 @@ import '../App.css';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicHJvamVjdGNpdmlsaWFuIiwiYSI6ImNsbDduZWdzcDBzcGUzanNzcjdxamVicXMifQ.lVmATzvMkyZSxPthIay_mA'; // Set your mapbox token here
 
-function NewMap(props) {
+function PostMap(props) { 
   const mapRef = useRef(null);
-
+  // selectedMapPosts={selectedMapPosts}
+  // setIsSelectedPaneOpen={setIsSelectedPaneOpen}
+  // isSelectedPaneOpen={
   const onClick = event => {
-    const feature = event.features[0];
-    const clusterId = feature.properties.cluster_id;
+    console.log(props);
+    props.setSelectedMapPosts(event.features)
+    props.setIsSelectedPaneOpen(true);
 
-    const mapboxSource = mapRef.current.getSource('earthquakes');
+  }
+    
+    // if (feature) {
+    //   console.log(event);
+    //   const clusterId = feature.properties.cluster_id;
+  
+    //   const mapboxSource = mapRef.current.getSource('postPoints');
+  
+    //   mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
+    //     if (err) {
+    //       return;
+    //     }
+  
+    //     mapRef.current.easeTo({
+    //       center: feature.geometry.coordinates,
+    //       zoom,
+    //       duration: 5000
+    //     });
+    //   });
+    // };
+    // }
+   
 
-    mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-      if (err) {
-        return;
-      }
-
-      mapRef.current.easeTo({
-        center: feature.geometry.coordinates,
-        zoom,
-        duration: 500
-      });
-    });
-  };
-  const layerStyle = {
-    id: 'point',
-    type: 'circle',
-    paint: {
-      'circle-radius': 10,
-      'circle-color': '#007cbf'
-    }
-  };
   return (
     <>
       <Map
@@ -50,10 +54,10 @@ function NewMap(props) {
         onClick={onClick}
         ref={mapRef}
       >
-        {/* <Source
-          id="earthquakes"
+        <Source
+          id="postPoints"
           type="geojson"
-          data="https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
+          data={props.postGeoJSON}
           cluster={true}
           clusterMaxZoom={14}
           clusterRadius={50}
@@ -61,13 +65,10 @@ function NewMap(props) {
           <Layer {...clusterLayer} />
           <Layer {...clusterCountLayer} />
           <Layer {...unclusteredPointLayer} />
-        </Source> */}
-        <Source id="my-data" type="geojson" data={props.postGeoJSON}>
-            <Layer {...layerStyle} />
         </Source>
       </Map>
     </>
   );
 }
 
-export default NewMap;
+export default PostMap;

@@ -18,12 +18,12 @@ import { useGeolocated } from "react-geolocated";
 import Login from './Login';
 import SignUp from './SignUp';
 import postToGeoJSON from '../utils/postToGeoJSON';
-import NewMap from './NewMap';
+import PostMap from './PostMap';
 // Queries and Mutations
 import { GET_ALL_POSTS } from '../utils/queries';
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
-const MainMap = () => {
+const PinPoint = () => {
   // Map states.
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
   const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [-103.771556, 44.967243];
@@ -129,8 +129,12 @@ const MainMap = () => {
         setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
       />
-       <NewMap
-         postGeoJSON={postGeoJSON}
+       <PostMap
+        postGeoJSON={postGeoJSON}
+        setSelectedMapPosts={setSelectedMapPosts}
+        selectedMapPosts={selectedMapPosts}
+        setIsSelectedPaneOpen={setIsSelectedPaneOpen}
+        isSelectedPaneOpen={isSelectedPaneOpen}
        />
       <SlidingPane
         closeIcon={<div>Close</div>}
@@ -188,6 +192,7 @@ const MainMap = () => {
       >
         <SelectedPosts
           selectedMapPosts={selectedMapPosts}
+          setSelectedMapPosts={selectedMapPosts}
           setIsSelectedPaneOpen={setIsSelectedPaneOpen}
           isSelectedPaneOpen={isSelectedPaneOpen}
         ></SelectedPosts>
@@ -196,4 +201,4 @@ const MainMap = () => {
   )
 };
 
-export default MainMap;
+export default PinPoint;

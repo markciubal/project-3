@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from 'react';
 const PostInstance = (props) => {
     const postData = props.post;
-    const detail = postData.get('detail');
-    const time = postData.get('time');
+    console.log(postData);
     return (
     <div>
-        <div>{detail}</div>
-        <div>By: User @ {time}</div>
+
     </div>)
 }
 const SelectedPosts = (props) => {
@@ -15,7 +13,7 @@ const SelectedPosts = (props) => {
     const [postResults, setPostResults] = useState();
     const [selectedPosts, setSelectedPosts] = useState();
     // props.setIsSelectedPostPaneOpen(true);
-    console.log(props);
+    console.log(selectedPosts);
     useEffect(() => {
         console.log(props);
         let keyCount = 0;
