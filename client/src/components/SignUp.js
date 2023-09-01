@@ -41,7 +41,7 @@ const SignUp = (props) => {
   };
 
   return (
-    <main className="flex-row justify-center mb-4">
+    <main className="d-flex row justify-content-center mb-4">
       <div className="col-12 col-lg-10">
         <div className="card">
           <h4 className="card-header bg-dark text-light p-2">Sign Up</h4>
@@ -51,33 +51,35 @@ const SignUp = (props) => {
                 Success! You may now head{' '}
               </p>
             ) : (
-              <form onSubmit={handleFormSubmit}>
+              <form className="d-grid gap-3" onSubmit={handleFormSubmit}>
+                <div className="d-flex justify-content-between"> 
+                  <input
+                    className="form-input text-center w-100 me-2 border border-dark rounded"
+                    placeholder="Your username"
+                    name="username"
+                    type="text"
+                    value={formState.username}
+                    onChange={handleChange}
+                  />
+                  <input
+                    className="form-input text-center w-100 ms-2 border border-dark rounded"
+                    placeholder="Your email"
+                    name="email"
+                    type="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                  />
+                </div>
                 <input
-                  className="form-input"
-                  placeholder="Your username"
-                  name="username"
-                  type="text"
-                  value={formState.username}
-                  onChange={handleChange}
-                />
-                <input
-                  className="form-input"
-                  placeholder="Your email"
-                  name="email"
-                  type="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                />
-                <input
-                  className="form-input"
-                  placeholder=""
+                  className="form-input text-center w-100 border border-dark rounded"
+                  placeholder="Please enter password"
                   name="password"
                   type="password"
                   value={formState.password}
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-block btn-info"
+                  className="btn btn-block btn-info w-100"
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
