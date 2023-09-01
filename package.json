@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "nodemon": "^3.0.1",
+    "react-bootstrap": "^2.8.0",
     "sass": "^1.66.1"
   }
 }
