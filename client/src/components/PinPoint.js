@@ -26,11 +26,18 @@ import "react-sliding-pane/dist/react-sliding-pane.css";
 const PinPoint = () => {
   // Map states.
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
-  const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [-103.771556, 44.967243];
+  const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [44.967243, -103.771556];
   const [coordinateRoundTo, setCoordinateRoundTo] = React.useState(3);
-  const [view, setView] = React.useState({ center: fromLonLat(GEOGRAPHIC_CENTER_OF_UNITED_STATES), zoom: 3, extent: [-20037508.34, 20037508.34, 20037508.34, -20037508.34] });
+  // const [view, setView] = React.useState({ center: fromLonLat(GEOGRAPHIC_CENTER_OF_UNITED_STATES), zoom: 3, extent: [-20037508.34, 20037508.34, 20037508.34, -20037508.34] });
   const [centerLatitude, setCenterLatitude] = React.useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[0]);
   const [centerLongitude, setCenterLongitude] = React.useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[1]);
+  const [viewport, setViewport] = React.useState({
+    latitude: GEOGRAPHIC_CENTER_OF_UNITED_STATES[0],
+    longitude: GEOGRAPHIC_CENTER_OF_UNITED_STATES[1],
+    width: "100vw",
+    height: "100vh",
+    zoom: 1
+  });
   const [currentEmoji, setCurrentEmoji] = React.useState('▼');
   const [postGeoJSON, setPostGeoJSON] = React.useState({
     "type": "FeatureCollection",
@@ -83,7 +90,6 @@ const PinPoint = () => {
     const successCallback = async (position) => {
       setCurrentLongitude(position.coords.longitude);
       setCurrentLatitude(position.coords.latitude);
-      setView({ center: fromLonLat([position.coords.longitude, position.coords.latitude]), zoom: view.zoom+3 });
     };
     
     const errorCallback = async (error) => {
@@ -95,11 +101,11 @@ const PinPoint = () => {
 
 
 
-  React.useEffect(() => {
-    let viewCenter = toLonLat(view.center);
-    setCenterLatitude(viewCenter[1]);
-    setCenterLongitude(viewCenter[0]);
-  }, [view]);
+  // React.useEffect(() => {
+  //   let viewCenter = toLonLat(view.center);
+  //   setCenterLatitude(viewCenter[1]);
+  //   setCenterLongitude(viewCenter[0]);
+  // }, [view]);
 
   
   React.useEffect(() => {
@@ -130,6 +136,8 @@ const PinPoint = () => {
         panAndZoomToMe={panAndZoomToMe}
       />
        <PostMap
+        viewport={viewport}
+        setViewport={setViewport}
         postGeoJSON={postGeoJSON}
         setSelectedMapPosts={setSelectedMapPosts}
         selectedMapPosts={selectedMapPosts}

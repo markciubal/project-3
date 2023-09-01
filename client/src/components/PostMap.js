@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useRef} from 'react';
 import {Map, Source, Layer} from 'react-map-gl';
+import { supercluster } from 'use-supercluster';
 
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from '../utils/layers';
 import '../App.css';
@@ -12,13 +13,26 @@ function PostMap(props) {
   // selectedMapPosts={selectedMapPosts}
   // setIsSelectedPaneOpen={setIsSelectedPaneOpen}
   // isSelectedPaneOpen={
+  const bounds = mapRef.current
+  ? mapRef.current
+      .getMap()
+      .getBounds()
+      .toArray()
+      .flat()
+  : null;
+
   const onClick = event => {
     console.log(props);
     props.setSelectedMapPosts(event.features)
     props.setIsSelectedPaneOpen(true);
 
   }
-    
+  // const { clusters, supercluster } = useSupercluster({
+  //   points: props.postGeoJSON,
+  //   bounds,
+  //   zoom: props.viewport.zoom,
+  //   options: { radius: 75, maxZoom: 20 }
+  // });
     // if (feature) {
     //   console.log(event);
     //   const clusterId = feature.properties.cluster_id;
@@ -43,22 +57,23 @@ function PostMap(props) {
   return (
     <>
       <Map
-        initialViewState={{
-          latitude: 40.67,
-          longitude: -103.59,
-          zoom: 3
-        }}
+        {...props.viewport}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxAccessToken={MAPBOX_TOKEN}
         interactiveLayerIds={[clusterLayer.id]}
         onClick={onClick}
+        onMove={evt => { 
+          props.setViewport(evt.viewState);
+          console.log(props.viewport);
+         }}
         ref={mapRef}
+        maxZoom={20}
       >
         <Source
           id="postPoints"
           type="geojson"
           data={props.postGeoJSON}
-          cluster={true}
+          cluster={true}  
           clusterMaxZoom={14}
           clusterRadius={50}
         >
