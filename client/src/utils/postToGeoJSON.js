@@ -30,9 +30,7 @@ const postToGeoJSON = (posts) => {
         });
         
         console.log(geoJSON);
-        return new GeoJSON({
-            featureProjection: "EPSG:3857",
-          }).readFeatures(geoJSON);
+        return geoJSON;
 }
 
 export default postToGeoJSON;

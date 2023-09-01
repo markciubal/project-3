@@ -3,10 +3,11 @@ import {useRef} from 'react';
 import {Map, Source, Layer} from 'react-map-gl';
 
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from '../utils/layers';
+import '../App.css';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicHJvamVjdGNpdmlsaWFuIiwiYSI6ImNsbDduZWdzcDBzcGUzanNzcjdxamVicXMifQ.lVmATzvMkyZSxPthIay_mA'; // Set your mapbox token here
 
-function NewMap() {
+function NewMap(props) {
   const mapRef = useRef(null);
 
   const onClick = event => {
@@ -27,7 +28,14 @@ function NewMap() {
       });
     });
   };
-
+  const layerStyle = {
+    id: 'point',
+    type: 'circle',
+    paint: {
+      'circle-radius': 10,
+      'circle-color': '#007cbf'
+    }
+  };
   return (
     <>
       <Map
@@ -54,6 +62,9 @@ function NewMap() {
           <Layer {...clusterCountLayer} />
           <Layer {...unclusteredPointLayer} />
         </Source> */}
+        <Source id="my-data" type="geojson" data={props.postGeoJSON}>
+            <Layer {...layerStyle} />
+        </Source>
       </Map>
     </>
   );

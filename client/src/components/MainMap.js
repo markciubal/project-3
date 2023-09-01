@@ -32,15 +32,13 @@ const MainMap = () => {
   const [centerLatitude, setCenterLatitude] = React.useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[0]);
   const [centerLongitude, setCenterLongitude] = React.useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[1]);
   const [currentEmoji, setCurrentEmoji] = React.useState('▼');
-  const [postGeoJSON, setPostGeoJSON] = React.useState(new GeoJSON({
-    featureProjection: "EPSG:3857",
-  }).readFeatures({
+  const [postGeoJSON, setPostGeoJSON] = React.useState({
     "type": "FeatureCollection",
     "metadata": {
       "title": "PinPoint Posts",
     },
     "features": []
-  }));
+  });
   // Bottom sliding pane state.
   const [isPostPaneOpen, setIsPostPaneOpen] = React.useState(false);
   const [isSignUpPaneOpen, setIsSignUpPaneOpen] = React.useState(false);
@@ -131,7 +129,9 @@ const MainMap = () => {
         setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
       />
-       <NewMap/>
+       <NewMap
+         postGeoJSON={postGeoJSON}
+       />
       <SlidingPane
         closeIcon={<div>Close</div>}
         className="bottom-pane"
