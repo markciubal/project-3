@@ -6,7 +6,7 @@ import { SIGNUP } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [formState, setFormState] = useState({
     username: '',
     email: '',
@@ -34,6 +34,7 @@ const SignUp = () => {
       });
 
       Auth.login(data.signUp.token);
+      props.setIsSignUpPaneOpen(false);
     } catch (e) {
       console.error(e);
     }

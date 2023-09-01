@@ -16,8 +16,6 @@ function Login(props) {
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
-      console.log(token);
-      props.setIsLoggedIn(true);
       props.setIsLoginPaneOpen(false);
     } catch (e) {
       console.log(e);

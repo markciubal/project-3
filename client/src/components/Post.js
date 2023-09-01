@@ -63,10 +63,11 @@ const Post = (props) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      let approvePost = await checkPost();
+      // let approvePost = await checkPost();
       const mutationResponse = addPost({
-        variables: { body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude, createdAt: new Date().getTime()},
+        variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
       });
+      // set to change 
       props.setIsPostPaneOpen(false);
     } catch (e) {
       console.log(error);
@@ -78,7 +79,7 @@ const Post = (props) => {
   }, [toxicityResult])
     return ( 
         <div className="align-items-center justify-content-center text-center">
-          @ {`${props.centerLatitude}, ${props.centerLongitude}`}
+          {/* @ {`${props.centerLatitude}, ${props.centerLongitude}`} */}
           <form onSubmit={handleFormSubmit}>
             <textarea
               className="w-100"
@@ -94,7 +95,7 @@ const Post = (props) => {
             <br/>
             {255 - postText.length} letters left.
             {postValidationText}
-            <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid>
+            {/* <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid> */}
             <div>
               <Button type="submit" disabled={postDisabled}>
               <Spinner

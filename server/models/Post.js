@@ -6,7 +6,8 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema({
   user: {
-    type: User,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   body: {
