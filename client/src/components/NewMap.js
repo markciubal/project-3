@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useRef} from 'react';
-import {createRoot} from 'react-dom/client';
 import {Map, Source, Layer} from 'react-map-gl';
 
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from '../utils/layers';
@@ -43,7 +42,7 @@ function NewMap() {
         onClick={onClick}
         ref={mapRef}
       >
-        <Source
+        {/* <Source
           id="earthquakes"
           type="geojson"
           data="https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
@@ -54,7 +53,7 @@ function NewMap() {
           <Layer {...clusterLayer} />
           <Layer {...clusterCountLayer} />
           <Layer {...unclusteredPointLayer} />
-        </Source>
+        </Source> */}
       </Map>
     </>
   );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Map from 'react-map-gl';
-
+// import { useContext } from 'react';
 import '../App.css';
 import ControlPanel from "./ControlPanel";
 import { useMutation, useQuery } from '@apollo/client';
@@ -21,39 +21,8 @@ import postToGeoJSON from '../utils/postToGeoJSON';
 import NewMap from './NewMap';
 // Queries and Mutations
 import { GET_ALL_POSTS } from '../utils/queries';
-
-import {
-  RMap,
-  ROSM,
-  RLayerVector,
-  RLayerCluster,
-  RFeature,
-  RControl,
-  RGeolocation,
-  ROverlay,
-  RStyle,
-  useOL,
-} from "rlayers";
-
-import { RCircle, RFill, RText, RStroke, RRegularShape } from "rlayers/style";
-import CenterMenu from "./CenterMenu";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 
-const reader = new GeoJSON({ featureProjection: "EPSG:3857" });
-const colorBlob = (size) =>
-  "rgba(" +
-  [255, 255, 255, Math.min(0.8, 0.4 + Math.log(size / 10) / 20)].join() +
-  ")";
-const radiusStar = (feature) => Math.round(5 * (parseFloat(feature.get("mag")) - 2.5));
-
-
-// This returns the north/south east/west extent of a group of features
-// divided by the resolution
-const extentFeatures = (features, resolution) => {
-  const extent = createEmpty();
-  for (const f of features) extend(extent, f.getGeometry().getExtent());
-  return Math.round(0.25 * (getWidth(extent) + getHeight(extent))) / resolution;
-};
 const MainMap = () => {
   // Map states.
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).

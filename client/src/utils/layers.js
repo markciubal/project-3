@@ -23,7 +23,7 @@ export const clusterCountLayer = {
   }
 };
 
-export const unclusteredPointLayer: LayerProps = {
+export const unclusteredPointLayer = {
   id: 'unclustered-point',
   type: 'circle',
   source: 'earthquakes',
