@@ -3,7 +3,6 @@ const { User, Post, Comment, Reaction } = require('../models');
 const { signToken } = require('../utils/auth');
 const { GraphQLScalarType } = require('graphql');
 
-
 const dateScalar = new GraphQLScalarType({
   name: 'Date',
   description: 'Date custom scalar type',
@@ -36,7 +35,7 @@ const resolvers = {
       return await User.find();
     },
     posts: async () => {
-      return await Post.find();
+      return await Post.find().populate('user');
     },
     // posts: async (parent, { _id }) => {
     //   if (context.user) {
@@ -83,8 +82,10 @@ const resolvers = {
       return { token, user };
     },
     addPost: async (parent, { body, latitude, longitude }, context) => {
+      console.log('test before context.');
       console.log(context);
-      if (context.user) {
+      
+    if (context.user) {
         const newPost = await Post.create({ user: context.user._id, body, latitude, longitude });
         console.log("New post has been made! " + `${latitude}, ${longitude}`)
         return newPost;
@@ -92,6 +93,7 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
+    
     // updateUser: async (parent, args, context) => {
     //   if (context.user) {
     //     return await User.findByIdAndUpdate(context.user._id, args, {

@@ -65,8 +65,9 @@ const Post = (props) => {
     try {
       let approvePost = await checkPost();
       const mutationResponse = addPost({
-        variables: { body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude, createdAt: new Date().getTime()},
+        variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
       });
+      // set to change 
       props.setIsPostPaneOpen(false);
     } catch (e) {
       console.log(error);

@@ -14,8 +14,11 @@ import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
 import { useGeolocated } from "react-geolocated";
 import Login from './Login';
 import SignUp from './SignUp';
-
+import { postToGeoJSON } from '../utils/postToGeoJSON';
 import "ol/ol.css";
+
+//Mutations
+import { GET_ALL_POSTS } from '../utils/queries';
 
 import {
   RMap,
@@ -49,10 +52,7 @@ const extentFeatures = (features, resolution) => {
   for (const f of features) extend(extent, f.getGeometry().getExtent());
   return Math.round(0.25 * (getWidth(extent) + getHeight(extent))) / resolution;
 };
-const MainMap = (props) => {
-  // Managing login status.
-  console.log(props.client);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const MainMap = () => {
   // Map states.
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
   const GEOGRAPHIC_CENTER_OF_UNITED_STATES = [-103.771556, 44.967243];
@@ -137,7 +137,6 @@ const MainMap = (props) => {
   return (
     <>
       <ControlPanel 
-        isLoggedIn={isLoggedIn}
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
         coordinateRoundTo={coordinateRoundTo}
@@ -240,6 +239,7 @@ const MainMap = (props) => {
               // We have a single feature cluster
               const unclusteredFeature = feature.get("features")[0];
               const mag = unclusteredFeature.get("mag");
+              console.log(mag);
               const magSize = (Math.abs(mag)*5).toFixed(1);
               // console.log(mag);
               return (
@@ -292,10 +292,9 @@ const MainMap = (props) => {
         }}  
         width="100%"
       >
-        <Post
+        <Post 
           centerLatitude={centerLatitude}
           centerLongitude={centerLongitude}
-          setIsPostPaneOpen={setIsPostPaneOpen}
         />
       </SlidingPane>
       <SlidingPane
@@ -309,8 +308,6 @@ const MainMap = (props) => {
         width="100%"
       >
         <Login 
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
           setIsLoginPaneOpen={setIsLoginPaneOpen}
         />
       </SlidingPane>

@@ -14,8 +14,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import { useState } from "react";
 //import { toLonLat } from 'ol/proj';
 //import View from 'ol/View.js';
+
 const HeaderOptions = (props) => {
-    if (props.isLoggedIn === true) {
+    if (Auth.loggedIn()) {
         return (
             <>
             <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
@@ -71,7 +72,6 @@ const ControlPanel = (props) => {
                             setIsSignUpPaneOpen={props.setIsSignUpPaneOpen}
                             setIsLoginPaneOpen={props.setIsLoginPaneOpen}
                             setIsPostPaneOpen={props.setIsPostPaneOpen}
-                            isLoggedIn={props.isLoggedIn}
                         ></HeaderOptions>
                         </Nav>
                     </Offcanvas.Body>

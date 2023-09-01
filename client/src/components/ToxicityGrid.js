@@ -47,8 +47,8 @@ const ToxicityGrid = (props) => {
         <table style={{fontSize: "8pt"}}>
           <tbody>
             <th>
-              <td>Type</td>
-              <td>Value</td>
+              <td key={"type"}>Type</td>
+              <td key={"value"}>Value</td>
             </th>
             {props.toxicityResult.map(toxic => (
               <tr>
