@@ -138,6 +138,8 @@ const PinPoint = () => {
        <PostMap
         viewport={viewport}
         setViewport={setViewport}
+        setCenterLatitude={setCenterLatitude}
+        setCenterLongitude={setCenterLongitude}
         postGeoJSON={postGeoJSON}
         setSelectedMapPosts={setSelectedMapPosts}
         selectedMapPosts={selectedMapPosts}

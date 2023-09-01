@@ -79,7 +79,7 @@ const Post = (props) => {
   }, [toxicityResult])
     return ( 
         <div className="align-items-center justify-content-center text-center">
-          {/* @ {`${props.centerLatitude}, ${props.centerLongitude}`} */}
+          @ {`${props.centerLatitude}, ${props.centerLongitude}`}
           <form onSubmit={handleFormSubmit}>
             <textarea
               className="w-100"
