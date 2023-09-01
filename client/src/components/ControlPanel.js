@@ -52,9 +52,15 @@ const ControlPanel = (props) => {
     
     return (
         <>
-            <Navbar key={expand} expand={expand} variant="main" className="mb-3">
+            <Navbar key={expand} expand={expand} variant="main" className="mb-3 custom-navbar">
                 <Container fluid>
-                    <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
+               
+                    <Navbar.Brand href="#"><img src="Untitled.png"
+                    
+                    width="45" 
+                    height="45" 
+        
+                    />inPoint</Navbar.Brand>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
                     <Navbar.Offcanvas
                     id={`offcanvasNavbar-expand-${expand}`}
