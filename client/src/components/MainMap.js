@@ -62,7 +62,15 @@ const MainMap = () => {
   const [centerLatitude, setCenterLatitude] = useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[0]);
   const [centerLongitude, setCenterLongitude] = useState(GEOGRAPHIC_CENTER_OF_UNITED_STATES[1]);
   const [currentEmoji, setCurrentEmoji] = useState('▼');
-  
+  const [postGeoJSON, setPostGeoJSON] = useState(new GeoJSON({
+    featureProjection: "EPSG:3857",
+  }).readFeatures({
+    "type": "FeatureCollection",
+    "metadata": {
+      "title": "PinPoint Posts",
+    },
+    "features": []
+  }));
   // Bottom sliding pane state.
   const [isPostPaneOpen, setIsPostPaneOpen] = useState(false);
   const [isSignUpPaneOpen, setIsSignUpPaneOpen] = useState(false);
@@ -85,7 +93,6 @@ const MainMap = () => {
 
   // Getting posts.
   const { loading, error, data } = useQuery(GET_ALL_POSTS);
-  const [isPostFetchLoading, setIsPostFetchLoading] = useState();
   const earthquakeLayer = useRef();
 
   const panAndZoomToMe = async () => {
@@ -119,18 +126,7 @@ const MainMap = () => {
     const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
-  const getAllPosts = async () => {
-    if (!loading) {
-      console.log(error);
-      const postData = postToGeoJSON(data);
-      console.log(data);
 
-      return postData;
-    } else {
-      console.log("Loading...");
-    }
-    
-  }
 
   useEffect(() => {
     let viewCenter = toLonLat(view.center);
@@ -138,19 +134,19 @@ const MainMap = () => {
     setCenterLongitude(viewCenter[0]);
   }, [view]);
 
+  
   useEffect(() => {
+    async function getAllPosts() {
+    if (!loading) {
+      console.log(postGeoJSON);
+      const postData = postToGeoJSON(data);
+      setPostGeoJSON(postData);
+      console.log(postGeoJSON);
+      console.log(postData);
+    }
+  }
     getAllPosts();
-    // async function fetchData() {
-    //   // fetch the data from the url, this will need to be updated to fetch posts from database.
-    //   const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
-    //   // parse the data
-    //   const parsedData = await JSON.stringify(geojson.json());
-    //   // use the data
-    //   setData(parsedData);
-    //   console.log(parsedData); 
-    // }
-    // fetchData();
-  }, [isPostFetchLoading]);
+  }, [data]);
 
   return (
     <>
@@ -199,7 +195,8 @@ const MainMap = () => {
             ref={earthquakeLayer}
             distance={distance}
             format={new GeoJSON({ featureProjection: "EPSG:3857" })}
-            url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+            features={postGeoJSON}
+            // url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
             onClick={React.useCallback((e) => {
               const features = e.target.get("features") ?? [];
               // console.log(features);
@@ -256,16 +253,15 @@ const MainMap = () => {
               }
               // We have a single feature cluster
               const unclusteredFeature = feature.get("features")[0];
-              const mag = unclusteredFeature.get("mag");
-              const magSize = (Math.abs(mag)*5).toFixed(1);
+              const body = unclusteredFeature.get("body");
               // console.log(mag);
               return (
                 <>
-                  <RCircle radius={magSize}>
+                  <RCircle radius={10}>
                     <RFill color="rgba(255, 255, 255, 0.8)" />
                     <RStroke color="rgba(0, 0, 0, 1)" width={1.5} />
                   </RCircle>
-                  <RText text={mag.toString()}>
+                  <RText text={body}>
                     <RFill color="#000" />
                     <RStroke color="rgba(255, 255, 255, 0.6)" width={5} />
                   </RText>
