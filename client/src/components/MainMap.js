@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState, useRef, useCallback  } from "react";
 import '../App.css';
 import ControlPanel from "./ControlPanel";
+import { useMutation, useQuery } from '@apollo/client';
 import Post from './Post';
 import SelectedPosts from "./SelectedPosts";
 import SlidingPane from "react-sliding-pane";
@@ -14,10 +15,10 @@ import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
 import { useGeolocated } from "react-geolocated";
 import Login from './Login';
 import SignUp from './SignUp';
-import { postToGeoJSON } from '../utils/postToGeoJSON';
+import postToGeoJSON from '../utils/postToGeoJSON';
 import "ol/ol.css";
 
-//Mutations
+// Queries and Mutations
 import { GET_ALL_POSTS } from '../utils/queries';
 
 import {
@@ -69,7 +70,6 @@ const MainMap = () => {
   const [isSelectedPaneOpen, setIsSelectedPaneOpen] = useState(false);
 
   const geoJSONString = JSON.stringify();
-  const [data, setData] = useState(geoJSONString);
 
   //For clustering posts.
   const [distance, setDistance] = useState(50);
@@ -82,6 +82,10 @@ const MainMap = () => {
 
   // For managing user clicks and date.
   const [selectedMapPosts, setSelectedMapPosts] = useState([]);
+
+  // Getting posts.
+  const { loading, error, data } = useQuery(GET_ALL_POSTS);
+  const [isPostFetchLoading, setIsPostFetchLoading] = useState();
   const earthquakeLayer = useRef();
 
   const panAndZoomToMe = async () => {
@@ -115,6 +119,19 @@ const MainMap = () => {
     const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
+  const getAllPosts = async () => {
+    if (!loading) {
+      console.log(error);
+      const postData = postToGeoJSON(data);
+      console.log(data);
+
+      return postData;
+    } else {
+      console.log("Loading...");
+    }
+    
+  }
+
   useEffect(() => {
     let viewCenter = toLonLat(view.center);
     setCenterLatitude(viewCenter[1]);
@@ -122,17 +139,18 @@ const MainMap = () => {
   }, [view]);
 
   useEffect(() => {
-    async function fetchData() {
-      // fetch the data from the url, this will need to be updated to fetch posts from database.
-      const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
-      // parse the data
-      const parsedData = await JSON.stringify(geojson.json());
-      // use the data
-      setData(parsedData);
-      console.log(parsedData); 
-    }
-    fetchData();
-  }, []);
+    getAllPosts();
+    // async function fetchData() {
+    //   // fetch the data from the url, this will need to be updated to fetch posts from database.
+    //   const geojson = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
+    //   // parse the data
+    //   const parsedData = await JSON.stringify(geojson.json());
+    //   // use the data
+    //   setData(parsedData);
+    //   console.log(parsedData); 
+    // }
+    // fetchData();
+  }, [isPostFetchLoading]);
 
   return (
     <>
@@ -239,7 +257,6 @@ const MainMap = () => {
               // We have a single feature cluster
               const unclusteredFeature = feature.get("features")[0];
               const mag = unclusteredFeature.get("mag");
-              console.log(mag);
               const magSize = (Math.abs(mag)*5).toFixed(1);
               // console.log(mag);
               return (
@@ -280,7 +297,9 @@ const MainMap = () => {
         }}  
         width="100%"
       >
-        <SignUp />
+        <SignUp 
+          setIsSignUpPaneOpen={setIsSignUpPaneOpen}
+        />
       </SlidingPane>
       <SlidingPane
         closeIcon={<div>Close</div>}
@@ -295,6 +314,7 @@ const MainMap = () => {
         <Post 
           centerLatitude={centerLatitude}
           centerLongitude={centerLongitude}
+          setIsPostPaneOpen={setIsPostPaneOpen}
         />
       </SlidingPane>
       <SlidingPane

@@ -1,17 +1,17 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_POSTS = gql`
-  {
-    post {
-      _id
-      user {
+    query Query {
+    posts {
         _id
-        username
-      }
-      body
-      latitude
-      longitude
-      createdAt
+        user {
+            _id
+            username
+        }
+        body
+        latitude
+        longitude
+        createdAt
     }
-  }
+    }
 `;
