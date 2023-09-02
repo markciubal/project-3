@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {useState, useRef, useEffect} from 'react';
 import {Map, Marker, Source, Layer} from 'react-map-gl';
-import useSupercluster from 'use-supercluster';
 import Pin from './Pin';
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from '../utils/layers';
 import '../App.css';
