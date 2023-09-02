@@ -1,10 +1,10 @@
 {
-  "name": "mern-shopping",
+  "name": "PinPoint",
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "start": "npm server --ignore client",
+    "start": "node start --ignore client",
     "develop": "concurrently \"cd server && nodemon server\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
