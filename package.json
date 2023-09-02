@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "start": "node server --ignore client && serve -s client/build",
+    "start": "npm server --ignore client",
     "develop": "concurrently \"cd server && nodemon server\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
