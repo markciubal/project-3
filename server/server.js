@@ -18,12 +18,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Serve up static assets
-app.use('/images', express.static(path.resolve(__dirname, "./client/build/images")));
+app.use('/images', express.static(path.resolve(__dirname, "../client/build/images")));
 
-app.use(express.static(path.resolve(__dirname, "./client/build")));
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "./client/public/index.html"));
+  response.sendFile(path.resolve(__dirname, "../client/public/index.html"));
 });
 
 
