@@ -70,12 +70,12 @@ const resolvers = {
       const user = await User.findOne({ username });
 
       if (!user) {
-        throw new AuthenticationError('Incorrect credentials');
+        throw new AuthenticationError('Incorrect credentials.');
       }
       const correctPassword = await user.isCorrectPassword(password);
 
       if (!correctPassword) {
-        throw new AuthenticationError('Incorrect credentials');
+        throw new AuthenticationError('Incorrect credentials.');
       }
 
       const token = signToken(user);
@@ -87,11 +87,10 @@ const resolvers = {
       
     if (context.user) {
         const newPost = await Post.create({ user: context.user._id, body, latitude, longitude });
-        console.log("New post has been made! " + `${latitude}, ${longitude}`)
         return newPost;
       }
 
-      throw new AuthenticationError('Not logged in');
+      throw new AuthenticationError('Not logged in.');
     },
     
     // updateUser: async (parent, args, context) => {

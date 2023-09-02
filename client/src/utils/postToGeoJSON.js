@@ -15,6 +15,7 @@ const postToGeoJSON = (posts) => {
                 "type": "Feature", 
                 "properties": {
                     "id": post._id,
+                    "cluster": false,
                     "body": post.body,
                     "time": post.createdAt,
                     

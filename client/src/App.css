@@ -996,3 +996,12 @@ a.mapboxgl-ctrl-logo.mapboxgl-compact {
 .mapboxgl-canvas-container.mapboxgl-touch-pan-blocker-override.mapboxgl-scrollable-page,.mapboxgl-canvas-container.mapboxgl-touch-pan-blocker-override.mapboxgl-scrollable-page .mapboxgl-canvas {
   touch-action: pan-x pan-y
 }
+
+.post-marker {
+  background: none;
+  border: none;
+}
+
+.post-marker img {
+  width: 25px;
+}
