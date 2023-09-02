@@ -82,8 +82,8 @@ const resolvers = {
       return { token, user };
     },
     addPost: async (parent, { body, latitude, longitude }, context) => {
-      console.log('test before context.');
-      console.log(context);
+      // console.log('test before context.');
+      // console.log(context);
       
     if (context.user) {
         const newPost = await Post.create({ user: context.user._id, body, latitude, longitude });
