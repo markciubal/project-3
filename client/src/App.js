@@ -1,5 +1,4 @@
 import './App.css';
-import './custom.scss';
 import PinPoint from './components/PinPoint';
 import React from 'react';
 import {
