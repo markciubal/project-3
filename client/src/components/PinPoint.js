@@ -14,7 +14,6 @@ import GeoJSON from "ol/format/GeoJSON";
 import { Geometry, Point } from "ol/geom";
 import { Geolocation as OLGeoLoc } from "ol";
 import { createEmpty, extend, getHeight, getWidth } from "ol/extent";
-import { useGeolocated } from "react-geolocated";
 import Login from './Login';
 import SignUp from './SignUp';
 import postToGeoJSON from '../utils/postToGeoJSON';
