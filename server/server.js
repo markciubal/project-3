@@ -18,15 +18,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Serve up static assets
-app.use('/images', express.static(path.join(__dirname, './client/images')));
+app.use('/images', express.static(path.resolve(__dirname, "./client/images')));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, './client/build')));
+  app.use(express.static(path.resolve(__dirname, "./client/build")));
 }
 
-app.get('/', (req, res) => {
-  console.log(req);
-  res.sendFile(path.join(__dirname, './client/build/index.html'));
+app.get("*", function (request, response) {
+  response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
 
