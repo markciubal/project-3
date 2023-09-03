@@ -8,6 +8,7 @@
     "develop": "concurrently \"cd server && nodemon server\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
+    "postinstall": "npm run build",
     "build": "cd client && npm run build"
   },
   "keywords": [],
