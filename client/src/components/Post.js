@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import * as toxicity from '@tensorflow-models/toxicity';
 import ToxicityGrid from './ToxicityGrid'; 
 import Button from 'react-bootstrap/Button';
@@ -7,6 +7,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import '../App.css';
 import { ADD_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
+import { GET_ALL_POSTS } from '../utils/queries';
+import postToGeoJSON from '../utils/postToGeoJSON';
 
   // Post states.
 
@@ -14,7 +16,7 @@ import Auth from '../utils/auth';
 const Post = (props) => {
   // This is used for the state of the form
   const [formState, setFormState] = useState({ body: '' });
-  const [addPost, { error }] = useMutation(ADD_POST);
+  const [addPost, { error: addPostError }] = useMutation(ADD_POST);
 
 
   const [postText, setPostText] = useState('');
@@ -23,8 +25,9 @@ const Post = (props) => {
   const [spinnerHidden, setSpinnerHidden] = useState(true);
   const [postDisabled, setPostDisabled] = useState(false);
   const [postButtonText, setPostButtonText] = useState("Post");
+  const [didPostSend, setDidPostSend] = useState(0);
+  const { loading, error, data } = useQuery(GET_ALL_POSTS);
 
-  
   // This should probably be server side.
   const checkPost = async () => {
     if (postText.length !== 0) {
@@ -59,7 +62,30 @@ const Post = (props) => {
       [name]: value,
     });
   };
-
+  
+  // const useGetData = async () => {
+  //   const { loading, error, data } = useQuery(GET_ALL_POSTS);
+  //   async function getAllPosts() {
+  //     if (!loading) {
+  //       console.log(postGeoJSON);
+  //       const postData = postToGeoJSON(data);
+  //       setPostGeoJSON(postData);
+  //       console.log(postGeoJSON);
+  //       console.log(postData);
+  //     }
+  //   }
+  //     getAllPosts();
+  // }
+  React.useEffect(() => {
+    async function getAllPosts() {
+    if (!loading) {
+      const postData = postToGeoJSON(data);
+      props.setPostGeoJSON(postData);
+      console.log(postData);
+    }
+  }
+    getAllPosts();
+  }, [data]);
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -69,11 +95,18 @@ const Post = (props) => {
       });
       // set to change 
       props.setIsPostPaneOpen(false);
+      let newPostSend = didPostSend + 1;
+      setDidPostSend(newPostSend);
     } catch (e) {
       console.log(error);
       console.log(e);
     }
   };
+
+  // React.useEffect(() => {
+  //     useGetData();
+  // }, [postToGeoJSON]);
+
   useEffect(() => {
 
   }, [toxicityResult])

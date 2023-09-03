@@ -9,7 +9,7 @@ const PostInstance = (props) => {
     return (
     <div>
         <div>{body}</div>
-        <div>By: User @ {time}</div>
+        <div>By: {user} @ {time}</div>
     </div>)
 }
 const SelectedPosts = (props) => {

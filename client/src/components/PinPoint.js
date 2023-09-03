@@ -173,6 +173,8 @@ const PinPoint = () => {
           centerLatitude={centerLatitude}
           centerLongitude={centerLongitude}
           setIsPostPaneOpen={setIsPostPaneOpen}
+          setPostGeoJSON={setPostGeoJSON}
+          postGeoJSON={postGeoJSON}
         />
       </SlidingPane>
       <SlidingPane
