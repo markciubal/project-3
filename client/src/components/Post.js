@@ -9,7 +9,8 @@ import { ADD_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { GET_ALL_POSTS } from '../utils/queries';
 import postToGeoJSON from '../utils/postToGeoJSON';
-
+import {tfjs} from '@tensorflow/tfjs';
+// import { toxicity } from '@tensorflow-models/toxicity';
   // Post states.
 
 // Toxicity filter based on https://medium.com/tensorflow/text-classification-using-tensorflow-js-an-example-of-detecting-offensive-language-in-browser-e2b94e3565ce
@@ -30,7 +31,9 @@ const Post = (props) => {
 
   // This should probably be server side.
   const checkPost = async () => {
+
     if (postText.length !== 0) {
+        let approvePost = true;
         // The minimum prediction confidence.
         const threshold = 0.7;
 
@@ -44,13 +47,24 @@ const Post = (props) => {
         await toxicity.load(threshold, labelsToInclude).then(model => {
             // Now you can use the `model` object to label sentences. 
             model.classify([postText]).then(predictions => {
-                setToxicityResult(predictions);
-                setPostDisabled(false); 
-                setSpinnerHidden(true); 
+              predictions.map((prediction) => {
+                if (prediction.results[0].match == true) { 
+                  alert("Your post was flagged for toxic content and was deleted.");
+                  approvePost = false;
+                } 
+              })
+              console.log(predictions);
+                // setToxicityResult(predictions);
+                // setPostDisabled(false); 
+                // setSpinnerHidden(true); 
                 setPostButtonText("Post")
+                console.log("Passed toxicity filter.");
             });
+            
         });
+        return approvePost;
     }
+    return true;
 }
   // update state based on form input changes
   const handleChange = (event) => {
@@ -89,14 +103,16 @@ const Post = (props) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      // let approvePost = await checkPost();
-      const mutationResponse = addPost({
-        variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
-      });
+      let approvePost = await checkPost();
+      console.log(approvePost);
+      if (approvePost) {
+        const mutationResponse = addPost({
+          variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
+        });
+        console.log(mutationResponse);
+      }
       // set to change 
       props.setIsPostPaneOpen(false);
-      let newPostSend = didPostSend + 1;
-      setDidPostSend(newPostSend);
     } catch (e) {
       console.log(error);
       console.log(e);

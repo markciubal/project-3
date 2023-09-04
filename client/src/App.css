@@ -983,7 +983,7 @@ a.mapboxgl-ctrl-logo.mapboxgl-compact {
   height: 100%;
   background: rgba(0,0,0,.7);
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none; 
   transition: opacity .75s ease-in-out;
   transition-delay: 1s
 }

@@ -52,7 +52,7 @@ const ControlPanel = (props) => {
     
     return (
         <>
-            <Navbar key={expand} expand={expand} variant="main" className="mb-3 custom-navbar">
+            <Navbar key={expand} expand={expand} variant="main" className="custom-navbar">
                 <Container fluid>
                
                     <Navbar.Brand href="#"><img src="Untitled.png"
