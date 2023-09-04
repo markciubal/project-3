@@ -31,3 +31,11 @@ export const GET_ONE_POST = gql`
         }
     }
 `;
+
+export const GET_ME = gql`
+  query me {
+    me {
+      _id
+    }
+  }
+`;

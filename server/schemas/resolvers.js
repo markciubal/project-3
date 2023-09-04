@@ -68,14 +68,25 @@ const resolvers = {
       // console.log('test before context.');
       // console.log(context);
       
-    if (context.user) {
+      if (context.user) {
         const newPost = await Post.create({ user: context.user._id, body, latitude, longitude });
         return newPost;
       }
 
       throw new AuthenticationError('Not logged in.');
     },
-    
+    deletePost: async (parent, { userId, postId }, context) => {
+      // console.log('test before context.');
+      // console.log(context);
+      
+      if (context.user._id.toString() === userId) {
+        const operation = Post.findOneAndDelete({ _id: postId });
+        console.log(operation);
+        return operation;
+      }
+
+      throw new AuthenticationError('Not logged in.');
+    },
     // updateUser: async (parent, args, context) => {
     //   if (context.user) {
     //     return await User.findByIdAndUpdate(context.user._id, args, {

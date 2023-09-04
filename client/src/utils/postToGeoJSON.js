@@ -1,5 +1,3 @@
-import GeoJSON from "ol/format/GeoJSON";
-
 const postToGeoJSON = (posts) => {
     posts = posts.posts;
         let geoJSON = {
@@ -9,13 +7,14 @@ const postToGeoJSON = (posts) => {
             },
             "features": []
         };
-        console.log(geoJSON);
+
         posts.forEach(function (post) {
             geoJSON.features.push({
                 "type": "Feature", 
                 "properties": {
                     "id": post._id,
                     "user": post.user.username,
+                    "userId": post.user._id,
                     "cluster": false,
                     "body": post.body,
                     "time": post.createdAt,
@@ -31,7 +30,6 @@ const postToGeoJSON = (posts) => {
             })
         });
         
-        console.log(geoJSON);
         return geoJSON;
 }
 

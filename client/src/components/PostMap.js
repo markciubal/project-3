@@ -75,7 +75,7 @@ const PostMap = (props) => {
     type: 'circle',
     paint: {
       'circle-radius': 5,
-      'circle-color': '#e6edf6',
+      'circle-color': '#0047a7',
       'circle-stroke-width': 2,
       'circle-stroke-color': '#000'
     }
