@@ -198,6 +198,7 @@ const PinPoint = () => {
         ></SelectedPosts>
       </SlidingPane>
        <PostMap
+       className="postMap"
         viewport={viewport}
         setViewport={setViewport}
         setCenterLatitude={setCenterLatitude}

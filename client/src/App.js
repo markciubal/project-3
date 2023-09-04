@@ -34,7 +34,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App" style={{display: "flex"}}>
+      <div className="App" style={{display: "flex", height: '100vh'}}>
         <section style={{flex: '1'}} >
           <PinPoint client={client}/>
         </section>

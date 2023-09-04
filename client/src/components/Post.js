@@ -27,13 +27,14 @@ const Post = (props) => {
   const [postDisabled, setPostDisabled] = useState(false);
   const [postButtonText, setPostButtonText] = useState("Post");
   const [didPostSend, setDidPostSend] = useState(0);
-  const { loading, error, data } = useQuery(GET_ALL_POSTS);
+  const [approvePost, setApprovePost] = useState(true);
+
+  const { loading, error, data, refetch } = useQuery(GET_ALL_POSTS);
 
   // This should probably be server side.
   const checkPost = async () => {
-
     if (postText.length !== 0) {
-        let approvePost = true;
+
         // The minimum prediction confidence.
         const threshold = 0.7;
 
@@ -42,29 +43,31 @@ const Post = (props) => {
 
         setPostDisabled(true);
         setSpinnerHidden(false);
-        // Space before text is intentional, it is for putting a gap between the loader and the text.
-        setPostButtonText(" Checking post content...")
-        await toxicity.load(threshold, labelsToInclude).then(model => {
-            // Now you can use the `model` object to label sentences. 
-            model.classify([postText]).then(predictions => {
-              predictions.map((prediction) => {
-                if (prediction.results[0].match == true) { 
-                  alert("Your post was flagged for toxic content and was deleted.");
-                  approvePost = false;
-                } 
-              })
-              console.log(predictions);
-                // setToxicityResult(predictions);
-                // setPostDisabled(false); 
-                // setSpinnerHidden(true); 
-                setPostButtonText("Post")
-                console.log("Passed toxicity filter.");
-            });
-            
-        });
-        return approvePost;
+        setPostButtonText(" Checking post content...");
+
+        const model = await toxicity.load(threshold, labelsToInclude);
+        const predictions = await model.classify([postText]);
+
+        let isPostApproved = true;
+        for (let prediction of predictions) {
+            if (prediction.results[0].match === true) {
+                isPostApproved = false;
+                break;
+            }
+        }
+
+        setApprovePost(isPostApproved);
+        setPostButtonText("Post");
+
+        if (isPostApproved) {
+            console.log("Passed toxicity filter.");
+        } else {
+            console.log("Failed toxicity filter.");
+        }
+
+        return isPostApproved;
     }
-    return true;
+    return false; // Default return in case postText.length is 0
 }
   // update state based on form input changes
   const handleChange = (event) => {
@@ -100,15 +103,17 @@ const Post = (props) => {
   }
     getAllPosts();
   }, [data]);
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
       let approvePost = await checkPost();
       console.log(approvePost);
-      if (approvePost) {
+      if (approvePost === true) {
         const mutationResponse = addPost({
           variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
         });
+        window.location.reload();
         console.log(mutationResponse);
       }
       // set to change 
