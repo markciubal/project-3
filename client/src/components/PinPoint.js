@@ -67,7 +67,7 @@ const PinPoint = () => {
 
   // Getting posts.
   const { loading, error, data } = useQuery(GET_ALL_POSTS, {
-    pollInterval: 500
+    pollInterval: 2500
   });
 
   const panAndZoomToMe = async () => {
@@ -148,8 +148,9 @@ const PinPoint = () => {
         selectedMapPosts={selectedMapPosts}
         setIsSelectedPaneOpen={setIsSelectedPaneOpen}
         isSelectedPaneOpen={isSelectedPaneOpen}
+        setIsPostPaneOpen={setIsPostPaneOpen}
        />
-       <CenterMenu
+       {/* <CenterMenu
        centerLatitude={centerLatitude}
        centerLongitude={centerLongitude}
        coordinateRoundTo={coordinateRoundTo}
@@ -159,7 +160,7 @@ const PinPoint = () => {
        setIsLoginPaneOpen={setIsLoginPaneOpen}
        isSignUpPaneOpen={isSignUpPaneOpen}
        setIsSignUpPaneOpen={setIsSignUpPaneOpen}
-       panAndZoomToMe={panAndZoomToMe}/>
+       panAndZoomToMe={panAndZoomToMe}/> */}
     </div>
       <SlidingPane
         closeIcon={<div>Close</div>}

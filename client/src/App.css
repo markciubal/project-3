@@ -299,7 +299,7 @@ p {
 .mapboxgl-ctrl-bottom-left,.mapboxgl-ctrl-bottom-right,.mapboxgl-ctrl-top-left,.mapboxgl-ctrl-top-right {
   position: absolute;
   pointer-events: none;
-  z-index: 2
+  /* z-index: 2 */
 }
 
 .mapboxgl-ctrl-top-left {
@@ -1029,4 +1029,8 @@ a.mapboxgl-ctrl-logo.mapboxgl-compact {
 
 .dropdown-menu {
   width: 50% !important;
+}
+
+.post {
+  margin: 1em;
 }

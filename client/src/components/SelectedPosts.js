@@ -1,15 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
+import Auth from '../utils/auth';
+import { Card } from 'bootstrap';
+
 const PostInstance = (props) => {
     const postData = props.post;
     // console.log(postData);
     const user = postData.properties.user;
     const body = postData.properties.body;
-    const time = postData.properties.time;
+    const time = new Date(postData.properties.time).toLocaleString();
+    const latitude = postData.geometry.coordinates[1].toFixed(3);
+    const longitude = postData.geometry.coordinates[0].toFixed(3);
     return (
-    <div>
+    <div className={"post"}>
         <div>{body}</div>
-        <div>By: {user} @ {time}</div>
+        <div class="post-byline">By: {user} @ [{latitude}, {longitude}], {time}</div>
     </div>)
 }
 const SelectedPosts = (props) => {
@@ -17,7 +22,7 @@ const SelectedPosts = (props) => {
     const [postResults, setPostResults] = useState();
     const [selectedPosts, setSelectedPosts] = useState();
     // props.setIsSelectedPostPaneOpen(true);
-    console.log(props);
+    console.log(Auth);
     useEffect(() => {
         console.log(props);
         let keyCount = 0;

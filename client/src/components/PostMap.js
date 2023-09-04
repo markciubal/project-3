@@ -4,9 +4,14 @@ import {Map, Marker, Source, Layer} from 'react-map-gl';
 import Pin from './Pin';
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from '../utils/layers';
 import '../App.css';
-
+import Auth from '../utils/auth'
+// TODO: Move to .env file.
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicHJvamVjdGNpdmlsaWFuIiwiYSI6ImNsbDduZWdzcDBzcGUzanNzcjdxamVicXMifQ.lVmATzvMkyZSxPthIay_mA'; // Set your mapbox token here
 const PostMap = (props) => {
+  // if (Auth.loggedIn()) {
+  //   return (
+  //       <>
+  //       <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
   const [pointData, setPointData] = useState(null);
   const mapRef = useRef();
 
@@ -25,7 +30,7 @@ const PostMap = (props) => {
   }
   useEffect(() => {
     const animation = window.requestAnimationFrame(() =>
-      setPointData(getCenter({center: [props.viewport.longitude, props.viewport.latitude], angle: Date.now() / 1000, radius: 20}))
+      setPointData(getCenter({center: [props.viewport.longitude, props.viewport.latitude]}))
     );
     return () => window.cancelAnimationFrame(animation);
   }, [props.viewport]);
@@ -57,14 +62,22 @@ const PostMap = (props) => {
          props.setSelectedMapPosts(feature);
          props.setIsSelectedPaneOpen(true);
       });
+
+      mapRef.current.on('click', 'pinpoint', (e) => {
+        if (Auth.loggedIn()) {
+          props.setIsPostPaneOpen(true)
+        }
+      });
    }
   }
   const pointLayer = {
-    id: 'point',
+    id: 'pinpoint',
     type: 'circle',
     paint: {
       'circle-radius': 5,
-      'circle-color': '#0047A7'
+      'circle-color': '#e6edf6',
+      'circle-stroke-width': 2,
+      'circle-stroke-color': '#000'
     }
   };
   return (
@@ -96,7 +109,10 @@ const PostMap = (props) => {
           <Layer {...unclusteredPointLayer} />
         </Source>
         {pointData && (
-          <Source type="geojson" data={pointData}>
+          <Source 
+            id="pinpoint" 
+            type="geojson"
+            data={pointData}>
             <Layer {...pointLayer} />
           </Source>
         )}

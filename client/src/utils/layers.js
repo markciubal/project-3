@@ -7,11 +7,11 @@ export const clusterLayer = {
     'circle-color': [
       'step',
       ['get', 'point_count'],
-      '#51bbd6',
+      '#4d7ec1',
       100,
-      '#f1f075',
+      '#336cb9',
       750,
-      '#f28cb1',
+      '#1a59b0',
     ],
     'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
   },
@@ -36,9 +36,9 @@ export const unclusteredPointLayer = {
   source: 'postPoints',
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': '#11b4da',
-    'circle-radius': 7,
-    'circle-stroke-width': 1,
-    'circle-stroke-color': '#fff',
+    'circle-color': '#80a3d3',
+    'circle-radius': 5,
+    'circle-stroke-width': 2,
+    'circle-stroke-color': '#000',
   },
 };

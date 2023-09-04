@@ -133,7 +133,7 @@ const Post = (props) => {
   }, [toxicityResult])
     return ( 
         <div className="align-items-center justify-content-center text-center">
-          <h2>@ {`${props.centerLatitude.toFixed(3)}, ${props.centerLongitude.toFixed(3)}`}</h2>
+          <p>Pin the world.<br/>🌐</p>
           <form onSubmit={handleFormSubmit}>
             <textarea
               className="w-75"
@@ -147,7 +147,8 @@ const Post = (props) => {
               style={{ color: 'blue', borderColor: 'lightblue' }}
             />
             <br/>
-            <div className="m-2">{255 - postText.length} letters left.</div>
+            <div className="fs-5 m-2">@ {`${props.centerLatitude.toFixed(3)}, ${props.centerLongitude.toFixed(3)}`}</div>
+            <div className="fs-7 m-2">{255 - postText.length} letters left.</div>
             {postValidationText}
             {/* <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid> */}
             <div>
@@ -164,7 +165,6 @@ const Post = (props) => {
             </div>
           </form>
           <br/>
-          <p>Pin the World🌐</p>
           </div>
     )
 }
