@@ -21,7 +21,7 @@ import PostMap from './PostMap';
 // Queries and Mutations
 import { GET_ALL_POSTS } from '../utils/queries';
 import "react-sliding-pane/dist/react-sliding-pane.css";
-
+import CenterMenu from './CenterMenu';
 const PinPoint = () => {
   // Map states.
   // Paired in [ LONGITUDE, LATITUDE ] because OpenLayers uses the pair (Longitude before Latitude, i.e., toLonLat, fromLonLat).
@@ -122,6 +122,7 @@ const PinPoint = () => {
 
   return (
     <>
+    <div className="parentContainer">
       <ControlPanel 
         centerLatitude={centerLatitude}
         centerLongitude={centerLongitude}
@@ -134,6 +135,30 @@ const PinPoint = () => {
         setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
       />
+      <PostMap
+       className="postMap"
+        viewport={viewport}
+        setViewport={setViewport}
+        setCenterLatitude={setCenterLatitude}
+        setCenterLongitude={setCenterLongitude}
+        postGeoJSON={postGeoJSON}
+        setSelectedMapPosts={setSelectedMapPosts}
+        selectedMapPosts={selectedMapPosts}
+        setIsSelectedPaneOpen={setIsSelectedPaneOpen}
+        isSelectedPaneOpen={isSelectedPaneOpen}
+       />
+       <CenterMenu
+       centerLatitude={centerLatitude}
+       centerLongitude={centerLongitude}
+       coordinateRoundTo={coordinateRoundTo}
+       isPostPaneOpen={isPostPaneOpen}
+       setIsPostPaneOpen={setIsPostPaneOpen}
+       isLoginPaneOpen={isLoginPaneOpen}
+       setIsLoginPaneOpen={setIsLoginPaneOpen}
+       isSignUpPaneOpen={isSignUpPaneOpen}
+       setIsSignUpPaneOpen={setIsSignUpPaneOpen}
+       panAndZoomToMe={panAndZoomToMe}/>
+    </div>
       <SlidingPane
         closeIcon={<div>Close</div>}
         className="bottom-pane"
@@ -197,18 +222,7 @@ const PinPoint = () => {
           isSelectedPaneOpen={isSelectedPaneOpen}
         ></SelectedPosts>
       </SlidingPane>
-       <PostMap
-       className="postMap"
-        viewport={viewport}
-        setViewport={setViewport}
-        setCenterLatitude={setCenterLatitude}
-        setCenterLongitude={setCenterLongitude}
-        postGeoJSON={postGeoJSON}
-        setSelectedMapPosts={setSelectedMapPosts}
-        selectedMapPosts={selectedMapPosts}
-        setIsSelectedPaneOpen={setIsSelectedPaneOpen}
-        isSelectedPaneOpen={isSelectedPaneOpen}
-       />
+       
     </>
   )
 };

@@ -20,9 +20,10 @@ html, body {
 
 #center-coordinate-text {
   font-size: .75em;
-  position: relative;
-  /* background: var(--grey-gradient); */
-  top: 12.5px0px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* This centers the element */
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #333;
@@ -1020,3 +1021,8 @@ a.mapboxgl-ctrl-logo.mapboxgl-compact {
   z-index: 1;
 }
 
+.parentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
