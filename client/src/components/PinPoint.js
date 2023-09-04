@@ -134,17 +134,6 @@ const PinPoint = () => {
         setIsSignUpPaneOpen={setIsSignUpPaneOpen}
         panAndZoomToMe={panAndZoomToMe}
       />
-       <PostMap
-        viewport={viewport}
-        setViewport={setViewport}
-        setCenterLatitude={setCenterLatitude}
-        setCenterLongitude={setCenterLongitude}
-        postGeoJSON={postGeoJSON}
-        setSelectedMapPosts={setSelectedMapPosts}
-        selectedMapPosts={selectedMapPosts}
-        setIsSelectedPaneOpen={setIsSelectedPaneOpen}
-        isSelectedPaneOpen={isSelectedPaneOpen}
-       />
       <SlidingPane
         closeIcon={<div>Close</div>}
         className="bottom-pane"
@@ -208,6 +197,17 @@ const PinPoint = () => {
           isSelectedPaneOpen={isSelectedPaneOpen}
         ></SelectedPosts>
       </SlidingPane>
+       <PostMap
+        viewport={viewport}
+        setViewport={setViewport}
+        setCenterLatitude={setCenterLatitude}
+        setCenterLongitude={setCenterLongitude}
+        postGeoJSON={postGeoJSON}
+        setSelectedMapPosts={setSelectedMapPosts}
+        selectedMapPosts={selectedMapPosts}
+        setIsSelectedPaneOpen={setIsSelectedPaneOpen}
+        isSelectedPaneOpen={isSelectedPaneOpen}
+       />
     </>
   )
 };
