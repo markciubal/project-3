@@ -66,7 +66,9 @@ const PinPoint = () => {
   const [selectedMapPosts, setSelectedMapPosts] = React.useState([]);
 
   // Getting posts.
-  const { loading, error, data } = useQuery(GET_ALL_POSTS);
+  const { loading, error, data } = useQuery(GET_ALL_POSTS, {
+    pollInterval: 500
+  });
 
   const panAndZoomToMe = async () => {
     function showError(error) {

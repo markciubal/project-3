@@ -13,7 +13,7 @@ const LoggedInComponents = (props) => {
 
 function CenterMenu(props) {
   return (
-    <Menu id="center-button"
+    <Menu id="right-button"
       menuButton={
       <MenuButton>
         <span id="center-down-button">{`@ ${props.centerLatitude.toFixed(props.coordinateRoundTo)}, ${props.centerLongitude.toFixed(props.coordinateRoundTo)}`} {props.currentEmoji}</span></MenuButton>}>

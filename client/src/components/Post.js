@@ -113,7 +113,7 @@ const Post = (props) => {
         const mutationResponse = addPost({
           variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
         });
-        window.location.reload();
+        // window.location.reload();
         console.log(mutationResponse);
       }
       // set to change 
@@ -133,10 +133,10 @@ const Post = (props) => {
   }, [toxicityResult])
     return ( 
         <div className="align-items-center justify-content-center text-center">
-          @ {`${props.centerLatitude}, ${props.centerLongitude}`}
+          <h2>@ {`${props.centerLatitude.toFixed(3)}, ${props.centerLongitude.toFixed(3)}`}</h2>
           <form onSubmit={handleFormSubmit}>
             <textarea
-              className="w-100"
+              className="w-75"
               value={postText}
               name="body"
               onChange={(e) => {
@@ -147,11 +147,11 @@ const Post = (props) => {
               style={{ color: 'blue', borderColor: 'lightblue' }}
             />
             <br/>
-            {255 - postText.length} letters left.
+            <div className="m-2">{255 - postText.length} letters left.</div>
             {postValidationText}
             {/* <ToxicityGrid toxicityResult={toxicityResult}></ToxicityGrid> */}
             <div>
-              <Button type="submit" disabled={postDisabled}>
+              <Button type="submit" variant="flat" disabled={postDisabled}>
               <Spinner
                 as="span"
                 animation="border"
