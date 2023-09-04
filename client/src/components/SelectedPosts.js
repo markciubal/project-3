@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from 'react';
 const PostInstance = (props) => {
     const postData = props.post;
-    const detail = postData.get('detail');
-    const time = postData.get('time');
+    // console.log(postData);
+    const user = postData.properties.user;
+    const body = postData.properties.body;
+    const time = postData.properties.time;
     return (
     <div>
-        <div>{detail}</div>
-        <div>By: User @ {time}</div>
+        <div>{body}</div>
+        <div>By: {user} @ {time}</div>
     </div>)
 }
 const SelectedPosts = (props) => {
@@ -22,19 +24,22 @@ const SelectedPosts = (props) => {
         if (props.selectedMapPosts) {
             
             let postLength = props.selectedMapPosts.length;
-            
+            console.log(postLength);
             if (postLength !== 1) {
                 setSelectedText(postLength + " posts selected.");
             } else {
                 setSelectedText(postLength + " post selected.");
             }
-            setSelectedPosts(props.selectedMapPosts.map((post) => {
-                keyCount++;
-                return <PostInstance key={`post-${keyCount}`} post={post}/>;
-                
-            }));
+            if (props.selectedMapPosts.length) {
+                setSelectedPosts(props.selectedMapPosts.map((post) => {
+                    keyCount++;
+                    return <PostInstance key={`post-${keyCount}`} post={post}/>;
+                    
+                }));
+            } else {
+                setSelectedPosts(<PostInstance key={`post-${keyCount}`} post={props.selectedMapPosts}/>);
+            }
             props.setIsSelectedPaneOpen(true);
-            
         }
         
     }, [props.selectedMapPosts])

@@ -23,7 +23,7 @@ app.use('/images', express.static(path.join(__dirname, '../client/images')));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
-
+// C:\Users\markc\OneDrive\Documents\Coding Bootcamp\project-3\client\public\index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });

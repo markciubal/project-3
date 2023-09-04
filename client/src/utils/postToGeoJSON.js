@@ -15,6 +15,8 @@ const postToGeoJSON = (posts) => {
                 "type": "Feature", 
                 "properties": {
                     "id": post._id,
+                    "user": post.user.username,
+                    "cluster": false,
                     "body": post.body,
                     "time": post.createdAt,
                     
@@ -30,9 +32,7 @@ const postToGeoJSON = (posts) => {
         });
         
         console.log(geoJSON);
-        return new GeoJSON({
-            featureProjection: "EPSG:3857",
-          }).readFeatures(geoJSON);
+        return geoJSON;
 }
 
 export default postToGeoJSON;
