@@ -33,8 +33,8 @@ const PinPoint = () => {
   const [viewport, setViewport] = React.useState({
     latitude: GEOGRAPHIC_CENTER_OF_UNITED_STATES[0],
     longitude: GEOGRAPHIC_CENTER_OF_UNITED_STATES[1],
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     zoom: 1
   });
   const [currentEmoji, setCurrentEmoji] = React.useState('▼');
