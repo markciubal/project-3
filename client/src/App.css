@@ -180,7 +180,7 @@ nav {
   background-color: whitesmoke;
 }
 nav {
-  position: absolute;
+  position: fixed;
 }
 .ol-zoom {
   top: 65px;
