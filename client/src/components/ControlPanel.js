@@ -19,14 +19,7 @@ const HeaderOptions = (props) => {
     if (Auth.loggedIn()) {
         return (
             <>
-            <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
-            <Nav.Link onClick={props.history}>History</Nav.Link>
-            <Nav.Link onClick={props.profile}>Profile</Nav.Link>
-            <Nav.Link onClick={() => {
-                Auth.logout();
-            // Redirect to login page after logout
-            }}>Logout</Nav.Link>
-            <Form className="d-flex">
+             <Form className="d-flex">
                 <Form.Control
                     type="search"
                     placeholder="Search"
@@ -35,6 +28,13 @@ const HeaderOptions = (props) => {
                 />
                 <Button variant="outline-success">Search</Button>
             </Form>
+            <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
+            <Nav.Link onClick={props.history}>History</Nav.Link>
+            <Nav.Link onClick={props.profile}>Profile</Nav.Link>
+            <Nav.Link onClick={() => {
+                Auth.logout();
+            // Redirect to login page after logout
+            }}>Logout</Nav.Link>
             </>
         )
     } else {
