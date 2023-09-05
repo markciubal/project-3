@@ -19,7 +19,7 @@ const HeaderOptions = (props) => {
     if (Auth.loggedIn()) {
         return (
             <>
-             <Form className="d-flex">
+             {/* <Form className="d-flex">
                 <Form.Control
                     type="search"
                     placeholder="Search"
@@ -27,7 +27,7 @@ const HeaderOptions = (props) => {
                     aria-label="Search"
                 />
                 <Button variant="outline-success">Search</Button>
-            </Form>
+            </Form> */}
             <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
             <Nav.Link onClick={() => { props.setIsHistoryPaneOpen(true)}}>History</Nav.Link>
             {/* <Nav.Link onClick={props.profile}>Profile</Nav.Link> */}

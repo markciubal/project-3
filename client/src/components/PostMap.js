@@ -38,7 +38,7 @@ const PostMap = (props) => {
   const onClick = event => {
     console.log(event);
     if (mapRef.current) {
-      mapRef.current.on('click', ['clusters', 'unclustered-point'], (e) => {
+      mapRef.current.on('click', ['clusters'], (e) => {
         const features = mapRef.current.queryRenderedFeatures(e.point, {
           layers: ['clusters']
         });
@@ -57,10 +57,12 @@ const PostMap = (props) => {
       });
 
       mapRef.current.on('click', 'unclustered-point', (e) => {
-        const feature = e.features[0];
+        const feature = e.features.splice(0, 1);
          console.log(feature);
-         props.setSelectedMapPosts(feature);
-         props.setIsSelectedPaneOpen(true);
+         if (feature) {
+          props.setSelectedMapPosts(feature);
+          props.setIsSelectedPaneOpen(true);
+        }
       });
 
       mapRef.current.on('click', 'pinpoint', (e) => {
@@ -91,6 +93,7 @@ const PostMap = (props) => {
         onClick={onClick}
         onMove={evt => { 
           props.setViewport(evt.viewState);
+          // console.log(evt.viewState);
           props.setCenterLongitude(props.viewport.longitude);
           props.setCenterLatitude(props.viewport.latitude);
          }}

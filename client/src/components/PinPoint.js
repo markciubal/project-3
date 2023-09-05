@@ -262,6 +262,7 @@
             setIsPostPaneOpen={setIsPostPaneOpen}
             setIsEditMode={setIsEditMode}
             setIsHistoryPaneOpen={setIsHistoryPaneOpen}
+            setViewport={setViewport}
           ></SelectedPosts>
         </SlidingPane>    
         <SlidingPane
@@ -286,6 +287,7 @@
             setIsPostPaneOpen={setIsPostPaneOpen}
             setIsEditMode={setIsEditMode}
             setIsHistoryPaneOpen={setIsHistoryPaneOpen}
+            setViewport={setViewport}
           ></History>
         </SlidingPane>     
       </>

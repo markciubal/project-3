@@ -41,6 +41,7 @@ const History = (props) => {
                 setIsPostPaneOpen={props.setIsPostPaneOpen}
                 setIsEditMode={props.setIsEditMode}
                 setIsHistoryPaneOpen={props.setIsHistoryPaneOpen}
+                setViewport={props.setViewport}
             /> 
         }</>
     );
