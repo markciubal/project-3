@@ -55,7 +55,7 @@ const ControlPanel = (props) => {
             <Navbar key={expand} expand={expand} variant="main" className="pinpoint-navbar">
                 <Container fluid>
                
-                    <Navbar.Brand href="#"><img src="Untitled.png"
+                    <Navbar.Brand href="#"><img src="logo192.svg"
                     
                     width="45" 
                     height="45" 
