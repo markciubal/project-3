@@ -22,7 +22,7 @@ module.exports = {
       req.user = data;
     } catch(e) {
       // console.log(e);
-      console.log('Invalid token.');
+      // console.log('Invalid token.');
     }
 
     return req;

@@ -87,6 +87,18 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in.');
     },
+    updatePost: async (parent, { userId, postId, body }, context) => {
+      // console.log('test before context.');
+      // console.log(context);
+      
+      if (context.user._id.toString() === userId) {
+        const operation = Post.findOneAndUpdate({ _id: postId, body: body });
+        console.log(operation);
+        return operation;
+      }
+
+      throw new AuthenticationError('Not logged in.');
+    },
     // updateUser: async (parent, args, context) => {
     //   if (context.user) {
     //     return await User.findByIdAndUpdate(context.user._id, args, {

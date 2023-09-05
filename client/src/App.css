@@ -4,6 +4,7 @@
 :root {
   /* --grey-gradient: linear-gradient(217deg, rgba(245, 245, 245, 0.5), rgba(245, 245, 245, 0) 70.71%)); */
   --blue-gradient: linear-gradient(217deg, rgba(0, 69, 175, 1), rgb(88, 113, 147));
+  --black-shadow: 0 0 1em #000;
 }
 
 html, body {
@@ -216,8 +217,8 @@ nav {
 }
 .slide-pane_from_bottom {
   z-index: 9999;
-  height: 45vh !important;
-  margin-top: 55vh !important;
+  height: 75vh !important;
+  margin-top: 25vh !important;
   box-shadow: var(--black-shadow) !important;
 
 }
