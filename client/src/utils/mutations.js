@@ -45,8 +45,8 @@ export const DELETE_POST = gql`
 `;
 
 export const UPDATE_POST = gql`
-  mutation updatePost($userId: ID!, $postId: ID!) {
-    updatePost(userId: $userId, postId: $postId) {
+  mutation updatePost($userId: ID!, $postId: ID!, $body: String!) {
+    updatePost(userId: $userId, postId: $postId, body: $body) {
       user {
           _id
       }

@@ -55,7 +55,6 @@ const typeDefs = gql`
     addPost(body: String!, latitude: Float!, longitude: Float!): Post
     deletePost(userId: ID!, postId: ID!): Post
     updatePost(userId: ID!, postId: ID!, body: String!): Post
-
   }
 `;
 

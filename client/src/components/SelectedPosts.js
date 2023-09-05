@@ -34,8 +34,13 @@ const PostInstance = (props) => {
                     deletePost({variables: { userId: postData.properties.userId, postId: id}});
                     document.getElementById(id).remove();
                 }} type="button">Delete</Button>
-                <Button className="btn-warning m-3" disabled onClick={() => {    
-
+                <Button className="btn-warning m-3" onClick={() => { 
+                    props.setEditUser(postData.properties.userId.toString());
+                    props.setEditPostId(id); 
+                    props.setEditPostBody(body); 
+                    props.setIsEditMode(true);
+                    props.setIsPostPaneOpen(true);
+                    props.setIsSelectedPaneOpen(false);
                 }} type="button">Update</Button>
             </>
         }
@@ -64,11 +69,33 @@ const SelectedPosts = (props) => {
             if (props.selectedMapPosts.length) {
                 setSelectedPosts(props.selectedMapPosts.map((post) => {
                     keyCount++;
-                    return <PostInstance key={`post-${keyCount}`} post={post} loading={loading} me={data} />;
+                    return <PostInstance
+                        key={`post-${keyCount}`}
+                        post={post}
+                        setEditUser={props.setEditUser}
+                        setEditPostId={props.setEditPostId}
+                        setEditPostBody={props.setEditPostBody}
+                        setIsEditMode={props.setIsEditMode}
+                        setIsPostPaneOpen={props.setIsPostPaneOpen}
+                        setIsSelectedPaneOpen={props.setIsSelectedPaneOpen}
+                        loading={loading}
+                        me={data}
+                    />;
                     
                 }));
             } else {
-                setSelectedPosts(<PostInstance key={`post-${keyCount}`} post={props.selectedMapPosts} loading={loading} me={data} />);
+                setSelectedPosts(<PostInstance 
+                        key={`post-${keyCount}`} 
+                        post={props.selectedMapPosts}
+                        setEditUser={props.setEditUser}
+                        setEditPostId={props.setEditPostId}
+                        setEditPostBody={props.setEditPostBody}
+                        setIsEditMode={props.setIsEditMode}
+                        setIsPostPaneOpen={props.setIsPostPaneOpen}
+                        setIsSelectedPaneOpen={props.setIsSelectedPaneOpen}
+                        loading={loading}
+                        me={data} 
+                    />);
             }
             props.setIsSelectedPaneOpen(true);
         }

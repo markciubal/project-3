@@ -51,6 +51,11 @@
     const [isLoginPaneOpen, setIsLoginPaneOpen] = React.useState(false);
     const [isSelectedPaneOpen, setIsSelectedPaneOpen] = React.useState(false);
 
+    const [isEditMode, setIsEditMode] = React.useState(false);
+    const [editUser, setEditUser] = React.useState();
+    const [editPostId, setEditPostId] = React.useState();
+    const [editPostBody, setEditPostBody] = React.useState();
+
     const geoJSONString = JSON.stringify();
 
     //For clustering posts.
@@ -171,24 +176,52 @@
             setIsSignUpPaneOpen={setIsSignUpPaneOpen}
           />
         </SlidingPane>
-        <SlidingPane
-          closeIcon={<div>Close</div>}
-          className="bottom-pane"
-          from="bottom"
-          isOpen={isPostPaneOpen}
-          onRequestClose={() => {
-            setIsPostPaneOpen(false);
-          }}  
-          width="100%"
-        >
-          <Post 
-            centerLatitude={centerLatitude}
-            centerLongitude={centerLongitude}
-            setIsPostPaneOpen={setIsPostPaneOpen}
-            setPostGeoJSON={setPostGeoJSON}
-            postGeoJSON={postGeoJSON}
-          />
-        </SlidingPane>
+        {!isEditMode &&
+          <SlidingPane
+            id="post-pane"
+            closeIcon={<div>Close</div>}
+            className="bottom-pane"
+            from="bottom"
+            isOpen={isPostPaneOpen}
+            onRequestClose={() => {
+              setIsPostPaneOpen(false);
+            }}  
+            width="100%"
+          >
+            <Post 
+              centerLatitude={centerLatitude}
+              centerLongitude={centerLongitude}
+              setIsPostPaneOpen={setIsPostPaneOpen}
+              setPostGeoJSON={setPostGeoJSON}
+              postGeoJSON={postGeoJSON}
+            />
+          </SlidingPane>
+        }
+         {isEditMode &&
+          <SlidingPane
+            id="post-pane"
+            closeIcon={<div>Close</div>}
+            className="bottom-pane"
+            from="bottom"
+            isOpen={isPostPaneOpen}
+            onRequestClose={() => {
+              setIsPostPaneOpen(false);
+            }}  
+            width="100%"
+          >
+            <Post
+              update={true}
+              editUser={editUser}
+              editPostId={editPostId}
+              editPostBody={editPostBody}
+              centerLatitude={centerLatitude}
+              centerLongitude={centerLongitude}
+              setIsPostPaneOpen={setIsPostPaneOpen}
+              setPostGeoJSON={setPostGeoJSON}
+              postGeoJSON={postGeoJSON}
+            />
+          </SlidingPane>
+        }
         <SlidingPane
           closeIcon={<div>Close</div>}
           className="bottom-pane"
@@ -214,10 +247,16 @@
           width="100%"
         >
           <SelectedPosts
+            update={true}
+            setEditUser={setEditUser}
+            setEditPostId={setEditPostId}
+            setEditPostBody={setEditPostBody}
             selectedMapPosts={selectedMapPosts}
             setSelectedMapPosts={selectedMapPosts}
             setIsSelectedPaneOpen={setIsSelectedPaneOpen}
             isSelectedPaneOpen={isSelectedPaneOpen}
+            setIsPostPaneOpen={setIsPostPaneOpen}
+            setIsEditMode={setIsEditMode}
           ></SelectedPosts>
         </SlidingPane>       
       </>

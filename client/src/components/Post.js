@@ -5,22 +5,28 @@ import ToxicityGrid from './ToxicityGrid';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import '../App.css';
-import { ADD_POST } from '../utils/mutations';
+import { ADD_POST, UPDATE_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { GET_ALL_POSTS } from '../utils/queries';
 import postToGeoJSON from '../utils/postToGeoJSON';
-import {tfjs} from '@tensorflow/tfjs';
 // import { toxicity } from '@tensorflow-models/toxicity';
   // Post states.
 
 // Toxicity filter based on https://medium.com/tensorflow/text-classification-using-tensorflow-js-an-example-of-detecting-offensive-language-in-browser-e2b94e3565ce
 const Post = (props) => {
   // This is used for the state of the form
-  const [formState, setFormState] = useState({ body: '' });
+  let bodyValue;
+  if (props.editPostBody) {
+    bodyValue = props.editPostBody;
+  } else {
+    bodyValue = '';
+  }
+  const [formState, setFormState] = useState({ body: bodyValue });
   const [addPost, { error: addPostError }] = useMutation(ADD_POST);
+  const [updatePost, { error: updatePostError }] = useMutation(UPDATE_POST);
 
 
-  const [postText, setPostText] = useState('');
+  const [postText, setPostText] = useState(bodyValue);
   const [postValidationText, setPostValidationText] = useState();
   const [toxicityResult, setToxicityResult] = useState([]);
   const [spinnerHidden, setSpinnerHidden] = useState(true);
@@ -93,16 +99,16 @@ const Post = (props) => {
   //   }
   //     getAllPosts();
   // }
-  React.useEffect(() => {
-    async function getAllPosts() {
-    if (!loading) {
-      const postData = postToGeoJSON(data);
-      props.setPostGeoJSON(postData);
-      console.log(postData);
-    }
-  }
-    getAllPosts();
-  }, [data]);
+  // React.useEffect(() => {
+  //   async function getAllPosts() {
+  //   if (!loading) {
+  //     const postData = postToGeoJSON(data);
+  //     props.setPostGeoJSON(postData);
+  //     console.log(postData);
+  //   }
+  // }
+  //   getAllPosts();
+  // }, [data]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -110,9 +116,16 @@ const Post = (props) => {
       let approvePost = await checkPost();
       console.log(approvePost);
       if (approvePost === true) {
-        const mutationResponse = addPost({
-          variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
-        });
+        let mutationResponse;
+        if (props.update === true) {
+          mutationResponse = updatePost({
+            variables: {userId: props.editUser, postId: props.editPostId, body: formState.body},
+          });
+        } else {
+          mutationResponse = addPost({
+            variables: {body: formState.body, latitude: props.centerLatitude, longitude: props.centerLongitude},
+          });
+        }
         // window.location.reload();
         console.log(mutationResponse);
       }
@@ -124,16 +137,9 @@ const Post = (props) => {
     }
   };
 
-  // React.useEffect(() => {
-  //     useGetData();
-  // }, [postToGeoJSON]);
-
-  useEffect(() => {
-
-  }, [toxicityResult])
     return ( 
         <div className="align-items-center justify-content-center text-center">
-
+          {props.editPostId}
           <form onSubmit={handleFormSubmit}>
             <textarea
               className="w-75"
