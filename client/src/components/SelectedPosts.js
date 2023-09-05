@@ -26,7 +26,10 @@ const PostInstance = (props) => {
     <div id={id} className={"post rounded-1 align-items-center justify-content-center text-center"}>
         <div id={id + "-text"}>{body}</div>
         {/* <Post id={id + "-update"} hidden/> */}
-        <div className="post-byline">By: {user}<br/>@ <button onClick={() => { props.setViewport({latitude, longitude, zoom: 10})}}>[{latitude}, {longitude}]</button><br/>{time}</div>
+        <div className="post-byline">By: {user}<br/>@ <button onClick={() => {
+            props.setViewport({latitude: postData.geometry.coordinates[1], longitude: postData.geometry.coordinates[0], zoom: 10});
+            
+            }}>[{latitude}, {longitude}]</button><br/>{time}</div>
         {(props.me?.me?._id.toString() === postData.properties.userId.toString()) && 
             <>
                 <Button className="btn-danger m-3" onClick={() => {

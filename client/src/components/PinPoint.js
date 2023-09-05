@@ -106,11 +106,11 @@
       const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     }
 
-    // React.useEffect(() => {
-    //   let viewCenter = toLonLat(view.center);
-    //   setCenterLatitude(viewCenter[1]);
-    //   setCenterLongitude(viewCenter[0]);
-    // }, [view]);
+    React.useEffect(() => {
+      console.log(viewport);
+      setCenterLatitude(viewport.latitude);
+      setCenterLongitude(viewport.longitude);
+    }, [viewport]);
 
     
     React.useEffect(() => {
@@ -154,17 +154,6 @@
           setIsPostPaneOpen={setIsPostPaneOpen}
           setIsEditMode={setIsEditMode}
         />
-        {/* <CenterMenu
-        centerLatitude={centerLatitude}
-        centerLongitude={centerLongitude}
-        coordinateRoundTo={coordinateRoundTo}
-        isPostPaneOpen={isPostPaneOpen}
-        setIsPostPaneOpen={setIsPostPaneOpen}
-        isLoginPaneOpen={isLoginPaneOpen}
-        setIsLoginPaneOpen={setIsLoginPaneOpen}
-        isSignUpPaneOpen={isSignUpPaneOpen}
-        setIsSignUpPaneOpen={setIsSignUpPaneOpen}
-        panAndZoomToMe={panAndZoomToMe}/> */}
       </div>
         <SlidingPane
           closeIcon={<div>Close</div>}
