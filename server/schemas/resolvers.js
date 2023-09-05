@@ -20,6 +20,9 @@ const resolvers = {
     post: async (parent, args) => {
       return await Post.findOne({ _id: args._id }).populate('user');
     },
+    postHistory: async (parent, args, context) => {
+      return await Post.find().populate('user');
+    },
     // posts: async (parent, { _id }) => {
     //   if (context.user) {
     //     const 

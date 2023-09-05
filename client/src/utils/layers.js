@@ -36,9 +36,9 @@ export const unclusteredPointLayer = {
   source: 'postPoints',
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': '#80a3d3',
-    'circle-radius': 5,
-    'circle-stroke-width': 2,
+    'circle-color': '#fff',
+    'circle-radius': 6,
+    'circle-stroke-width': 1,
     'circle-stroke-color': '#000',
   },
 };

@@ -46,7 +46,7 @@ const typeDefs = gql`
     me: User
     users: [User]
     posts: [Post]
-    userPosts(userId: ID!): [Post]
+    postHistory: [Post]
     post(_id: String): Post
   }
 

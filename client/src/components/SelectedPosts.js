@@ -4,7 +4,7 @@ import Auth from '../utils/auth';
 import { Card } from 'bootstrap';
 import { GET_ME } from '../utils/queries';
 import { DELETE_POST, UPDATE_POST } from '../utils/mutations';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
 import Button from 'react-bootstrap/Button';
 import Post from './Post';
 const UpdateInstance = (props) => {
@@ -16,7 +16,6 @@ const PostInstance = (props) => {
     const [updatePost, { error: updateError, data: updateData }] = useMutation(UPDATE_POST);
 
     const postData = props.post;
-    console.log(props);
     const id = postData.properties.id;
     const user = postData.properties.user;
     const body = postData.properties.body;
@@ -51,14 +50,12 @@ const SelectedPosts = (props) => {
     const [postResults, setPostResults] = useState();
     const [selectedPosts, setSelectedPosts] = useState();
     const { loading, error, data } = useQuery(GET_ME);
-    console.log(data);
     // props.setIsSelectedPostPaneOpen(true);
-    console.log(Auth);
     useEffect(() => {
         console.log(props);
         let keyCount = 0;
-        if (props.selectedMapPosts) {
-            
+        if (props.selectedMapPosts.length > 0) {
+            console.log("MAP PROPS", props.selectedMapPosts);
             let postLength = props.selectedMapPosts.length;
             console.log(postLength);
             if (postLength !== 1) {
@@ -97,10 +94,10 @@ const SelectedPosts = (props) => {
                         me={data} 
                     />);
             }
-            props.setIsSelectedPaneOpen(true);
+            // props.setIsSelectedPaneOpen(true);
         }
         
-    }, [props.selectedMapPosts, data, props.mainPostData])
+    }, [data, props.mainPostData])
     return selectedPosts;
 }
 

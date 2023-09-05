@@ -1,5 +1,5 @@
 const postToGeoJSON = (posts) => {
-    posts = posts.posts;
+    posts = posts.posts || posts.postHistory;
         let geoJSON = {
             "type": "FeatureCollection",
             "metadata": {
@@ -7,7 +7,7 @@ const postToGeoJSON = (posts) => {
             },
             "features": []
         };
-
+            
         posts.forEach(function (post) {
             geoJSON.features.push({
                 "type": "Feature", 
