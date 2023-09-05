@@ -65,6 +65,7 @@ const PostMap = (props) => {
 
       mapRef.current.on('click', 'pinpoint', (e) => {
         if (Auth.loggedIn()) {
+          props.setIsEditMode(false);
           props.setIsPostPaneOpen(true)
         }
       });

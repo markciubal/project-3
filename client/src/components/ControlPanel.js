@@ -29,8 +29,8 @@ const HeaderOptions = (props) => {
                 <Button variant="outline-success">Search</Button>
             </Form>
             <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
-            <Nav.Link onClick={props.history}>History</Nav.Link>
-            <Nav.Link onClick={props.profile}>Profile</Nav.Link>
+            <Nav.Link onClick={() => { props.setIsHistoryPaneOpen(true)}}>History</Nav.Link>
+            {/* <Nav.Link onClick={props.profile}>Profile</Nav.Link> */}
             <Nav.Link onClick={() => {
                 Auth.logout();
             // Redirect to login page after logout
@@ -75,6 +75,7 @@ const ControlPanel = (props) => {
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                         <HeaderOptions
+                            setIsHistoryPaneOpen={props.setIsHistoryPaneOpen}
                             setIsSignUpPaneOpen={props.setIsSignUpPaneOpen}
                             setIsLoginPaneOpen={props.setIsLoginPaneOpen}
                             setIsPostPaneOpen={props.setIsPostPaneOpen}

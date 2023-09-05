@@ -3,6 +3,7 @@
   // import { useContext } from 'react';
   import '../App.css';
   import ControlPanel from "./ControlPanel";
+  import History from "./History"
   import { useMutation, useQuery } from '@apollo/client';
   import Post from './Post';
   import SelectedPosts from "./SelectedPosts";
@@ -50,7 +51,7 @@
     const [isSignUpPaneOpen, setIsSignUpPaneOpen] = React.useState(false);
     const [isLoginPaneOpen, setIsLoginPaneOpen] = React.useState(false);
     const [isSelectedPaneOpen, setIsSelectedPaneOpen] = React.useState(false);
-
+    const [isHistoryPaneOpen, setIsHistoryPaneOpen] = React.useState(false);
     const [isEditMode, setIsEditMode] = React.useState(false);
     const [editUser, setEditUser] = React.useState();
     const [editPostId, setEditPostId] = React.useState();
@@ -135,6 +136,8 @@
           setIsLoginPaneOpen={setIsLoginPaneOpen}
           isSignUpPaneOpen={isSignUpPaneOpen}
           setIsSignUpPaneOpen={setIsSignUpPaneOpen}
+          isHistoryPaneOpen={isHistoryPaneOpen}
+          setIsHistoryPaneOpen={setIsHistoryPaneOpen}
           panAndZoomToMe={panAndZoomToMe}
         />
         <PostMap
@@ -149,6 +152,7 @@
           setIsSelectedPaneOpen={setIsSelectedPaneOpen}
           isSelectedPaneOpen={isSelectedPaneOpen}
           setIsPostPaneOpen={setIsPostPaneOpen}
+          setIsEditMode={setIsEditMode}
         />
         {/* <CenterMenu
         centerLatitude={centerLatitude}
@@ -258,7 +262,30 @@
             setIsPostPaneOpen={setIsPostPaneOpen}
             setIsEditMode={setIsEditMode}
           ></SelectedPosts>
-        </SlidingPane>       
+        </SlidingPane>    
+        <SlidingPane
+          closeIcon={<div>Close</div>}
+          className="bottom-pane"
+          from="bottom"
+          isOpen={isHistoryPaneOpen}
+          onRequestClose={() => {
+            setIsHistoryPaneOpen(false);
+          }}  
+          width="100%"
+        >
+          <History
+            update={true}
+            setEditUser={setEditUser}
+            setEditPostId={setEditPostId}
+            setEditPostBody={setEditPostBody}
+            selectedMapPosts={selectedMapPosts}
+            setSelectedMapPosts={selectedMapPosts}
+            setIsSelectedPaneOpen={setIsSelectedPaneOpen}
+            isSelectedPaneOpen={isSelectedPaneOpen}
+            setIsPostPaneOpen={setIsPostPaneOpen}
+            setIsEditMode={setIsEditMode}
+          ></History>
+        </SlidingPane>     
       </>
     )
   };

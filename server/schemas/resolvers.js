@@ -93,7 +93,7 @@ const resolvers = {
       
       if (context.user._id.toString() === userId) {
         const operation = Post.findOneAndUpdate({ _id: postId }, { body: body });
-        console.log(operation);
+        // console.log(operation);
         return operation;
       }
 
