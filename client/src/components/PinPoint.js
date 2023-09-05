@@ -100,7 +100,13 @@ const PinPoint = () => {
     const id = navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
-
+  React.useEffect(() => {
+    if (isSelectedPaneOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isSelectedPaneOpen]);
 
   // React.useEffect(() => {
   //   let viewCenter = toLonLat(view.center);
@@ -112,11 +118,8 @@ const PinPoint = () => {
   React.useEffect(() => {
     async function getAllPosts() {
     if (!loading) {
-      console.log(postGeoJSON);
       const postData = postToGeoJSON(data);
       setPostGeoJSON(postData);
-      console.log(postGeoJSON);
-      console.log(postData);
     }
   }
     getAllPosts();
@@ -185,8 +188,7 @@ const PinPoint = () => {
           setIsPostPaneOpen(false);
         }}  
         width="100%"
-      >
-        <Post 
+      ><Post 
           centerLatitude={centerLatitude}
           centerLongitude={centerLongitude}
           setIsPostPaneOpen={setIsPostPaneOpen}
@@ -217,15 +219,13 @@ const PinPoint = () => {
           setIsSelectedPaneOpen(false);
         }}  
         width="100%"
-      >
-        <SelectedPosts
+      ><SelectedPosts
           selectedMapPosts={selectedMapPosts}
           setSelectedMapPosts={selectedMapPosts}
           setIsSelectedPaneOpen={setIsSelectedPaneOpen}
           isSelectedPaneOpen={isSelectedPaneOpen}
         ></SelectedPosts>
-      </SlidingPane>
-       
+      </SlidingPane>       
     </>
   )
 };
