@@ -77,9 +77,9 @@ const PostMap = (props) => {
     id: 'pinpoint',
     type: 'circle',
     paint: {
-      'circle-radius': 6,
+      'circle-radius': 8,
       'circle-color': '#0047a7',
-      'circle-stroke-width': 2,
+      'circle-stroke-width': 3,
       'circle-stroke-color': '#000'
     }
   };
