@@ -32,20 +32,30 @@ const typeDefs = gql`
   body: String
   }
 
+  type MutationResponse {
+    success: Boolean!
+    message: String
+  }
+
   type Auth {
     token: ID
     user: User
   }
 
   type Query {
+    me: User
     users: [User]
     posts: [Post]
+    postHistory: [Post]
+    post(_id: String): Post
   }
 
   type Mutation {
     signUp(username: String!, email: String!, password: String!): Auth
     login(username: String!, password: String!): Auth
     addPost(body: String!, latitude: Float!, longitude: Float!): Post
+    deletePost(userId: ID!, postId: ID!): Post
+    updatePost(userId: ID!, postId: ID!, body: String!): Post
   }
 `;
 

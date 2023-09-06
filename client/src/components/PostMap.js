@@ -4,9 +4,14 @@ import {Map, Marker, Source, Layer} from 'react-map-gl';
 import Pin from './Pin';
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from '../utils/layers';
 import '../App.css';
-
+import Auth from '../utils/auth'
+// TODO: Move to .env file.
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicHJvamVjdGNpdmlsaWFuIiwiYSI6ImNsbDduZWdzcDBzcGUzanNzcjdxamVicXMifQ.lVmATzvMkyZSxPthIay_mA'; // Set your mapbox token here
 const PostMap = (props) => {
+  // if (Auth.loggedIn()) {
+  //   return (
+  //       <>
+  //       <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
   const [pointData, setPointData] = useState(null);
   const mapRef = useRef();
 
@@ -25,7 +30,7 @@ const PostMap = (props) => {
   }
   useEffect(() => {
     const animation = window.requestAnimationFrame(() =>
-      setPointData(getCenter({center: [props.viewport.longitude, props.viewport.latitude], angle: Date.now() / 1000, radius: 20}))
+      setPointData(getCenter({center: [props.viewport.longitude, props.viewport.latitude]}))
     );
     return () => window.cancelAnimationFrame(animation);
   }, [props.viewport]);
@@ -33,7 +38,7 @@ const PostMap = (props) => {
   const onClick = event => {
     console.log(event);
     if (mapRef.current) {
-      mapRef.current.on('click', ['clusters', 'unclustered-point'], (e) => {
+      mapRef.current.on('click', ['clusters'], (e) => {
         const features = mapRef.current.queryRenderedFeatures(e.point, {
           layers: ['clusters']
         });
@@ -52,19 +57,30 @@ const PostMap = (props) => {
       });
 
       mapRef.current.on('click', 'unclustered-point', (e) => {
-        const feature = e.features[0];
+        const feature = e.features.splice(0, 1);
          console.log(feature);
-         props.setSelectedMapPosts(feature);
-         props.setIsSelectedPaneOpen(true);
+         if (feature) {
+          props.setSelectedMapPosts(feature);
+          props.setIsSelectedPaneOpen(true);
+        }
+      });
+
+      mapRef.current.on('click', 'pinpoint', (e) => {
+        if (Auth.loggedIn()) {
+          props.setIsEditMode(false);
+          props.setIsPostPaneOpen(true)
+        }
       });
    }
   }
   const pointLayer = {
-    id: 'point',
+    id: 'pinpoint',
     type: 'circle',
     paint: {
-      'circle-radius': 5,
-      'circle-color': '#007cbf'
+      'circle-radius': 10,
+      'circle-color': '#0047a7',
+      'circle-stroke-width': 3,
+      'circle-stroke-color': '#000'
     }
   };
   return (
@@ -77,6 +93,7 @@ const PostMap = (props) => {
         onClick={onClick}
         onMove={evt => { 
           props.setViewport(evt.viewState);
+          // console.log(evt.viewState);
           props.setCenterLongitude(props.viewport.longitude);
           props.setCenterLatitude(props.viewport.latitude);
          }}
@@ -96,7 +113,10 @@ const PostMap = (props) => {
           <Layer {...unclusteredPointLayer} />
         </Source>
         {pointData && (
-          <Source type="geojson" data={pointData}>
+          <Source 
+            id="pinpoint" 
+            type="geojson"
+            data={pointData}>
             <Layer {...pointLayer} />
           </Source>
         )}

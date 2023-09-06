@@ -19,14 +19,7 @@ const HeaderOptions = (props) => {
     if (Auth.loggedIn()) {
         return (
             <>
-            <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
-            <Nav.Link onClick={props.history}>History</Nav.Link>
-            <Nav.Link onClick={props.profile}>Profile</Nav.Link>
-            <Nav.Link onClick={() => {
-                Auth.logout();
-            // Redirect to login page after logout
-            }}>Logout</Nav.Link>
-            <Form className="d-flex">
+             {/* <Form className="d-flex">
                 <Form.Control
                     type="search"
                     placeholder="Search"
@@ -34,7 +27,14 @@ const HeaderOptions = (props) => {
                     aria-label="Search"
                 />
                 <Button variant="outline-success">Search</Button>
-            </Form>
+            </Form> */}
+            <Nav.Link onClick={() => { props.setIsPostPaneOpen(true)}}>Post</Nav.Link>
+            <Nav.Link onClick={() => { props.setIsHistoryPaneOpen(true)}}>History</Nav.Link>
+            {/* <Nav.Link onClick={props.profile}>Profile</Nav.Link> */}
+            <Nav.Link onClick={() => {
+                Auth.logout();
+            // Redirect to login page after logout
+            }}>Logout</Nav.Link>
             </>
         )
     } else {
@@ -52,10 +52,10 @@ const ControlPanel = (props) => {
     
     return (
         <>
-            <Navbar key={expand} expand={expand} variant="main" className="custom-navbar">
+            <Navbar key={expand} expand={expand} variant="main" className="pinpoint-navbar">
                 <Container fluid>
                
-                    <Navbar.Brand href="#"><img src="Untitled.png"
+                    <Navbar.Brand href="#"><img src="logo192.svg"
                     
                     width="45" 
                     height="45" 
@@ -75,6 +75,7 @@ const ControlPanel = (props) => {
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                         <HeaderOptions
+                            setIsHistoryPaneOpen={props.setIsHistoryPaneOpen}
                             setIsSignUpPaneOpen={props.setIsSignUpPaneOpen}
                             setIsLoginPaneOpen={props.setIsLoginPaneOpen}
                             setIsPostPaneOpen={props.setIsPostPaneOpen}

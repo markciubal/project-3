@@ -77,7 +77,7 @@ const SignUp = (props) => {
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-block btn-info w-100"
+                  className="btn btn-block btn-flat w-100"
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
@@ -88,7 +88,7 @@ const SignUp = (props) => {
 
             {error && (
               <div className="my-3 p-3 bg-danger text-white">
-                {error.message}
+               There was an error.
               </div>
             )}
           </div>

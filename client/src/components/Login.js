@@ -55,7 +55,7 @@ function Login(props) {
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-block btn-info w-100"
+                  className="btn btn-block btn-flat w-100"
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
